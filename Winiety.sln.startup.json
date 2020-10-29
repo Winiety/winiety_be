@@ -1,0 +1,40 @@
+/*
+    This is a configuration file for the SwitchStartupProject Visual Studio Extension
+    See https://heptapod.host/thirteen/switchstartupproject/blob/branch/current/Configuration.md
+*/
+{
+  /*  Configuration File Version  */
+  "Version": 3,
+
+  /*  Create an item in the dropdown list for each project in the solution?  */
+  "ListAllProjects": false,
+
+  "MultiProjectConfigurations": {
+    "FullBackend": {
+      "Projects": {
+        "AI.API": {
+          "ProfileName": "AI.API"
+        },
+        "Fines.API": {
+          "ProfileName": "Fines.API"
+        },
+        "Identity.API": {
+          "ProfileName": "Identity.API"
+        },
+        "Payment.API": {
+          "ProfileName": "Payment.API"
+        },
+        "Pictures.API": {
+          "ProfileName": "Pictures.API"
+        },
+        "Rides.API": {
+          "ProfileName": "Rides.API"
+        },
+        "Statistics.API": {
+          "ProfileName": "Statistics.API"
+        }
+      },
+      "SolutionPlatform": "x64"
+    }
+  }
+}
