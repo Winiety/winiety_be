@@ -1,0 +1,99 @@
+version: "3.8"
+
+services:
+  rabbitmq:
+    image: masstransit/rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+  identity.api:
+    build:
+      context: .
+      dockerfile: src/Services/Identity/Identity.API/Dockerfile
+    ports:
+      - "5101:80"
+
+  ai.api:
+    build:
+      context: .
+      dockerfile: src/Services/AI/AI.API/Dockerfile
+    depends_on:
+      - identity.api
+      - rabbitmq
+    ports:
+      - "5102:80"
+    environment:
+      - RabbitMqHost=rabbitmq
+
+  fines.api:
+    build:
+      context: .
+      dockerfile: src/Services/Fines/Fines.API/Dockerfile
+    depends_on:
+      - identity.api
+      - rabbitmq
+    ports:
+      - "5103:80"
+    environment:
+      - RabbitMqHost=rabbitmq
+
+  payment.api:
+    build:
+      context: .
+      dockerfile: src/Services/Payment/Payment.API/Dockerfile
+    depends_on:
+      - rabbitmq
+    ports:
+      - "5104:80"
+    environment:
+      - RabbitMqHost=rabbitmq
+
+  pictures.api:
+    build:
+      context: .
+      dockerfile: src/Services/Pictures/Pictures.API/Dockerfile
+    depends_on:
+      - rabbitmq
+    ports:
+      - "5105:80"
+    environment:
+      - RabbitMqHost=rabbitmq
+
+  rides.api:
+    build:
+      context: .
+      dockerfile: src/Services/Rides/Rides.API/Dockerfile
+    depends_on:
+      - rabbitmq
+    ports:
+      - "5106:80"
+    environment:
+      - RabbitMqHost=rabbitmq
+
+  statistics.api:
+    build:
+      context: .
+      dockerfile: src/Services/Statistics/Statistics.API/Dockerfile
+    depends_on:
+      - rabbitmq
+    ports:
+      - "5107:80"
+    environment:
+      - RabbitMqHost=rabbitmq
+
+  apigateway:
+    build:
+      context: .
+      dockerfile: src/ApiGateways/ApiGateway/Dockerfile
+    depends_on:
+      - identity.api
+      - rabbitmq
+      - ai.api
+      - fines.api
+      - payment.api
+      - pictures.api
+      - rides.api
+      - statistics.api
+    ports:
+      - "5200:80"

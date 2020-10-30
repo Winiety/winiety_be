@@ -1,12 +1,13 @@
 ﻿using AI.Application.Consumers;
 using MassTransit;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AI.API.StartupConfiguration
 {
     public static class MassTransit
     {
-        public static IServiceCollection ConfigureMassTransit(this IServiceCollection services)
+        public static IServiceCollection ConfigureMassTransit(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddMassTransit(c =>
             {
@@ -14,6 +15,7 @@ namespace AI.API.StartupConfiguration
 
                 c.UsingRabbitMq((context, cfg) =>
                 {
+                    cfg.Host(configuration["RabbitMqHost"]);
                     cfg.ReceiveEndpoint("ai-listener", e =>
                     {
                         e.ConfigureConsumer<AnalyzePictureConsumer>(context);
