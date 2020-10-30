@@ -6,7 +6,7 @@ namespace Statistics.API.StartupConfiguration
 {
     public static class Swagger
     {
-        public static IServiceCollection AddSwagger(this IServiceCollection services)
+        public static IServiceCollection ConfigureSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(options =>
             {
