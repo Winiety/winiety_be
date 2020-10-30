@@ -26,6 +26,7 @@ namespace Statistics.API
             services
                 .ConfigureSwagger()
                 .ConfigureServices()
+                .ConfigureHealthChecks(Configuration)
                 .ConfigureMassTransit(Configuration);
         }
 
@@ -42,6 +43,8 @@ namespace Statistics.API
             app.UseAuthorization();
 
             app.UseMvcWithDefaultRoute();
+            
+            app.UseHealthChecks();
 
             app.UseSwaggerEx();
         }

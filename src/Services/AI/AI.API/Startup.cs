@@ -26,6 +26,7 @@ namespace AI.API
             services
                 .ConfigureSwagger()
                 .ConfigureServices()
+                .ConfigureHealthChecks(Configuration)
                 .ConfigureMassTransit(Configuration);
         }
 
@@ -42,6 +43,8 @@ namespace AI.API
             app.UseAuthorization();
 
             app.UseMvcWithDefaultRoute();
+
+            app.UseHealthChecks();
 
             app.UseSwaggerEx();
         }

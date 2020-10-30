@@ -23,7 +23,9 @@ namespace Identity.API
                 .AddMvc(options => options.EnableEndpointRouting = false)
                 .AddControllersAsServices();
 
-            services.AddSwagger();
+            services
+                .ConfigureHealthChecks()
+                .ConfigureSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,6 +41,8 @@ namespace Identity.API
             app.UseAuthorization();
 
             app.UseMvcWithDefaultRoute();
+
+            app.UseHealthChecks();
 
             app.UseSwaggerEx();
         }

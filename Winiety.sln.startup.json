@@ -32,6 +32,12 @@
         },
         "Statistics.API": {
           "ProfileName": "Statistics.API"
+        },
+        "HealthCheckUI.API": {
+          "ProfileName": "HealthCheckUI.API"
+        },
+        "ApiGateway": {
+          "ProfileName": "ApiGateway"
         }
       },
       "SolutionPlatform": "x64"

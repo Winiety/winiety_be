@@ -26,6 +26,7 @@ namespace Rides.API
             services
                 .ConfigureSwagger()
                 .ConfigureServices()
+                .ConfigureHealthChecks(Configuration)
                 .ConfigureMassTransit(Configuration);
         }
 
@@ -42,6 +43,8 @@ namespace Rides.API
             app.UseAuthorization();
 
             app.UseMvcWithDefaultRoute();
+
+            app.UseHealthChecks();
 
             app.UseSwaggerEx();
         }

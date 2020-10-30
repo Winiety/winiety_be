@@ -1,11 +1,12 @@
-using Fines.API.StartupConfiguration;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 
-namespace Fines.API
+namespace HealthCheckUI.API
 {
     public class Startup
     {
@@ -19,15 +20,18 @@ namespace Fines.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
+
             services
                 .AddMvc(options => options.EnableEndpointRouting = false)
                 .AddControllersAsServices();
 
+            services.AddHealthChecks()
+               .AddCheck("self", () => HealthCheckResult.Healthy());
+
             services
-                .ConfigureSwagger()
-                .ConfigureServices()
-                .ConfigureHealthChecks(Configuration)
-                .ConfigureMassTransit(Configuration);
+                .AddHealthChecksUI()
+                .AddInMemoryStorage();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,15 +42,21 @@ namespace Fines.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseHealthChecks("/health/live", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
+            });
+
+            app.UseHealthChecksUI(config =>
+            {
+                config.UIPath = "/hc-ui";
+            });
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
             app.UseMvcWithDefaultRoute();
-            
-            app.UseHealthChecks();
-
-            app.UseSwaggerEx();
         }
     }
 }
