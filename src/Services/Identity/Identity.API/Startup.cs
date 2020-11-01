@@ -1,3 +1,4 @@
+using Identity.API.IdentityConfiguration;
 using Identity.API.StartupConfiguration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,6 +35,8 @@ namespace Identity.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            IdentitySeed.InitializeDatabase(app);
 
             app.UseHealthChecks();
             

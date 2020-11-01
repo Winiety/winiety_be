@@ -1,6 +1,5 @@
 ﻿using Identity.Core.Data;
 using Identity.Core.Data.Model;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,13 +15,12 @@ namespace Identity.API.StartupConfiguration
         public static IServiceCollection ConfigureIdentity(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration["ConnectionString"];
-            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+            var migrationsAssembly = typeof(ApplicationDbContext).GetTypeInfo().Assembly.GetName().Name;
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString,
                 sqlServerOptionsAction: sqlOptions =>
                 {
-                    sqlOptions.MigrationsAssembly(migrationsAssembly);
                     sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                 }));
 

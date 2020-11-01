@@ -1,0 +1,8 @@
+﻿dotnet ef migrations add <migration title> -c PersistedGrantDbContext -o Data/Migrations/IdentityServer/PersistedGrantDb
+dotnet ef migrations add <migration title> -c ConfigurationDbContext -o Data/Migrations/IdentityServer/ConfigurationDb
+dotnet ef migrations add <migration title> -c ApplicationDbContext -o Data/Migrations/Application/ApplicationDb
+
+Add-Migration <migration title> -c PersistedGrantDbContext -o Data/Migrations/IdentityServer/PersistedGrantDb
+Add-Migration <migration title> -c ConfigurationDbContext -o Data/Migrations/IdentityServer/ConfigurationDb
+Add-Migration <migration title> -c ApplicationDbContext -o Data/Migrations/Application/ApplicationDb
+
