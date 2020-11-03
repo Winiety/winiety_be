@@ -36,13 +36,13 @@ namespace Identity.API
                 app.UseDeveloperExceptionPage();
             }
 
-            IdentitySeed.InitializeDatabase(app);
+            IdentitySeed.InitializeDatabase(app, Configuration);
 
             app.UseHealthChecks();
             
             app.UseIdentityServer();
             
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseMvc(routes =>
             {

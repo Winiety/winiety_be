@@ -26,6 +26,7 @@ services:
     environment:
       - RabbitMqHost=rabbitmq
       - RabbitMqConn=amqp://guest:guest@rabbitmq:5672
+      - IdentityUrl=http://identity.api
 
   fines.api:
     build:
@@ -39,6 +40,7 @@ services:
     environment:
       - RabbitMqHost=rabbitmq
       - RabbitMqConn=amqp://guest:guest@rabbitmq:5672
+      - IdentityUrl=http://identity.api
 
   payment.api:
     build:
@@ -51,6 +53,7 @@ services:
     environment:
       - RabbitMqHost=rabbitmq
       - RabbitMqConn=amqp://guest:guest@rabbitmq:5672
+      - IdentityUrl=http://identity.api
 
   pictures.api:
     build:
@@ -63,6 +66,7 @@ services:
     environment:
       - RabbitMqHost=rabbitmq
       - RabbitMqConn=amqp://guest:guest@rabbitmq:5672
+      - IdentityUrl=http://identity.api
 
   rides.api:
     build:
@@ -75,6 +79,7 @@ services:
     environment:
       - RabbitMqHost=rabbitmq
       - RabbitMqConn=amqp://guest:guest@rabbitmq:5672
+      - IdentityUrl=http://identity.api
 
   statistics.api:
     build:
@@ -87,6 +92,7 @@ services:
     environment:
       - RabbitMqHost=rabbitmq
       - RabbitMqConn=amqp://guest:guest@rabbitmq:5672
+      - IdentityUrl=http://identity.api
 
   apigateway:
     build:
@@ -104,6 +110,7 @@ services:
     ports:
       - "5200:80"
     environment:
+      - IdentityUrl=http://identity.api
       - AIUrlHC=http://ai.api/health/ready
       - FinesUrlHC=http://fines.api/health/ready
       - IdentityUrlHC=http://identity.api/health/ready
