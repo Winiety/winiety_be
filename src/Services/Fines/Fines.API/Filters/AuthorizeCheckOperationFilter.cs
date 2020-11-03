@@ -4,7 +4,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AI.API.Filters
+namespace Fines.API.Filters
 {
     public class AuthorizeCheckOperationFilter : IOperationFilter
     {
@@ -20,19 +20,18 @@ namespace AI.API.Filters
                 operation.Responses.Add("403", new OpenApiResponse { Description = "Forbidden" });
 
                 operation.Security = new List<OpenApiSecurityRequirement>
-            {
-                new OpenApiSecurityRequirement
                 {
-                    [
-                        new OpenApiSecurityScheme {Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "oauth2"}
-                        }
-                    ] = new[] { "ai" }
-                }
-            };
-
+                    new OpenApiSecurityRequirement
+                    {
+                        [
+                            new OpenApiSecurityScheme {Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "oauth2"}
+                            }
+                        ] = new[] { "fines" }
+                    }
+                };
             }
         }
     }

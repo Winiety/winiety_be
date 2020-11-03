@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Fines.API.Filters;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -36,6 +37,8 @@ namespace Fines.API.StartupConfiguration
                         }
                     }
                 });
+
+                options.OperationFilter<AuthorizeCheckOperationFilter>();
             });
 
             return services;

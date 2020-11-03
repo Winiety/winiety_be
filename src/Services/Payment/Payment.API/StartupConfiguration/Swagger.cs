@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Payment.API.Filters;
 using System;
 using System.Collections.Generic;
 
@@ -36,6 +37,8 @@ namespace Payment.API.StartupConfiguration
                         }
                     }
                 });
+
+                options.OperationFilter<AuthorizeCheckOperationFilter>();
             });
 
             return services;
