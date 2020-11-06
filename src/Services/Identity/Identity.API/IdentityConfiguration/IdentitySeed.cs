@@ -50,6 +50,15 @@ namespace Identity.API.IdentityConfiguration
                     context.SaveChanges();
                 }
 
+                if (!context.ApiScopes.Any())
+                {
+                    foreach (var scope in IdentityConfiguration.GetApiScopes())
+                    {
+                        context.ApiScopes.Add(scope.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+
                 if (!context.ApiResources.Any())
                 {
                     foreach (var resource in IdentityConfiguration.GetApiResources())

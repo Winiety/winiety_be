@@ -12,6 +12,8 @@ namespace Pictures.API.StartupConfiguration
     {
         public static IServiceCollection ConfigureSwagger(this IServiceCollection services, IConfiguration configuration)
         {
+            var url = configuration.GetValue<string>("IdentityClientUrl") ?? configuration.GetValue<string>("IdentityUrl");
+
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo
@@ -28,8 +30,8 @@ namespace Pictures.API.StartupConfiguration
                     {
                         Implicit = new OpenApiOAuthFlow
                         {
-                            AuthorizationUrl = new Uri($"{configuration.GetValue<string>("IdentityUrl")}/connect/authorize"),
-                            TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrl")}/connect/token"),
+                            AuthorizationUrl = new Uri($"{url}/connect/authorize"),
+                            TokenUrl = new Uri($"{url}/connect/token"),
                             Scopes = new Dictionary<string, string>()
                             {
                                 { "pictures", "Pictures API" }

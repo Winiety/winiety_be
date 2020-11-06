@@ -15,16 +15,29 @@ namespace Identity.API.IdentityConfiguration
             };
         }
 
+        public static IEnumerable<ApiScope> GetApiScopes()
+        {
+            return new List<ApiScope>
+            {
+                new ApiScope("ai", "Full Access for AI Service"),
+                new ApiScope("fines", "Full Access for Fines Service"),
+                new ApiScope("payment", "Full Access for Payment Service"),
+                new ApiScope("pictures", "Full Access for Pictures Service"),
+                new ApiScope("rides", "Full Access for Rides Service"),
+                new ApiScope("statistics", "Full Access for Statistics Service"),
+            };
+        }
+
         public static IEnumerable<ApiResource> GetApiResources()
         {
             return new List<ApiResource>
             {
-                new ApiResource("ai", "AI Service"),
-                new ApiResource("fines", "Fines Service"),
-                new ApiResource("payment", "Payment Service"),
-                new ApiResource("pictures", "Pictures Service"),
-                new ApiResource("rides", "Rides Service"),
-                new ApiResource("statistics", "Statistics Service"),
+                new ApiResource("ai", "AI Service"){ Scopes = { "ai" } },
+                new ApiResource("fines", "Fines Service"){ Scopes = { "fines" } },
+                new ApiResource("payment", "Payment Service"){ Scopes = { "payment" } },
+                new ApiResource("pictures", "Pictures Service"){ Scopes = { "pictures" } },
+                new ApiResource("rides", "Rides Service"){ Scopes = { "rides" } },
+                new ApiResource("statistics", "Statistics Service"){ Scopes = { "statistics" } },
             };
         }
 

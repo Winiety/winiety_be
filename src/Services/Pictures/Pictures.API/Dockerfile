@@ -1,22 +1,61 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+FROM golang:alpine as cert
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
-WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+RUN apk update \
+  && apk add git openssl nss-tools \
+  && rm -rf /var/cache/apk/*
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
+RUN cd /go && \
+  go get -u github.com/FiloSottile/mkcert && \
+  cd src/github.com/FiloSottile/mkcert && \
+  go build -o /bin/mkcert
+
+WORKDIR /root/.local/share/mkcert
+
+COPY certs/rootCA*.pem /root/.local/share/mkcert/
+
+ARG DNS_NAMES
+ARG CERT_NAME
+
+RUN mkcert -install \
+  && mkcert -key-file https-${CERT_NAME}.key -cert-file https-${CERT_NAME}.pem ${DNS_NAMES} \
+  && openssl pkcs12 -export -out https-${CERT_NAME}.pfx -inkey https-${CERT_NAME}.key -in https-${CERT_NAME}.pem -certfile rootCA.pem -passout pass:https-${CERT_NAME}
+
+
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster as build
+
 WORKDIR /src
 COPY ["src/Services/Pictures/Pictures.API/Pictures.API.csproj", "src/Services/Pictures/Pictures.API/"]
 RUN dotnet restore "src/Services/Pictures/Pictures.API/Pictures.API.csproj"
 COPY . .
 WORKDIR "/src/src/Services/Pictures/Pictures.API"
-RUN dotnet build "Pictures.API.csproj" -c Release -o /app/build
 
-FROM build AS publish
-RUN dotnet publish "Pictures.API.csproj" -c Release -o /app/publish
+RUN dotnet publish -c Debug -o /dist
 
-FROM base AS final
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim
+
+RUN apt-get update
+RUN apt-get -y install libnss3-tools
+
+ARG CERT_NAME
+
+RUN curl -L https://github.com/FiloSottile/mkcert/releases/download/v1.4.2/mkcert-v1.4.2-linux-amd64 > mkcert
+RUN chmod +x mkcert
+RUN cp mkcert /usr/local/bin/
+
+COPY --from=cert /root/.local/share/mkcert/rootCA.pem /root/.local/share/mkcert/rootCA.pem
+COPY --from=cert /root/.local/share/mkcert/https-${CERT_NAME}.pfx /app/
+
+ENV Kestrel__Certificates__Default__Path=/app/https-${CERT_NAME}.pfx
+ENV Kestrel__Certificates__Default__Password=https-${CERT_NAME}
+
+RUN mkcert -install
+RUN apt-get -y remove libnss3-tools
+RUN rm -rf /usr/local/bin/mkcert
+
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Pictures.API.dll"]
+COPY --from=build /dist /app
+
+EXPOSE 80
+EXPOSE 443
+
+CMD ["dotnet", "Pictures.API.dll"]
