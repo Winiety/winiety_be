@@ -22,10 +22,12 @@ RUN mkcert -install \
 
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
-
+RUN dotnet tool install -g Microsoft.Web.LibraryManager.Cli
+ENV PATH="$PATH:/root/.dotnet/tools"
 WORKDIR /src
 COPY ["src/Services/Identity/Identity.API/Identity.API.csproj", "src/Services/Identity/Identity.API/"]
 RUN dotnet restore "src/Services/Identity/Identity.API/Identity.API.csproj"
+
 COPY . .
 WORKDIR "/src/src/Services/Identity/Identity.API"
 
