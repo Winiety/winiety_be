@@ -1,0 +1,31 @@
+After running docker compose, there will be:
+6 apis + 1 identity server + 1 health checks api + 1 api gateway available.
+
+Because all http requests will be redirected to https, only those will be listed below.
+
+API urls:
+
+AI Module - https://localhost:5103
+Fines Module - https://localhost:5105
+Payment Module - https://localhost:5107
+Pictures Module - https://localhost:5109
+Rides Module - https://localhost:5111
+Statistics Module - https://localhost:5113
+
+Identity Server url - https://localhost:5101
+
+Health Checks api url - https://localhost:5301
+ 
+Api gateway url - https://localhost:5301
+Sub paths:
+  - /api/ai - AI module 
+  - /api/fi - Fines module
+  - /api/pa - Payment module
+  - /api/pi - Pictures module
+  - /api/ri - Rides module
+  - /api/st - Statistics module
+
+All apis has simple Values controller which can be used to test Swagger and api gateway.
+Sample api gateway request:
+
+https://localhost:5301/api/ai/values - will return list of values
