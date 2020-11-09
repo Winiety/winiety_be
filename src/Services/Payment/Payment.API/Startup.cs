@@ -24,10 +24,11 @@ namespace Payment.API
                 .AddControllersAsServices();
 
             services
-                .ConfigureSwagger()
+                .ConfigureSwagger(Configuration)
                 .ConfigureServices()
                 .ConfigureHealthChecks(Configuration)
-                .ConfigureMassTransit(Configuration);
+                .ConfigureMassTransit(Configuration)
+                .ConfigureAuthentication(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,6 +40,8 @@ namespace Payment.API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
