@@ -37,31 +37,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateways", "ApiGateways"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGateway", "src\ApiGateways\ApiGateway\ApiGateway.csproj", "{F4A26461-FE0C-4C6A-8883-9ED123BB6DC1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI.Domain", "src\Services\AI\AI.Domain\AI.Domain.csproj", "{44033ADC-D59E-4554-AF2B-496265152EF0}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI.Application", "src\Services\AI\AI.Application\AI.Application.csproj", "{20A6A846-9623-4FA2-A710-B5EDC836840A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fines.Domain", "src\Services\Fines\Fines.Domain\Fines.Domain.csproj", "{DEB395F7-71C9-44D1-8E9B-2387ABB272BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI.Core", "src\Services\AI\AI.Core\AI.Core.csproj", "{20A6A846-9623-4FA2-A710-B5EDC836840A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fines.Infrastructure", "src\Services\Fines\Fines.Infrastructure\Fines.Infrastructure.csproj", "{387587F3-F5BA-497B-A243-D664B9FE0B6B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fines.Application", "src\Services\Fines\Fines.Application\Fines.Application.csproj", "{AFE874C7-6AD9-47F4-B25E-737920C9DF81}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pictures.Domain", "src\Services\Pictures\Pictures.Domain\Pictures.Domain.csproj", "{C313CDF9-18B5-4479-9769-EB8F8904C743}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fines.Core", "src\Services\Fines\Fines.Core\Fines.Core.csproj", "{AFE874C7-6AD9-47F4-B25E-737920C9DF81}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pictures.Infrastructure", "src\Services\Pictures\Pictures.Infrastructure\Pictures.Infrastructure.csproj", "{F79B5A04-C1D1-4E9B-8B1F-9B36772D056D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pictures.Application", "src\Services\Pictures\Pictures.Application\Pictures.Application.csproj", "{FC3DB740-8EC0-4758-A8BF-A88F45CC2319}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pictures.Core", "src\Services\Pictures\Pictures.Core\Pictures.Core.csproj", "{FC3DB740-8EC0-4758-A8BF-A88F45CC2319}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.Core", "src\Services\Identity\Identity.Core\Identity.Core.csproj", "{0BD95436-58C8-427A-9473-8E23767E1627}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rides.Infrastructure", "src\Services\Rides\Rides.Infrastructure\Rides.Infrastructure.csproj", "{352416A5-3941-4D75-859E-90566B6274F0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rides.Application", "src\Services\Rides\Rides.Application\Rides.Application.csproj", "{B4BA350C-7841-4648-A09B-4F635D6F2E98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rides.Core", "src\Services\Rides\Rides.Core\Rides.Core.csproj", "{B4BA350C-7841-4648-A09B-4F635D6F2E98}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rides.Domain", "src\Services\Rides\Rides.Domain\Rides.Domain.csproj", "{E7086BA4-D84B-4EBD-9B24-C6DB3325C81D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Statistics.Application", "src\Services\Statistics\Statistics.Application\Statistics.Application.csproj", "{BCBD166B-85EB-4FA8-9331-6FA305B44A5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Statistics.Core", "src\Services\Statistics\Statistics.Core\Statistics.Core.csproj", "{BCBD166B-85EB-4FA8-9331-6FA305B44A5C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HealthCheckUI", "HealthCheckUI", "{1E12A7A8-F2F7-428E-BD15-1D39FF6BB4D1}"
 EndProject

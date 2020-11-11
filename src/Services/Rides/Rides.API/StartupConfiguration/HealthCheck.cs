@@ -13,13 +13,16 @@ namespace Rides.API.StartupConfiguration
         {
             var hcBuilder = services.AddHealthChecks();
 
-            hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
-
             hcBuilder
-                    .AddRabbitMQ(
-                        configuration["RabbitMqConn"],
-                        name: "rides-rabbitmq-check",
-                        tags: new string[] { "rabbitmq" });
+                .AddCheck("self", () => HealthCheckResult.Healthy())
+                .AddSqlServer(configuration["ConnectionString"],
+                    name: "RidesDB-check",
+                    tags: new string[] { "RidesDB" })
+                .AddRabbitMQ(
+                    configuration["RabbitMqConn"],
+                    name: "rides-rabbitmq-check",
+                    tags: new string[] { "rabbitmq" });
+                    
 
             return services;
         }

@@ -13,13 +13,12 @@ namespace Fines.API.StartupConfiguration
         {
             var hcBuilder = services.AddHealthChecks();
 
-            hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
-
             hcBuilder
-                    .AddRabbitMQ(
-                        configuration["RabbitMqConn"],
-                        name: "fines-rabbitmq-check",
-                        tags: new string[] { "rabbitmq" });
+                .AddCheck("self", () => HealthCheckResult.Healthy())
+                .AddRabbitMQ(
+                    configuration["RabbitMqConn"],
+                    name: "fines-rabbitmq-check",
+                    tags: new string[] { "rabbitmq" });
 
             return services;
         }

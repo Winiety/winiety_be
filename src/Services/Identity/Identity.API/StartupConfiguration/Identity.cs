@@ -1,5 +1,7 @@
 ﻿using Identity.Core.Data;
 using Identity.Core.Data.Model;
+using Identity.Core.Services;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +30,12 @@ namespace Identity.API.StartupConfiguration
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+            });
+
             services.AddIdentityServer(x =>
                 {
                     x.IssuerUri = "null";
@@ -52,7 +60,8 @@ namespace Identity.API.StartupConfiguration
                             sqlOptions.MigrationsAssembly(migrationsAssembly);
                             sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                         });
-                });
+                })
+                .Services.AddTransient<IProfileService, ProfileService>();
 
             return services;
         }

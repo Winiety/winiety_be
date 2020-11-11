@@ -44,27 +44,6 @@ namespace ApiGateway
                    {
                        ValidAudiences = new[] { "ai", "fines", "payment", "pictures", "rides", "statistics" }
                    };
-
-//                   options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents()
-//                   {
-//#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-//#pragma warning disable CS0219 // Variable is assigned but its value is never used
-//                       OnAuthenticationFailed = async ctx =>
-//                       {
-//                           int i = 0;
-//                       },
-//                       OnTokenValidated = async ctx =>
-//                       {
-//                           int i = 0;
-//                       },
-
-//                       OnMessageReceived = async ctx =>
-//                       {
-//                           int i = 0;
-//                       }
-//#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-//#pragma warning restore CS0219 // Variable is assigned but its value is never used
-//                   };
                });
 
             services.AddOcelot();

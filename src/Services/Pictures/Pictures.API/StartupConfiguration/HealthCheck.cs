@@ -13,13 +13,15 @@ namespace Pictures.API.StartupConfiguration
         {
             var hcBuilder = services.AddHealthChecks();
 
-            hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
-
             hcBuilder
-                    .AddRabbitMQ(
-                        configuration["RabbitMqConn"],
-                        name: "pictures-rabbitmq-check",
-                        tags: new string[] { "rabbitmq" });
+                .AddCheck("self", () => HealthCheckResult.Healthy())
+                .AddSqlServer(configuration["ConnectionString"],
+                    name: "PicturesDB-check",
+                    tags: new string[] { "PicturesDB" })
+                .AddRabbitMQ(
+                    configuration["RabbitMqConn"],
+                    name: "pictures-rabbitmq-check",
+                    tags: new string[] { "rabbitmq" });
 
             return services;
         }

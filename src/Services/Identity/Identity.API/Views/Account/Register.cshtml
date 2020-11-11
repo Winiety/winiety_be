@@ -12,6 +12,16 @@
                     <input type="hidden" asp-for="ReturnUrl" />
                     <h4>CREATE NEW ACCOUNT</h4>
                     <div class="form-group">
+                        <label asp-for="FirstName" class="control-label form-label"></label>
+                        <input asp-for="FirstName" class="form-control form-input form-input-center" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LastName" class="control-label form-label"></label>
+                        <input asp-for="LastName" class="form-control form-input form-input-center" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
                         <label asp-for="Email" class="control-label form-label"></label>
                         <input asp-for="Email" class="form-control form-input form-input-center" />
                         <span asp-validation-for="Email" class="text-danger"></span>

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Pictures.Application.Services;
+using Pictures.Core.Services;
 
 namespace Pictures.API.Controllers
 {
