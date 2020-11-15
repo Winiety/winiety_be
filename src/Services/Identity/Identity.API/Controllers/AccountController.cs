@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Identity.API.ViewModels;
 using Identity.Core.Data.Model;
+using IdentityServer4.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +16,13 @@ namespace Identity.API.Controllers
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IIdentityServerInteractionService _interaction;
 
-        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IIdentityServerInteractionService interaction)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _interaction = interaction;
         }
 
         [HttpGet]
@@ -44,10 +48,31 @@ namespace Identity.API.Controllers
                 return View(model);
             }
 
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+            var user = await _userManager.FindByNameAsync(model.Email);
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, true);
 
             if (result.Succeeded)
             {
+                var tokenLifetime = 120;
+
+                var props = new AuthenticationProperties
+                {
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(tokenLifetime),
+                    AllowRefresh = true,
+                    RedirectUri = model.ReturnUrl
+                };
+
+                if (model.RememberMe)
+                {
+                    var permanentTokenLifetime = 365;
+
+                    props.ExpiresUtc = DateTimeOffset.UtcNow.AddDays(permanentTokenLifetime);
+                    props.IsPersistent = true;
+                };
+
+                await _signInManager.SignInAsync(user, props);
+
                 if (!string.IsNullOrWhiteSpace(model.ReturnUrl))
                 {
                     return Redirect(model.ReturnUrl);
@@ -84,7 +109,13 @@ namespace Identity.API.Controllers
                 return View(model);
             }
 
-            var user = new ApplicationUser(model.Email);
+            var user = new ApplicationUser
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+            };
 
             var result = await _userManager.CreateAsync(user, model.Password);
 
@@ -102,6 +133,43 @@ namespace Identity.API.Controllers
             }
 
             return Redirect("~/");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Logout(string logoutId)
+        {
+            if (User.Identity.IsAuthenticated == false)
+            {
+                return await Logout(new LogoutViewModel { LogoutId = logoutId });
+            }
+
+            var context = await _interaction.GetLogoutContextAsync(logoutId);
+            if (context?.ShowSignoutPrompt == false)
+            {
+                return await Logout(new LogoutViewModel { LogoutId = logoutId });
+            }
+
+            var vm = new LogoutViewModel
+            {
+                LogoutId = logoutId
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout(LogoutViewModel model)
+        {
+            await HttpContext.SignOutAsync();
+
+            await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+
+            HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
+
+            var logout = await _interaction.GetLogoutContextAsync(model.LogoutId);
+
+            return Redirect(logout?.PostLogoutRedirectUri);
         }
 
         private void AddErrors(IdentityResult result)

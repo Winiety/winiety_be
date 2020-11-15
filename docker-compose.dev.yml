@@ -15,6 +15,30 @@ services:
     ports:
       - "5434:1433"
 
+  rides.db:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5435:1433"
+
+  pictures.db:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5436:1433"
+
+  fines.db:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5437:1433"
+
   identity.api:
     build:
       context: .
@@ -22,14 +46,16 @@ services:
       args:
         - "DNS_NAMES=identity.api localhost 127.0.0.1"
         - "CERT_NAME=identity.api"
+    depends_on:
+      - identity.db
     ports:
       - "5100:80"
       - "5101:443"
     environment:
+      - ConnectionString=Server=identity.db;Database=IdentityDb;User Id=sa;Password=Pass@word
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+;http://+
       - ASPNETCORE_HTTPS_PORT=5101
-      - ConnectionString=Server=identity.db;Database=IdentityDb;User Id=sa;Password=Pass@word
       - ClientUrls__ReactApp=https://${WINIETY_DNS_NAME_OR_IP}:4000
       - ClientUrls__AIApi=https://${WINIETY_DNS_NAME_OR_IP}:5103
       - ClientUrls__FinesApi=https://${WINIETY_DNS_NAME_OR_IP}:5105
@@ -70,10 +96,12 @@ services:
     depends_on:
       - identity.api
       - rabbitmq
+      - fines.db
     ports:
       - "5104:80"
       - "5105:443"
     environment:
+      - ConnectionString=Server=fines.db;Database=FinesDb;User Id=sa;Password=Pass@word
       - RabbitMqHost=rabbitmq
       - RabbitMqConn=amqp://guest:guest@rabbitmq:5672
       - IdentityUrl=https://identity.api
@@ -111,11 +139,14 @@ services:
         - "DNS_NAMES=pictures.api localhost 127.0.0.1"
         - "CERT_NAME=pictures.api"
     depends_on:
+      - identity.api
       - rabbitmq
+      - pictures.db
     ports:
       - "5108:80"
       - "5109:443"
     environment:
+      - ConnectionString=Server=pictures.db;Database=PicturesDb;User Id=sa;Password=Pass@word
       - RabbitMqHost=rabbitmq
       - RabbitMqConn=amqp://guest:guest@rabbitmq:5672
       - IdentityUrl=https://identity.api
@@ -132,11 +163,14 @@ services:
         - "DNS_NAMES=rides.api localhost 127.0.0.1"
         - "CERT_NAME=rides.api"
     depends_on:
+      - identity.api
       - rabbitmq
+      - rides.db
     ports:
       - "5110:80"
       - "5111:443"
     environment:
+      - ConnectionString=Server=rides.db;Database=RidesDb;User Id=sa;Password=Pass@word
       - RabbitMqHost=rabbitmq
       - RabbitMqConn=amqp://guest:guest@rabbitmq:5672
       - IdentityUrl=https://identity.api
@@ -153,6 +187,7 @@ services:
         - "DNS_NAMES=statistics.api localhost 127.0.0.1"
         - "CERT_NAME=statistics.api"
     depends_on:
+      - identity.api
       - rabbitmq
     ports:
       - "5112:80"

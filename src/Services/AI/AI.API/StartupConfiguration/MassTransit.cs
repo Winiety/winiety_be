@@ -1,4 +1,4 @@
-﻿using AI.Application.Consumers;
+﻿using AI.Core.Consumers;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

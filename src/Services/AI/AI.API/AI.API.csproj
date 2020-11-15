@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AI.Application\AI.Application.csproj" />
+    <ProjectReference Include="..\AI.Core\AI.Core.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

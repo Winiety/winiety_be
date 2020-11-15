@@ -1,7 +1,7 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Rides.Application.Consumers;
+using Rides.Core.Consumers;
 
 namespace Rides.API.StartupConfiguration
 {
