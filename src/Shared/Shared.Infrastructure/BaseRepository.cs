@@ -1,20 +1,19 @@
-﻿using Fines.Core.Interfaces;
-using Fines.Core.Model;
-using Fines.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Shared.Core.BaseModels.Entities;
+using Shared.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Fines.Infrastructure.Repositories
+namespace Shared.Infrastructure
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
-        protected readonly ApplicationDbContext _dbContext;
+        protected readonly DbContext _dbContext;
 
-        public BaseRepository(ApplicationDbContext dbContext)
+        public BaseRepository(DbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -121,6 +120,52 @@ namespace Fines.Infrastructure.Repositories
         {
             return await GetAllByQuery(getBy, withTracking, includes)
                 .ToListAsync();
+        }
+
+        public virtual async Task<IPagedList<T>> GetPagedByAsync(
+           Expression<Func<T, bool>> getBy,
+           int pageNumber,
+           int pageSize,
+           bool withTracking = false,
+           params Expression<Func<T, object>>[] includes)
+        {
+            var query = GetAllByQuery(getBy, withTracking, includes);
+
+            return await PagedList<T>.Create(query, pageNumber, pageSize);
+        }
+
+        public virtual async Task<IPagedList<T>> GetPagedByAsync<TKey>(
+           Expression<Func<T, bool>> getBy,
+           Expression<Func<T, TKey>> orderBy,
+           int pageNumber,
+           int pageSize,
+           bool withTracking = false,
+           bool orderByDescending = true,
+           params Expression<Func<T, object>>[] includes)
+        {
+            var query = GetAllByQuery(getBy, withTracking, includes);
+
+            if (orderByDescending)
+            {
+                query = query.OrderByDescending(orderBy);
+            }
+            else
+            {
+                query = query.OrderBy(orderBy);
+            }
+
+            return await PagedList<T>.Create(query, pageNumber, pageSize);
+        }
+
+        public async Task<IPagedList<T>> GetPagedAsync(
+            int pageNumber,
+            int pageSize,
+            bool withTracking = false,
+            params Expression<Func<T, object>>[] includes)
+        {
+            var query = GetAllQuery(withTracking, includes);
+
+            return await PagedList<T>.Create(query, pageNumber, pageSize);
         }
 
         public virtual async Task<bool> ExistAsync(

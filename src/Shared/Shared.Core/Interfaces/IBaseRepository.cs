@@ -1,10 +1,10 @@
-﻿using Rides.Core.Model;
+﻿using Shared.Core.BaseModels.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Rides.Core.Interfaces
+namespace Shared.Core.Interfaces
 {
     public interface IBaseRepository<T> where T : BaseEntity
     {
@@ -33,6 +33,28 @@ namespace Rides.Core.Interfaces
             Expression<Func<T, bool>> getBy,
             bool withTracking = false,
             params Expression<Func<T, object>>[] includes);
+
+        Task<IPagedList<T>> GetPagedByAsync(
+         Expression<Func<T, bool>> getBy,
+         int pageNumber,
+         int pageSize,
+         bool withTracking = false,
+         params Expression<Func<T, object>>[] includes);
+
+        Task<IPagedList<T>> GetPagedByAsync<TKey>(
+           Expression<Func<T, bool>> getBy,
+           Expression<Func<T, TKey>> orderBy,
+           int pageNumber,
+           int pageSize,
+           bool withTracking = false,
+           bool orderByDescending = true,
+           params Expression<Func<T, object>>[] includes);
+
+        Task<IPagedList<T>> GetPagedAsync(
+           int pageNumber,
+           int pageSize,
+           bool withTracking = false,
+           params Expression<Func<T, object>>[] includes);
 
         Task<bool> ExistAsync(
             Expression<Func<T, bool>> getBy,

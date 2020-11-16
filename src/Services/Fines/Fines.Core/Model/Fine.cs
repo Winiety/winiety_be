@@ -1,4 +1,6 @@
-﻿namespace Fines.Core.Model
+﻿using Shared.Core.BaseModels.Entities;
+
+namespace Fines.Core.Model
 {
     public class Fine : BaseEntity
     {

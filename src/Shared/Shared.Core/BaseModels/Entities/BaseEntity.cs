@@ -1,4 +1,4 @@
-﻿namespace Rides.Core.Model
+﻿namespace Shared.Core.BaseModels.Entities
 {
     public abstract class BaseEntity
     {

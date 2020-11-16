@@ -1,6 +1,7 @@
 ﻿using Rides.Core.Interfaces;
 using Rides.Core.Model;
 using Rides.Infrastructure.Data;
+using Shared.Infrastructure;
 
 namespace Rides.Infrastructure.Repositories
 {

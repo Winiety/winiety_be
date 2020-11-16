@@ -1,4 +1,6 @@
-﻿namespace Pictures.Core.Model
+﻿using Shared.Core.BaseModels.Entities;
+
+namespace Pictures.Core.Model
 {
     public class Picture : BaseEntity
     {

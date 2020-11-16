@@ -9,4 +9,8 @@
     <PackageReference Include="MassTransit.Analyzers" Version="7.0.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Shared.Core\Shared.Core.csproj" />
+  </ItemGroup>
+
 </Project>

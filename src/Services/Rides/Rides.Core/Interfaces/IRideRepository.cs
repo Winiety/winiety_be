@@ -1,4 +1,5 @@
 ﻿using Rides.Core.Model;
+using Shared.Core.Interfaces;
 
 namespace Rides.Core.Interfaces
 {

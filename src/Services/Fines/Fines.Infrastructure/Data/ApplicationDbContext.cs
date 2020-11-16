@@ -1,10 +1,14 @@
-﻿using Fines.Infrastructure.Data.EntityConfigurations;
+﻿using Fines.Core.Model;
+using Fines.Infrastructure.Data.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Fines.Infrastructure.Data
 {
     public class ApplicationDbContext : DbContext
     {
+        public DbSet<Fine> Fines { get; set; }
+        public DbSet<Complaint> Complaints { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
