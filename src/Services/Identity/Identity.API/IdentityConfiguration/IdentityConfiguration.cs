@@ -25,6 +25,7 @@ namespace Identity.API.IdentityConfiguration
                 new ApiScope("pictures", "Full Access for Pictures Service"),
                 new ApiScope("rides", "Full Access for Rides Service"),
                 new ApiScope("statistics", "Full Access for Statistics Service"),
+                new ApiScope("userprofile", "Full Access for Profile Service"),
             };
         }
 
@@ -38,6 +39,7 @@ namespace Identity.API.IdentityConfiguration
                 new ApiResource("pictures", "Pictures Service"){ Scopes = { "pictures" } },
                 new ApiResource("rides", "Rides Service"){ Scopes = { "rides" } },
                 new ApiResource("statistics", "Statistics Service"){ Scopes = { "statistics" } },
+                new ApiResource("userprofile", "Profile Service"){ Scopes = { "userprofile" } },
             };
         }
 
@@ -65,6 +67,7 @@ namespace Identity.API.IdentityConfiguration
                         "pictures",
                         "rides",
                         "statistics",
+                        "userprofile"
                     },
                 },
                 new Client
@@ -155,6 +158,21 @@ namespace Identity.API.IdentityConfiguration
                     AllowedScopes =
                     {
                         "statistics"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "userprofileswaggerui",
+                    ClientName = "Profile Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientUrls["ProfileApi"]}/swagger/oauth2-redirect.html" },
+                    PostLogoutRedirectUris = { $"{clientUrls["ProfileApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "userprofile"
                     }
                 },
             };

@@ -33,6 +33,9 @@
         "Statistics.API": {
           "ProfileName": "Statistics.API"
         },
+        "Profile.API": {
+          "ProfileName": "Profile.API"
+        },
         "HealthCheckUI.API": {
           "ProfileName": "HealthCheckUI.API"
         },

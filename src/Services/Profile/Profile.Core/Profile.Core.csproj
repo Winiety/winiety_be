@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="MassTransit" Version="7.0.6" />
+    <PackageReference Include="MassTransit.Analyzers" Version="7.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Contracts\Commands\" />
+    <Folder Include="Contracts\Events\" />
+    <Folder Include="Contracts\Results\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Shared.Core\Shared.Core.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Shared.Infrastructure\Shared.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

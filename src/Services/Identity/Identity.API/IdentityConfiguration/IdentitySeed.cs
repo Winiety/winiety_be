@@ -31,6 +31,8 @@ namespace Identity.API.IdentityConfiguration
                 clientUrls.Add("PicutresApi", configuration.GetValue<string>("ClientUrls:PicutresApi"));
                 clientUrls.Add("RidesApi", configuration.GetValue<string>("ClientUrls:RidesApi"));
                 clientUrls.Add("StatisticsApi", configuration.GetValue<string>("ClientUrls:StatisticsApi"));
+                clientUrls.Add("ProfileApi", configuration.GetValue<string>("ClientUrls:ProfileApi"));
+
 
                 if (!context.Clients.Any())
                 {

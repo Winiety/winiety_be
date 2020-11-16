@@ -1,10 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Rides.Core.Model;
 using Rides.Infrastructure.Data.EntityConfigurations;
 
 namespace Rides.Infrastructure.Data
 {
-    public class ApplicationDbContext: DbContext
+    public class ApplicationDbContext : DbContext
     {
+        public DbSet<Ride> Rides { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

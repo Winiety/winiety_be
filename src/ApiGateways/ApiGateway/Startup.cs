@@ -33,7 +33,9 @@ namespace ApiGateway
                 .AddUrlGroup(new Uri(Configuration["PaymentUrlHC"]), name: "paymentapi-check", tags: new string[] { "paymentapi" })
                 .AddUrlGroup(new Uri(Configuration["PicturesUrlHC"]), name: "picturesapi-check", tags: new string[] { "picturesapi" })
                 .AddUrlGroup(new Uri(Configuration["RidesUrlHC"]), name: "ridesapi-check", tags: new string[] { "ridesapi" })
-                .AddUrlGroup(new Uri(Configuration["StatisticsUrlHC"]), name: "statisticsapi-check", tags: new string[] { "statisticsapi" });
+                .AddUrlGroup(new Uri(Configuration["StatisticsUrlHC"]), name: "statisticsapi-check", tags: new string[] { "statisticsapi" })
+                .AddUrlGroup(new Uri(Configuration["ProfileUrlHC"]), name: "userprofileapi-check", tags: new string[] { "userprofileapi" });
+
 
             services.AddAuthentication()
                .AddJwtBearer("IdentityApiKey", options =>
@@ -42,7 +44,7 @@ namespace ApiGateway
                    options.RequireHttpsMetadata = false;
                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                    {
-                       ValidAudiences = new[] { "ai", "fines", "payment", "pictures", "rides", "statistics" }
+                       ValidAudiences = new[] { "ai", "fines", "payment", "pictures", "rides", "statistics", "userprofile" }
                    };
                });
 

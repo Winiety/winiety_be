@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shared.Core.BaseModels.Entities;
+using System;
 
 namespace Rides.Core.Model
 {
