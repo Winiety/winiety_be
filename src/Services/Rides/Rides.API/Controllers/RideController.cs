@@ -1,13 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rides.Core.Model.DTOs;
+using Rides.Core.Model.Requests;
 using Rides.Core.Services;
-using Shared.Core.BaseModels.Requests;
 using Shared.Core.BaseModels.Responses.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Rides.API.Controllers
@@ -25,7 +21,7 @@ namespace Rides.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IPagedResponse<RideDTO>>> GetRides(SearchRequest searchRequest)
+        public async Task<ActionResult<IPagedResponse<RideDetailDTO>>> GetRides([FromQuery] RideSearchRequest searchRequest)
         {
             var response = await _rideService.GetRidesAsync(searchRequest);
             if (!response.IsSuccess)
@@ -37,7 +33,7 @@ namespace Rides.API.Controllers
         }
 
         [HttpGet("user")]
-        public async Task<ActionResult<IPagedResponse<RideDTO>>> GetUserRides(SearchRequest searchRequest)
+        public async Task<ActionResult<IPagedResponse<RideDTO>>> GetUserRides([FromQuery] RideSearchRequest searchRequest)
         {
             var response = await _rideService.GetUserRidesAsync(searchRequest);
             if (!response.IsSuccess)

@@ -16,7 +16,7 @@ namespace Rides.Core.Consumers
 
         public async Task Consume(ConsumeContext<CarRegistered> context)
         {
-            await _ridesService.RegisterRideAsync(context.Message);
+            await _ridesService.RegisterRideAsync(context.Message.PictureId, context.Message.PlateNumber);
         }
     }
 }

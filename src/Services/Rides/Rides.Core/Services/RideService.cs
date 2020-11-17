@@ -1,53 +1,81 @@
 ﻿using AutoMapper;
 using Contracts.Commands;
-using Contracts.Events;
 using Contracts.Results;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 using Rides.Core.Interfaces;
-using Rides.Core.Model;
 using Rides.Core.Model.DTOs;
 using Rides.Core.Model.Entities;
-using Shared.Core.BaseModels.Requests;
+using Rides.Core.Model.Requests;
+using Shared.Core.BaseModels.Responses;
 using Shared.Core.BaseModels.Responses.Interfaces;
 using Shared.Core.Services;
 using System;
-using System.Linq.Expressions;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Rides.Core.Services
 {
     public interface IRideService
     {
-        Task RegisterRideAsync(CarRegistered car);
-        Task<IPagedResponse<RideDTO>> GetRidesAsync(SearchRequest searchReques);
-        Task<IPagedResponse<RideDTO>> GetUserRidesAsync(SearchRequest searchReques);
+        Task RegisterRideAsync(int pictureId, string plateNumber);
+        Task<IPagedResponse<RideDetailDTO>> GetRidesAsync(RideSearchRequest search);
+        Task<IPagedResponse<RideDTO>> GetUserRidesAsync(RideSearchRequest search);
+
     }
 
     public class RideService : IRideService
     {
         private readonly IRideRepository _rideRepository;
         private readonly IBusControl _bus;
+        private readonly IUserContext _userContext;
+        private readonly IMapper _mapper;
         private readonly ILogger<RideService> _logger;
 
         public RideService(IRideRepository rideRepository, IBusControl bus, IUserContext userContext, IMapper mapper, ILogger<RideService> logger)
         {
             _rideRepository = rideRepository;
             _bus = bus;
+            _userContext = userContext;
+            _mapper = mapper;
             _logger = logger;
         }
 
-        public Task<IPagedResponse<RideDTO>> GetRidesAsync(SearchRequest searchReques)
+        public async Task<IPagedResponse<RideDetailDTO>> GetRidesAsync(RideSearchRequest search)
         {
-            throw new NotImplementedException();
+            var response = new PagedResponse<RideDetailDTO>();
+
+            var ridesQuery = _rideRepository.GetQueryable();
+            ridesQuery = CreateSearchQuery(ridesQuery, search, false);
+
+            var rides = await _rideRepository.GetPagedByAsync(
+                 ridesQuery,
+                 search.PageNumber,
+                 search.PageSize);
+
+            _mapper.Map(rides, response);
+
+            return response;
         }
 
-        public Task<IPagedResponse<RideDTO>> GetUserRidesAsync(SearchRequest searchReques)
+        public async Task<IPagedResponse<RideDTO>> GetUserRidesAsync(RideSearchRequest search)
         {
-            throw new NotImplementedException();
+            var response = new PagedResponse<RideDTO>();
+
+            var ridesQuery = _rideRepository.GetQueryable();
+            ridesQuery = CreateSearchQuery(ridesQuery, search, true);
+
+            var rides = await _rideRepository.GetPagedByAsync(
+                 ridesQuery,
+                 search.PageNumber,
+                 search.PageSize);
+
+            _mapper.Map(rides, response);
+
+            return response;
         }
 
-        public async Task RegisterRideAsync(CarRegistered car)
+        public async Task RegisterRideAsync(int pictureId, string plateNumber)
         {
             var uri = new Uri("rabbitmq://localhost/profile-listener");
 
@@ -55,13 +83,13 @@ namespace Rides.Core.Services
 
             var response = await requestClient.GetResponse<GetUserIdByPlateResult>(new
             {
-                PlateNumber = car.PlateNumber
+                PlateNumber = plateNumber
             });
 
             var ride = new Ride
             {
-                PictureId = car.PictureId,
-                PlateNumber = car.PlateNumber,
+                PictureId = pictureId,
+                PlateNumber = plateNumber,
                 RideDateTime = DateTimeOffset.UtcNow,
                 UserId = response.Message.UserId
             };
@@ -71,17 +99,27 @@ namespace Rides.Core.Services
             _logger.LogInformation($"Ride registered - [ID={ride.Id}] [PlateNumber={ride.PlateNumber}] [PictureId={ride.PictureId}] [UserId={ride.UserId}] [RideDateTime={ride.RideDateTime}]");
         }
 
-        private Expression<Func<Ride, bool>> CreateSearchExpression(SearchRequest search)
+        private IQueryable<Ride> CreateSearchQuery(IQueryable<Ride> query, RideSearchRequest search, bool isUserRides)
         {
-            var currentUserId = _userContext.GetUserId();
-            var query = search.Query;
+            if (isUserRides)
+            {
+                var currentUserId = _userContext.GetUserId();
+                query = query.Where(c => c.UserId == currentUserId);
+            }
 
-            return c => c.UserId == currentUserId &&
-                (c.PlateNumber.Contains(query) ||
-                 c.Model.Contains(query) ||
-                 c.Brand.Contains(query) ||
-                 c.Color.Contains(query) ||
-                 c.Year.Contains(query));
+            if (search.StartDate.HasValue)
+            {
+                query = query.Where(c => c.RideDateTime >= search.StartDate);
+            }
+
+            if (search.EndDate.HasValue)
+            {
+                query = query.Where(c => c.RideDateTime <= search.EndDate);
+            }
+
+            var searchQuery = search.Query;
+
+            return query.Where(c => c.PlateNumber.Contains(searchQuery));
         }
     }
 }

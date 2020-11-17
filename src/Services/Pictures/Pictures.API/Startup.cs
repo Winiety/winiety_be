@@ -29,7 +29,7 @@ namespace Pictures.API
 
             services
                 .ConfigureSwagger(Configuration)
-                .ConfigureServices()
+                .ConfigureServices(Configuration)
                 .ConfigureRepositories()
                 .ConfigureHealthChecks(Configuration)
                 .ConfigureMassTransit(Configuration)

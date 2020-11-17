@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Pictures.Core.Model;
+using Pictures.Core.Model.Entities;
 
 namespace Pictures.Infrastructure.Data.EntityConfigurations
 {

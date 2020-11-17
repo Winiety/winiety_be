@@ -1,6 +1,6 @@
 ﻿using Shared.Core.BaseModels.Entities;
 
-namespace Pictures.Core.Model
+namespace Pictures.Core.Model.Entities
 {
     public class Picture : BaseEntity
     {

@@ -46,7 +46,7 @@ namespace Profile.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<IResponse<CarDTO>>> CreateCar([FromBody] CreateCarRequest car)
+        public async Task<ActionResult<IResultResponse<CarDTO>>> CreateCar([FromBody] CreateCarRequest car)
         {
             var response = await _carService.CreateCarAsync(car);
             if (!response.IsSuccess)
@@ -58,7 +58,7 @@ namespace Profile.API.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<IResponse<CarDTO>>> UpdateCar([FromBody] UpdateCarRequest car)
+        public async Task<ActionResult<IResultResponse<CarDTO>>> UpdateCar([FromBody] UpdateCarRequest car)
         {
             var response = await _carService.UpdateCarAsync(car);
             if (!response.IsSuccess)

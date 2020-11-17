@@ -21,7 +21,7 @@ namespace Profile.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IResponse<UserProfileDTO>>> GetProfile()
+        public async Task<ActionResult<IResultResponse<UserProfileDTO>>> GetProfile()
         {
             var response = await _userProfileService.GetUserProfileAsync();
             if (!response.IsSuccess)
@@ -33,7 +33,7 @@ namespace Profile.API.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<IResponse<UserProfileDTO>>> UpdateCar([FromBody] UpdateUserProfileRequest userProfile)
+        public async Task<ActionResult<IResultResponse<UserProfileDTO>>> UpdateCar([FromBody] UpdateUserProfileRequest userProfile)
         {
             var response = await _userProfileService.UpdateProfileAsync(userProfile);
             if (!response.IsSuccess)
