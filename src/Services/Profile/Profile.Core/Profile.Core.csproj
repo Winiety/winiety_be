@@ -11,9 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Contracts\Commands\" />
     <Folder Include="Contracts\Events\" />
-    <Folder Include="Contracts\Results\" />
   </ItemGroup>
 
   <ItemGroup>

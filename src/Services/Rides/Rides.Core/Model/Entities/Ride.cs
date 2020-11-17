@@ -1,7 +1,7 @@
 ﻿using Shared.Core.BaseModels.Entities;
 using System;
 
-namespace Rides.Core.Model
+namespace Rides.Core.Model.Entities
 {
     public class Ride : BaseEntity
     {

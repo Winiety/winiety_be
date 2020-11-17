@@ -2,6 +2,9 @@
 using Contracts.Events;
 using Contracts.Results;
 using MassTransit;
+using Microsoft.Extensions.Logging;
+using Pictures.Core.Interfaces;
+using Pictures.Core.Model;
 using System;
 using System.Threading.Tasks;
 
@@ -14,11 +17,15 @@ namespace Pictures.Core.Services
 
     public class PictureService : IPictureService
     {
+        private readonly IPictureRepository _pictureRepository;
         private readonly IBusControl _bus;
+        private readonly ILogger<PictureService> _logger;
 
-        public PictureService(IBusControl bus)
+        public PictureService(IPictureRepository pictureRepository, IBusControl bus, ILogger<PictureService> logger)
         {
+            _pictureRepository = pictureRepository;
             _bus = bus;
+            _logger = logger;
         }
 
         public async Task<string> AddPictureAsync(byte[] pictureData)
@@ -32,15 +39,28 @@ namespace Pictures.Core.Services
                 Data = pictureData
             });
 
-            if (string.IsNullOrWhiteSpace(response.Message.PlateNumber))
+            var plateNumber = response.Message.PlateNumber;
+
+            var picture = new Picture
+            {
+                IsRecognized = string.IsNullOrWhiteSpace(plateNumber),
+                PlateNumber = plateNumber,
+                ImagePath = plateNumber
+            };
+
+            await _pictureRepository.AddAsync(picture);
+
+            _logger.LogInformation($"Picture registered - [ID={picture.Id}] [PlateNumber={picture.PlateNumber}] [ImagePath={picture.ImagePath}] [IsRecognized={picture.IsRecognized}]");
+
+            if (string.IsNullOrWhiteSpace(plateNumber))
             {
                 return "Not recognized";
             }
 
             await _bus.Publish<CarRegistered>(new
             {
-                PictureId = 1,
-                PlateNumber = "1234567"
+                PictureId = picture.Id,
+                PlateNumber = picture.PlateNumber
             });
 
             return response.Message.PlateNumber;

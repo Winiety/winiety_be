@@ -21,6 +21,7 @@ namespace Profile.Core.Services
         Task<ICollectionResponse<CarDTO>> GetCarsAsync();
         Task<IPagedResponse<CarDTO>> SearchCarsAsync(SearchRequest search);
         Task<IBaseResponse> RemoveCarAsync(int carId);
+        Task<int?> GetUserIdByPlateAsync(string plateNumber);
     }
 
     public class CarService : ICarService
@@ -134,6 +135,12 @@ namespace Profile.Core.Services
             return response;
         }
 
+        public async Task<int?> GetUserIdByPlateAsync(string plateNumber)
+        {
+            var result = await _carRepository.GetByAsync(c => c.PlateNumber == plateNumber);
+
+            return result?.UserId;
+        }
 
         private Expression<Func<Car, bool>> CreateSearchExpression(SearchRequest search)
         {
