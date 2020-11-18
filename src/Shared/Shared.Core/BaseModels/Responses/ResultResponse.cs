@@ -2,7 +2,7 @@
 
 namespace Shared.Core.BaseModels.Responses
 {
-    public class Response<T> : BaseResponse, IResponse<T> where T : IResponseDTO
+    public class ResultResponse<T> : BaseResponse, IResultResponse<T> where T : IResponseDTO
     {
         public T Result { get; set; }
     }

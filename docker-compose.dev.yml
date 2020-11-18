@@ -163,6 +163,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+;http://+
       - ASPNETCORE_HTTPS_PORT=5109
+      - AzureBlobKey=${AZURE_BLOB_KEY}
 
   rides.api:
     build:

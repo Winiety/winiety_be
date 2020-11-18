@@ -1,4 +1,4 @@
-﻿using Pictures.Core.Model;
+﻿using Pictures.Core.Model.Entities;
 using Shared.Core.Interfaces;
 
 namespace Pictures.Core.Interfaces

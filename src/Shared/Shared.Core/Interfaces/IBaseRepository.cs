@@ -1,6 +1,7 @@
 ﻿using Shared.Core.BaseModels.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -14,6 +15,8 @@ namespace Shared.Core.Interfaces
         Task UpdateRangeAsync(IEnumerable<T> entities);
         Task RemoveAsync(T entity);
         Task RemoveRangeAsync(IEnumerable<T> entities);
+
+        IQueryable<T> GetQueryable();
 
         Task<T> GetAsync(
             int id,
@@ -33,6 +36,11 @@ namespace Shared.Core.Interfaces
             Expression<Func<T, bool>> getBy,
             bool withTracking = false,
             params Expression<Func<T, object>>[] includes);
+
+        Task<IPagedList<T>> GetPagedByAsync(
+            IQueryable<T> query, 
+            int pageNumber,
+            int pageSize);
 
         Task<IPagedList<T>> GetPagedByAsync(
          Expression<Func<T, bool>> getBy,

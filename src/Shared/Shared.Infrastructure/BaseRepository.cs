@@ -122,6 +122,12 @@ namespace Shared.Infrastructure
                 .ToListAsync();
         }
 
+
+        public async Task<IPagedList<T>> GetPagedByAsync(IQueryable<T> query, int pageNumber, int pageSize)
+        {
+            return await PagedList<T>.Create(query, pageNumber, pageSize);
+        }
+
         public virtual async Task<IPagedList<T>> GetPagedByAsync(
            Expression<Func<T, bool>> getBy,
            int pageNumber,
@@ -209,6 +215,11 @@ namespace Shared.Infrastructure
             var query = GetAllQuery(withTracking, includes);
 
             return query.Where(getBy);
+        }
+
+        public IQueryable<T> GetQueryable()
+        {
+            return _dbContext.Set<T>();
         }
     }
 }

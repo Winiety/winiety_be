@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Rides.Core.Model;
+using Rides.Core.Model.Entities;
 
 namespace Rides.Infrastructure.Data.EntityConfigurations
 {

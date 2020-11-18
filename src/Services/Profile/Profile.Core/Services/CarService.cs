@@ -16,11 +16,12 @@ namespace Profile.Core.Services
 {
     public interface ICarService
     {
-        Task<IResponse<CarDTO>> CreateCarAsync(CreateCarRequest car);
-        Task<IResponse<CarDTO>> UpdateCarAsync(UpdateCarRequest car);
+        Task<IResultResponse<CarDTO>> CreateCarAsync(CreateCarRequest car);
+        Task<IResultResponse<CarDTO>> UpdateCarAsync(UpdateCarRequest car);
         Task<ICollectionResponse<CarDTO>> GetCarsAsync();
         Task<IPagedResponse<CarDTO>> SearchCarsAsync(SearchRequest search);
         Task<IBaseResponse> RemoveCarAsync(int carId);
+        Task<int?> GetUserIdByPlateAsync(string plateNumber);
     }
 
     public class CarService : ICarService
@@ -36,9 +37,9 @@ namespace Profile.Core.Services
             _mapper = mapper;
         }
 
-        public async Task<IResponse<CarDTO>> CreateCarAsync(CreateCarRequest car)
+        public async Task<IResultResponse<CarDTO>> CreateCarAsync(CreateCarRequest car)
         {
-            var response = new Response<CarDTO>();
+            var response = new ResultResponse<CarDTO>();
 
             var carEntity = _mapper.Map<Car>(car);
 
@@ -52,9 +53,9 @@ namespace Profile.Core.Services
             return response;
         }
 
-        public async Task<IResponse<CarDTO>> UpdateCarAsync(UpdateCarRequest car)
+        public async Task<IResultResponse<CarDTO>> UpdateCarAsync(UpdateCarRequest car)
         {
-            var response = new Response<CarDTO>();
+            var response = new ResultResponse<CarDTO>();
 
             var carEntity = await _carRepository.GetAsync(car.Id);
 
@@ -134,6 +135,12 @@ namespace Profile.Core.Services
             return response;
         }
 
+        public async Task<int?> GetUserIdByPlateAsync(string plateNumber)
+        {
+            var result = await _carRepository.GetByAsync(c => c.PlateNumber == plateNumber);
+
+            return result?.UserId;
+        }
 
         private Expression<Func<Car, bool>> CreateSearchExpression(SearchRequest search)
         {

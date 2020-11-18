@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Pictures.Core.Model;
+using Pictures.Core.Model.Entities;
 using Pictures.Infrastructure.Data.EntityConfigurations;
 
 namespace Pictures.Infrastructure.Data

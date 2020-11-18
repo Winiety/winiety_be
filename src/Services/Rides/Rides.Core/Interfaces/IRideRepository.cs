@@ -1,4 +1,4 @@
-﻿using Rides.Core.Model;
+﻿using Rides.Core.Model.Entities;
 using Shared.Core.Interfaces;
 
 namespace Rides.Core.Interfaces

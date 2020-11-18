@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rides.Core.Model;
+using Rides.Core.Model.Entities;
 using Rides.Infrastructure.Data.EntityConfigurations;
 
 namespace Rides.Infrastructure.Data

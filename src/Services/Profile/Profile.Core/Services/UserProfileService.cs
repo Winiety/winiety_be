@@ -12,8 +12,8 @@ namespace Profile.Core.Services
 {
     public interface IUserProfileService
     {
-        Task<IResponse<UserProfileDTO>> UpdateProfileAsync(UpdateUserProfileRequest userProfile);
-        Task<IResponse<UserProfileDTO>> GetUserProfileAsync();
+        Task<IResultResponse<UserProfileDTO>> UpdateProfileAsync(UpdateUserProfileRequest userProfile);
+        Task<IResultResponse<UserProfileDTO>> GetUserProfileAsync();
     }
 
     public class UserProfileService : IUserProfileService
@@ -30,9 +30,9 @@ namespace Profile.Core.Services
         }
 
 
-        public async Task<IResponse<UserProfileDTO>> UpdateProfileAsync(UpdateUserProfileRequest userProfile)
+        public async Task<IResultResponse<UserProfileDTO>> UpdateProfileAsync(UpdateUserProfileRequest userProfile)
         {
-            var response = new Response<UserProfileDTO>();
+            var response = new ResultResponse<UserProfileDTO>();
             var currentUserId = _userContext.GetUserId();
 
             var profileEntity = await _userProfileRepository.GetByAsync(c => c.UserId == currentUserId);
@@ -56,9 +56,9 @@ namespace Profile.Core.Services
             return response;
         }
 
-        public async Task<IResponse<UserProfileDTO>> GetUserProfileAsync()
+        public async Task<IResultResponse<UserProfileDTO>> GetUserProfileAsync()
         {
-            var response = new Response<UserProfileDTO>();
+            var response = new ResultResponse<UserProfileDTO>();
             var currentUserId = _userContext.GetUserId();
 
             var profileEntity = await _userProfileRepository.GetByAsync(c => c.UserId == currentUserId);

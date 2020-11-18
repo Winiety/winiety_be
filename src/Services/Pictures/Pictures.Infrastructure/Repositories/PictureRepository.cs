@@ -1,5 +1,5 @@
 ﻿using Pictures.Core.Interfaces;
-using Pictures.Core.Model;
+using Pictures.Core.Model.Entities;
 using Pictures.Infrastructure.Data;
 using Shared.Infrastructure;
 

@@ -1,9 +1,11 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Pictures.Core.Model.DTOs;
+using Pictures.Core.Model.Requests;
 using Pictures.Core.Services;
+using Shared.Core.BaseModels.Requests;
+using Shared.Core.BaseModels.Responses.Interfaces;
 
 namespace Pictures.API.Controllers
 {
@@ -20,15 +22,25 @@ namespace Pictures.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPicture(IFormFile file)
+        public async Task<ActionResult<string>> AddPicture([FromForm] AddPictureRequest request)
         {
-            using var ms = new MemoryStream();
-            
-            file.CopyTo(ms);
+            var response = await _pictureService.AddPictureAsync(request);
 
-            var fileBytes = ms.ToArray();
+            return Ok(response);
+        }
 
-            var response = await _pictureService.AddPictureAsync(fileBytes);
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PictureDTO>> GetPicture(int id)
+        {
+            var response = await _pictureService.GetPictureAsync(id);
+
+            return Ok(response);
+        }
+
+        [HttpGet("not-recognized")]
+        public async Task<ActionResult<IPagedResponse<PictureDTO>>> GetNotRecognizedPicturse([FromQuery] SearchRequest search)
+        {
+            var response = await _pictureService.GetNotRecognizedPicturesAsync(search);
 
             return Ok(response);
         }

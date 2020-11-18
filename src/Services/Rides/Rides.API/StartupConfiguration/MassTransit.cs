@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using Contracts.Commands;
+using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Rides.Core.Consumers;
@@ -21,6 +22,8 @@ namespace Rides.API.StartupConfiguration
                         e.ConfigureConsumer<CarRegisteredConsumer>(context);
                     });
                 });
+
+                c.AddRequestClient<GetUserIdByPlate>();
             });
 
             services.AddMassTransitHostedService();
