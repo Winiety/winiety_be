@@ -47,6 +47,14 @@ services:
     ports:
       - "5438:1433"
 
+  notification.db:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5439:1433"
+
   identity.api:
     build:
       context: .
@@ -72,6 +80,7 @@ services:
       - ClientUrls__RidesApi=https://${WINIETY_DNS_NAME_OR_IP}:5111
       - ClientUrls__StatisticsApi=https://${WINIETY_DNS_NAME_OR_IP}:5113
       - ClientUrls__ProfileApi=https://${WINIETY_DNS_NAME_OR_IP}:5115
+      - ClientUrls__NotificationApi=https://${WINIETY_DNS_NAME_OR_IP}:5117
 
   ai.api:
     build:
@@ -234,6 +243,29 @@ services:
       - ASPNETCORE_URLS=https://+;http://+
       - ASPNETCORE_HTTPS_PORT=5115
 
+  notification.api:
+    build:
+      context: .
+      dockerfile: src/Services/Notification/Notification.API/Dockerfile
+      args:
+        - "DNS_NAMES=notification.api localhost 127.0.0.1"
+        - "CERT_NAME=notification.api"
+    depends_on:
+      - identity.api
+      - rabbitmq
+    ports:
+      - "5116:80"
+      - "5117:443"
+    environment:
+      - ConnectionString=Server=notification.db;Database=NotificationDb;User Id=sa;Password=Pass@word
+      - RabbitMqHost=rabbitmq
+      - RabbitMqConn=amqp://guest:guest@rabbitmq:5672
+      - IdentityUrl=https://identity.api
+      - IdentityClientUrl=https://${WINIETY_DNS_NAME_OR_IP}:5101
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+;http://+
+      - ASPNETCORE_HTTPS_PORT=5117
+
   apigateway:
     build:
       context: .
@@ -251,6 +283,7 @@ services:
       - rides.api
       - statistics.api
       - profile.api
+      - notification.api
     ports:
       - "5200:80"
       - "5201:443"
@@ -264,6 +297,7 @@ services:
       - RidesUrlHC=https://rides.api/health/ready
       - StatisticsUrlHC=https://statistics.api/health/ready
       - ProfileUrlHC=https://profile.api/health/ready
+      - NotificationUrlHC=https://notification.api/health/ready
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+;http://+
       - ASPNETCORE_HTTPS_PORT=5201
@@ -297,8 +331,10 @@ services:
       - HealthChecksUI__HealthChecks__6__Uri=https://statistics.api/health/ready
       - HealthChecksUI__HealthChecks__7__Name=Profile HTTP Check
       - HealthChecksUI__HealthChecks__7__Uri=https://profile.api/health/ready
-      - HealthChecksUI__HealthChecks__8__Name=Api Gateway HTTP Check
-      - HealthChecksUI__HealthChecks__8__Uri=https://apigateway/health/ready
+      - HealthChecksUI__HealthChecks__8__Name=Notification HTTP Check
+      - HealthChecksUI__HealthChecks__8__Uri=https://notification.api/health/ready
+      - HealthChecksUI__HealthChecks__9__Name=Api Gateway HTTP Check
+      - HealthChecksUI__HealthChecks__9__Uri=https://apigateway/health/ready
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+;http://+
       - ASPNETCORE_HTTPS_PORT=5301

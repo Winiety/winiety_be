@@ -5,10 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Contracts\Commands\" />
+    <Folder Include="Contracts\Results\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.7.0" />
     <PackageReference Include="MassTransit" Version="7.0.6" />
     <PackageReference Include="MassTransit.Analyzers" Version="7.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>

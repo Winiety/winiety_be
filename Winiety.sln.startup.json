@@ -36,6 +36,9 @@
         "Profile.API": {
           "ProfileName": "Profile.API"
         },
+        "Notification.API": {
+          "ProfileName": "Notification.API"
+        },
         "HealthCheckUI.API": {
           "ProfileName": "HealthCheckUI.API"
         },
