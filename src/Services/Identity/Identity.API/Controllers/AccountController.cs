@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.Tasks;
+using Identity.API.Models;
+using Identity.API.Options;
 using Identity.API.ViewModels;
 using Identity.Core.Data.Model;
 using IdentityServer4.Services;
@@ -9,6 +14,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Identity.API.Controllers
 {
@@ -16,12 +22,21 @@ namespace Identity.API.Controllers
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IHttpClientFactory _clientFactory;
+        private readonly ReCaptchaOptions _reCaptchaOptions;
         private readonly IIdentityServerInteractionService _interaction;
 
-        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IIdentityServerInteractionService interaction)
+        public AccountController(
+            SignInManager<ApplicationUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            IOptions<ReCaptchaOptions> reCaptchaOptions,
+            IHttpClientFactory clientFactory,
+            IIdentityServerInteractionService interaction)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _clientFactory = clientFactory;
+            _reCaptchaOptions = reCaptchaOptions.Value;
             _interaction = interaction;
         }
 
@@ -42,13 +57,28 @@ namespace Identity.API.Controllers
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             ViewData["ReturnUrl"] = model.ReturnUrl;
-
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
+            
+            var isReCaptchaValid = await CheckReCaptcha(model.ReCaptchaToken);
+
+            if (!isReCaptchaValid)
+            {
+                ModelState.AddModelError(string.Empty, "ReCaptcha failed. You are a robot...");
+
+                return View(model);
+            }
 
             var user = await _userManager.FindByNameAsync(model.Email);
+
+            if (user == null)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid username or password.");
+
+                return View(model);
+            }
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, true);
 
@@ -178,6 +208,21 @@ namespace Identity.API.Controllers
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
+        }
+
+        private async Task<bool> CheckReCaptcha(string recaptchaToken)
+        {
+            var httpClient = _clientFactory.CreateClient();
+            var response = await httpClient.GetAsync($"https://www.google.com/recaptcha/api/siteverify?secret={_reCaptchaOptions.ReCaptchaSecretKey}&response={recaptchaToken}");
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                return false;
+            }
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var reCaptchaResponse = JsonSerializer.Deserialize<ReCaptchaResponse>(responseContent);
+
+            return reCaptchaResponse.success && reCaptchaResponse.score > 0.5;
         }
     }
 }

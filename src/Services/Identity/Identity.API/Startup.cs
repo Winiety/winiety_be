@@ -1,4 +1,5 @@
 using Identity.API.IdentityConfiguration;
+using Identity.API.Options;
 using Identity.API.StartupConfiguration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,8 +23,11 @@ namespace Identity.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddMvc(options => options.EnableEndpointRouting = false);
+            services.AddMvc(options => options.EnableEndpointRouting = false);
+
+            services.AddHttpClient();
+
+            services.Configure<ReCaptchaOptions>(Configuration.GetSection("ReCaptchaOptions"));
 
             services
                 .ConfigureHealthChecks(Configuration)

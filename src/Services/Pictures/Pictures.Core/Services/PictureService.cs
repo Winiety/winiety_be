@@ -29,6 +29,7 @@ namespace Pictures.Core.Services
         private readonly IPictureRepository _pictureRepository;
         private readonly IBlobStorageService _blobStorageService;
         private readonly IBusControl _bus;
+        private readonly IRequestClient<AnalyzePicture> _requestClient;
         private readonly IMapper _mapper;
         private readonly ILogger<PictureService> _logger;
 
@@ -36,12 +37,14 @@ namespace Pictures.Core.Services
             IPictureRepository pictureRepository,
             IBlobStorageService blobStorageService,
             IBusControl bus,
+            IRequestClient<AnalyzePicture> requestClient,
             IMapper mapper,
             ILogger<PictureService> logger)
         {
             _pictureRepository = pictureRepository;
             _blobStorageService = blobStorageService;
             _bus = bus;
+            _requestClient = requestClient;
             _mapper = mapper;
             _logger = logger;
         }
@@ -53,11 +56,8 @@ namespace Pictures.Core.Services
             pictureStream.CopyTo(pictureMemoryStream);
 
             pictureStream.Seek(0, SeekOrigin.Begin);
-            var uri = new Uri("rabbitmq://localhost/ai-listener");
 
-            var requestClient = _bus.CreateRequestClient<AnalyzePicture>(uri);
-
-            var response = await requestClient.GetResponse<AnalyzePictureResult>(new
+            var response = await _requestClient.GetResponse<AnalyzePictureResult>(new
             {
                 Data = pictureMemoryStream.ToArray()
             });
@@ -104,7 +104,7 @@ namespace Pictures.Core.Services
                 search.PageNumber,
                 search.PageSize);
 
-            _mapper.Map(pictures, response);
+            response = _mapper.Map(pictures, response);
 
             return response;
         }
