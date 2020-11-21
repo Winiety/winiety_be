@@ -42,7 +42,9 @@ namespace Pictures.UnitTests.PictureServiceUnitTests
                 .Setup(c => c.GetByAsync(It.IsAny<Expression<Func<Picture, bool>>>(), false))
                 .ReturnsAsync(picture);
 
-            _mapper.Setup(c => c.Map<PictureDTO>(picture)).Returns(pictureDto);
+            _mapper
+                .Setup(c => c.Map<PictureDTO>(picture))
+                .Returns(pictureDto);
 
             var result = await _pictureService.GetPictureAsync(1);
 
@@ -68,7 +70,7 @@ namespace Pictures.UnitTests.PictureServiceUnitTests
             var result = await _pictureService.GetPictureAsync(1);
 
             Assert.False(result.IsSuccess);
-            Assert.True(result.Errors.Count == 1);
+            Assert.Equal(1, result.Errors.Count);
             Assert.Equal("Picture not found", result.Errors.First().Message);
         }
 
@@ -111,7 +113,7 @@ namespace Pictures.UnitTests.PictureServiceUnitTests
             var result = await _pictureService.GetNotRecognizedPicturesAsync(searchRequest);
 
             Assert.True(result.IsSuccess);
-            Assert.True(result.TotalCount == pictures.Count());
+            Assert.Equal(pictures.Count(), result.TotalCount);
         }
 
         [Fact]
@@ -141,12 +143,11 @@ namespace Pictures.UnitTests.PictureServiceUnitTests
                 .ReturnsAsync(path);
 
             _pictureRepository
-              .Setup(c => c.AddAsync(It.IsAny<Picture>()));
+                .Setup(c => c.AddAsync(It.IsAny<Picture>()));
 
             var result = await _pictureService.AddPictureAsync(request);
 
             Assert.Equal(responseMock.Message.PlateNumber, result);
-
             _pictureRepository.Verify(c => c.AddAsync(It.IsAny<Picture>()), Times.Once());
         }
 
@@ -177,12 +178,11 @@ namespace Pictures.UnitTests.PictureServiceUnitTests
                 .ReturnsAsync(path);
 
             _pictureRepository
-              .Setup(c => c.AddAsync(It.IsAny<Picture>()));
+                .Setup(c => c.AddAsync(It.IsAny<Picture>()));
 
             var result = await _pictureService.AddPictureAsync(request);
 
             Assert.Equal("Not recognized", result);
-
             _pictureRepository.Verify(c => c.AddAsync(It.IsAny<Picture>()), Times.Once());
         }
     }

@@ -41,7 +41,7 @@ namespace Pictures.UnitTests.PictureServiceUnitTests
                 .ReturnsAsync(path);
 
             _pictureRepository
-              .Setup(c => c.AddAsync(It.IsAny<Picture>()));
+                .Setup(c => c.AddAsync(It.IsAny<Picture>()));
 
             var result = await _pictureService.AddPictureAsync(request);
 
@@ -75,7 +75,7 @@ namespace Pictures.UnitTests.PictureServiceUnitTests
                 .ReturnsAsync(path);
 
             _pictureRepository
-              .Setup(c => c.AddAsync(It.IsAny<Picture>()));
+                .Setup(c => c.AddAsync(It.IsAny<Picture>()));
 
             var result = await _pictureService.AddPictureAsync(request);
 

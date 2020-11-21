@@ -36,7 +36,6 @@ namespace Pictures.UnitTests.PictureServiceUnitTests
             _pictureService = new PictureService(_pictureRepository.Object, _blobStorageService.Object, _bus.Object, _requestClient.Object, _mapper.Object, _logger.Object);
         }
 
-
         public IEnumerable<Picture> GetPictures()
         {
             return new List<Picture>

@@ -35,7 +35,6 @@ namespace Rides.UnitTests.RideServiceUnitTests
             {
                 await harness.InputQueueSendEndpoint.Send<CarRegistered>(new
                 {
-
                     PictureId = 1,
                     PlateNumber = "112233"
                 });
@@ -52,7 +51,7 @@ namespace Rides.UnitTests.RideServiceUnitTests
         }
 
         [Fact]
-        public async Task RegisterRideAsync_Should_ConsumeCarRegistered()
+        public async Task CarRegisteredConsumer_Should_ConsumeCarRegistered()
         {
             var responseMock = new ResponseMock<GetUserIdByPlateResult>(new GetUserIdByPlateResultMock
             {

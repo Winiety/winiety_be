@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
     <PackageReference Include="Moq" Version="4.15.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -23,7 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\Shared.Core\Shared.Core.csproj" />
-    <ProjectReference Include="..\Pictures.Core\Pictures.Core.csproj" />
+    <ProjectReference Include="..\Profile.Core\Profile.Core.csproj" />
   </ItemGroup>
 
 </Project>

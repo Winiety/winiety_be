@@ -46,12 +46,14 @@ namespace Rides.UnitTests.RideServiceUnitTests
                 .Setup(c => c.GetPagedByAsync(It.IsAny<IQueryable<Ride>>(), searchRequest.PageNumber, searchRequest.PageSize))
                 .ReturnsAsync(paged);
 
-            _mapper.Setup(c => c.Map(It.IsAny<IPagedList<Ride>>(), It.IsAny<PagedResponse<RideDetailDTO>>())).Returns(response);
+            _mapper
+                .Setup(c => c.Map(It.IsAny<IPagedList<Ride>>(), It.IsAny<PagedResponse<RideDetailDTO>>()))
+                .Returns(response);
 
             var result = await _rideService.GetRidesAsync(searchRequest);
 
             Assert.True(result.IsSuccess);
-            Assert.True(result.TotalCount == rides.Count());
+            Assert.Equal(rides.Count(), result.TotalCount);
         }
 
         [Fact]
@@ -97,7 +99,7 @@ namespace Rides.UnitTests.RideServiceUnitTests
             var result = await _rideService.GetUserRidesAsync(searchRequest);
 
             Assert.True(result.IsSuccess);
-            Assert.True(result.TotalCount == rides.Count());
+            Assert.Equal(rides.Count(), result.TotalCount);
             _userContext.Verify(c => c.GetUserId(), Times.Once());
         }
 
@@ -114,7 +116,7 @@ namespace Rides.UnitTests.RideServiceUnitTests
                 .ReturnsAsync(responseMock);
 
             _rideRepository
-              .Setup(c => c.AddAsync(It.IsAny<Ride>()));
+                .Setup(c => c.AddAsync(It.IsAny<Ride>()));
 
             await _rideService.RegisterRideAsync(1, "112233");
 

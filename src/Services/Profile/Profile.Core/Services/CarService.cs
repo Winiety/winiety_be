@@ -69,7 +69,7 @@ namespace Profile.Core.Services
                 return response;
             }
 
-            _mapper.Map(car, carEntity);
+            carEntity = _mapper.Map(car, carEntity);
 
             await _carRepository.UpdateAsync(carEntity);
 
@@ -83,7 +83,6 @@ namespace Profile.Core.Services
             var response = new BaseResponse();
 
             var car = await _carRepository.GetAsync(carId);
-            var currentUserId = _userContext.GetUserId();
 
             if (car == null)
             {
@@ -95,12 +94,16 @@ namespace Profile.Core.Services
                 return response;
             }
 
+            var currentUserId = _userContext.GetUserId();
+
             if (car.UserId != currentUserId)
             {
                 response.AddError(new Error
                 {
                     Message = "User id does not match"
                 });
+
+                return response;
             }
 
             await _carRepository.RemoveAsync(car);
@@ -130,7 +133,7 @@ namespace Profile.Core.Services
                 search.PageNumber,
                 search.PageSize);
 
-            _mapper.Map(cars, response);
+            response = _mapper.Map(cars, response);
 
             return response;
         }
