@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Contracts.Commands;
+using Contracts.Events;
 using Contracts.Results;
 using MassTransit;
 using Microsoft.Extensions.Logging;
@@ -32,7 +33,12 @@ namespace Rides.Core.Services
         private readonly IMapper _mapper;
         private readonly ILogger<RideService> _logger;
 
-        public RideService(IRideRepository rideRepository, IBusControl bus, IUserContext userContext, IMapper mapper, ILogger<RideService> logger)
+        public RideService(
+            IRideRepository rideRepository,
+            IBusControl bus,
+            IUserContext userContext,
+            IMapper mapper,
+            ILogger<RideService> logger)
         {
             _rideRepository = rideRepository;
             _bus = bus;
@@ -95,6 +101,14 @@ namespace Rides.Core.Services
             };
 
             await _rideRepository.AddAsync(ride);
+
+            await _bus.Publish<RideRegistered>(new
+            {
+                Id = ride.Id,
+                UserId = ride.UserId,
+                PlateNumber = ride.PlateNumber,
+                RideDateTime = ride.RideDateTime
+            });
 
             _logger.LogInformation($"Ride registered - [ID={ride.Id}] [PlateNumber={ride.PlateNumber}] [PictureId={ride.PictureId}] [UserId={ride.UserId}] [RideDateTime={ride.RideDateTime}]");
         }

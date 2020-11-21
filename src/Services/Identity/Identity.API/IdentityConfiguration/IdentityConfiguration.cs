@@ -26,6 +26,7 @@ namespace Identity.API.IdentityConfiguration
                 new ApiScope("rides", "Full Access for Rides Service"),
                 new ApiScope("statistics", "Full Access for Statistics Service"),
                 new ApiScope("userprofile", "Full Access for Profile Service"),
+                new ApiScope("notification", "Full Access for Notification Service"),
             };
         }
 
@@ -40,6 +41,7 @@ namespace Identity.API.IdentityConfiguration
                 new ApiResource("rides", "Rides Service"){ Scopes = { "rides" } },
                 new ApiResource("statistics", "Statistics Service"){ Scopes = { "statistics" } },
                 new ApiResource("userprofile", "Profile Service"){ Scopes = { "userprofile" } },
+                new ApiResource("notification", "Notification Service"){ Scopes = { "notification" } },
             };
         }
 
@@ -67,7 +69,8 @@ namespace Identity.API.IdentityConfiguration
                         "pictures",
                         "rides",
                         "statistics",
-                        "userprofile"
+                        "userprofile",
+                        "notification"
                     },
                 },
                 new Client
@@ -173,6 +176,21 @@ namespace Identity.API.IdentityConfiguration
                     AllowedScopes =
                     {
                         "userprofile"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "notificationswaggerui",
+                    ClientName = "Notification Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{clientUrls["NotificationApi"]}/swagger/oauth2-redirect.html" },
+                    PostLogoutRedirectUris = { $"{clientUrls["NotificationApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "notification"
                     }
                 },
             };

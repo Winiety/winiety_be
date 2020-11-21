@@ -32,6 +32,7 @@ namespace Identity.API.IdentityConfiguration
                 clientUrls.Add("RidesApi", configuration.GetValue<string>("ClientUrls:RidesApi"));
                 clientUrls.Add("StatisticsApi", configuration.GetValue<string>("ClientUrls:StatisticsApi"));
                 clientUrls.Add("ProfileApi", configuration.GetValue<string>("ClientUrls:ProfileApi"));
+                clientUrls.Add("NotificationApi", configuration.GetValue<string>("ClientUrls:NotificationApi"));
 
 
                 if (!context.Clients.Any())
