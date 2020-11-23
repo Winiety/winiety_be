@@ -1,10 +1,13 @@
-﻿using Contracts.Events;
+﻿using Contracts.Commands;
+using Contracts.Events;
 using Contracts.Results;
 using MassTransit;
 using MassTransit.Testing;
 using Moq;
 using Rides.Core.Consumers;
 using Rides.Core.Model.Entities;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -73,6 +76,36 @@ namespace Rides.UnitTests.RideServiceUnitTests
 
                 Assert.True(await harness.Consumed.Any<CarRegistered>());
                 Assert.True(await consumerHarness.Consumed.Any<CarRegistered>());
+
+            }
+            finally
+            {
+                await harness.Stop();
+            }
+        }
+
+        [Fact]
+        public async Task GetRidesConsumer_Should_ConsumeGetRides()
+        {
+            var responseMock = new ResponseMock<GetRidesResult>(new GetRidesResultResultMock
+            {
+                Rides= new List<DateTimeOffset>()
+            });
+
+            var harness = new InMemoryTestHarness();
+            var consumerHarness = harness.Consumer(() => new GetRidesConsumer(_rideService));
+
+            await harness.Start();
+            try
+            {
+                await harness.InputQueueSendEndpoint.Send<GetRides>(new
+                {
+                    DateFrom = DateTimeOffset.UtcNow.AddDays(-1),
+                    DateTo = DateTimeOffset.UtcNow
+                });
+
+                Assert.True(await harness.Consumed.Any<GetRides>());
+                Assert.True(await consumerHarness.Consumed.Any<GetRides>());
 
             }
             finally

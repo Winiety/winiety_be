@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using Contracts.Commands;
+using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,6 +15,8 @@ namespace Statistics.API.StartupConfiguration
                 {
                     cfg.Host(configuration["RabbitMqHost"]);
                 });
+
+                c.AddRequestClient<GetRides>();
             });
 
             services.AddMassTransitHostedService();

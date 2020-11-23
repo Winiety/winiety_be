@@ -12,6 +12,7 @@ using Shared.Core.BaseModels.Responses;
 using Shared.Core.BaseModels.Responses.Interfaces;
 using Shared.Core.Services;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,7 +23,7 @@ namespace Rides.Core.Services
         Task RegisterRideAsync(int pictureId, string plateNumber);
         Task<IPagedResponse<RideDetailDTO>> GetRidesAsync(RideSearchRequest search);
         Task<IPagedResponse<RideDTO>> GetUserRidesAsync(RideSearchRequest search);
-
+        Task<IEnumerable<DateTimeOffset>> GetRidesForStatisticsAsync(DateTimeOffset startDate, DateTimeOffset endDate);
     }
 
     public class RideService : IRideService
@@ -110,6 +111,12 @@ namespace Rides.Core.Services
             });
 
             _logger.LogInformation($"Ride registered - [ID={ride.Id}] [PlateNumber={ride.PlateNumber}] [PictureId={ride.PictureId}] [UserId={ride.UserId}] [RideDateTime={ride.RideDateTime}]");
+        }
+
+        public async Task<IEnumerable<DateTimeOffset>> GetRidesForStatisticsAsync(DateTimeOffset startDate, DateTimeOffset endDate)
+        {
+            var rides = await _rideRepository.GetAllByAsync(c => c.RideDateTime >= startDate && c.RideDateTime <= endDate);
+            return rides.Select(c => c.RideDateTime).ToList();
         }
 
         private IQueryable<Ride> CreateSearchQuery(IQueryable<Ride> query, RideSearchRequest search, bool isUserRides)
