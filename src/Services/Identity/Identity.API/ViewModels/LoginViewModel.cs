@@ -15,5 +15,6 @@ namespace Identity.API.ViewModels
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
         public string ReturnUrl { get; set; }
+        public string ReCaptchaToken { get; set; }
     }
 }

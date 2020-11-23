@@ -47,7 +47,7 @@ namespace Profile.Core.Services
                 await _userProfileRepository.AddAsync(profileEntity);
             }
 
-            _mapper.Map(userProfile, profileEntity);
+            profileEntity = _mapper.Map(userProfile, profileEntity);
 
             await _userProfileRepository.UpdateAsync(profileEntity);
 

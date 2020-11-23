@@ -8,7 +8,7 @@ namespace Notification.Core.Model.DTOs
         public int Id { get; set; }
         public string NotificationType { get; set; }
         public int RedirectId { get; set; }
-        public bool Content { get; set; }
+        public string Content { get; set; }
         public bool IsRead { get; set; }
         public DateTimeOffset DateTime { get; set; }
     }

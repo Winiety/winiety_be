@@ -75,7 +75,7 @@ namespace Notification.Core.Services
                 search.PageNumber,
                 search.PageSize);
 
-            _mapper.Map(pictures, response);
+            response = _mapper.Map(pictures, response);
 
             return response;
         }

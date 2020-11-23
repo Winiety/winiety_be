@@ -81,6 +81,8 @@ services:
       - ClientUrls__StatisticsApi=https://${WINIETY_DNS_NAME_OR_IP}:5113
       - ClientUrls__ProfileApi=https://${WINIETY_DNS_NAME_OR_IP}:5115
       - ClientUrls__NotificationApi=https://${WINIETY_DNS_NAME_OR_IP}:5117
+      - ReCaptchaOptions__ReCaptchaSiteKey=${RECAPTCHA_SITEKEY}
+      - ReCaptchaOptions__ReCaptchaSecretKey=${RECAPTCHA_SECRETKEY}
 
   ai.api:
     build:

@@ -29,6 +29,7 @@ namespace Rides.Core.Services
     {
         private readonly IRideRepository _rideRepository;
         private readonly IBusControl _bus;
+        private readonly IRequestClient<GetUserIdByPlate> _requestClient;
         private readonly IUserContext _userContext;
         private readonly IMapper _mapper;
         private readonly ILogger<RideService> _logger;
@@ -36,12 +37,14 @@ namespace Rides.Core.Services
         public RideService(
             IRideRepository rideRepository,
             IBusControl bus,
+            IRequestClient<GetUserIdByPlate> requestClient,
             IUserContext userContext,
             IMapper mapper,
             ILogger<RideService> logger)
         {
             _rideRepository = rideRepository;
             _bus = bus;
+            _requestClient = requestClient;
             _userContext = userContext;
             _mapper = mapper;
             _logger = logger;
@@ -59,7 +62,7 @@ namespace Rides.Core.Services
                  search.PageNumber,
                  search.PageSize);
 
-            _mapper.Map(rides, response);
+            response = _mapper.Map(rides, response);
 
             return response;
         }
@@ -76,18 +79,14 @@ namespace Rides.Core.Services
                  search.PageNumber,
                  search.PageSize);
 
-            _mapper.Map(rides, response);
+            response = _mapper.Map(rides, response);
 
             return response;
         }
 
         public async Task RegisterRideAsync(int pictureId, string plateNumber)
         {
-            var uri = new Uri("rabbitmq://localhost/profile-listener");
-
-            var requestClient = _bus.CreateRequestClient<GetUserIdByPlate>(uri);
-
-            var response = await requestClient.GetResponse<GetUserIdByPlateResult>(new
+            var response = await _requestClient.GetResponse<GetUserIdByPlateResult>(new
             {
                 PlateNumber = plateNumber
             });

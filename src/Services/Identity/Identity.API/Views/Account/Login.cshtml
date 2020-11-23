@@ -1,5 +1,6 @@
 ﻿@model Identity.API.ViewModels.LoginViewModel
-
+@using Microsoft.Extensions.Options
+@inject IOptions<Identity.API.Options.ReCaptchaOptions> ReCaptchaOptions
 
 @{
     ViewData["Title"] = "Log in";
@@ -10,6 +11,7 @@
             <section>
                 <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
                     <input type="hidden" asp-for="ReturnUrl" />
+                    <input type="hidden" asp-for="ReCaptchaToken" />
                     <h4>ARE YOU REGISTERED?</h4>
                     <div class="form-group">
                         <label asp-for="Email" class="control-label form-label"></label>
@@ -31,7 +33,12 @@
                     </div>
                     <div class="text-danger">@Html.ValidationSummary(true)</div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-default btn-brand btn-brand-big">LOG IN</button>
+                        <button data-action="submit"
+                                data-sitekey="@ReCaptchaOptions.Value.ReCaptchaSiteKey"
+                                data-callback="onSubmit"
+                                class="btn btn-default btn-brand btn-brand-big g-recaptcha">
+                            LOG IN
+                        </button>
                     </div>
                     <p>
                         <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" class="text">Register as a new user?</a>
@@ -44,4 +51,11 @@
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script>
+        function onSubmit(token) {
+            $("#ReCaptchaToken").val(token);
+            $("form").submit();
+        }
+    </script>
 }
