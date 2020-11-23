@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Statistics.API.StartupConfiguration;
+using System.Globalization;
+using System.Text.Json.Serialization;
 
 namespace Statistics.API
 {
@@ -20,7 +23,11 @@ namespace Statistics.API
         {
             services
                 .AddMvc(options => options.EnableEndpointRouting = false)
-                .AddControllersAsServices();
+                .AddControllersAsServices()
+                .AddJsonOptions(opts =>
+                {
+                    opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                });
 
             services
                 .ConfigureSwagger(Configuration)
@@ -36,6 +43,19 @@ namespace Statistics.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            var supportedCultures = new[]{
+                new CultureInfo("en-US")
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en-US"),
+                SupportedCultures = supportedCultures,
+                FallBackToParentCultures = false
+            });
+
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
 
             app.UseHttpsRedirection();
 

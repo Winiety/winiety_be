@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Statistics.Core.Services;
 
 namespace Statistics.API.StartupConfiguration
 {
@@ -6,6 +7,8 @@ namespace Statistics.API.StartupConfiguration
     {
         public static IServiceCollection ConfigureServices(this IServiceCollection services)
         {
+            services.AddTransient<IStatisticsService, StatisticsService>();
+
             return services;
         }
     }

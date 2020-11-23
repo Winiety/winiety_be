@@ -112,6 +112,11 @@ namespace Rides.UnitTests.RideServiceUnitTests
             public int? UserId { get; set; }
         }
 
+        public class GetRidesResultResultMock : GetRidesResult
+        {
+            public IEnumerable<DateTimeOffset> Rides { get; set; }
+        }
+
         public class ResponseMock<TResponse> : Response<TResponse> where TResponse : class
         {
             public ResponseMock(TResponse response)

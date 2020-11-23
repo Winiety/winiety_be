@@ -13,6 +13,7 @@ namespace Rides.API.StartupConfiguration
             services.AddMassTransit(c =>
             {
                 c.AddConsumer<CarRegisteredConsumer>();
+                c.AddConsumer<GetRidesConsumer>();
 
                 c.UsingRabbitMq((context, cfg) =>
                 {
@@ -20,6 +21,7 @@ namespace Rides.API.StartupConfiguration
                     cfg.ReceiveEndpoint("rides-listener", e =>
                     {
                         e.ConfigureConsumer<CarRegisteredConsumer>(context);
+                        e.ConfigureConsumer<GetRidesConsumer>(context);
                     });
                 });
 
