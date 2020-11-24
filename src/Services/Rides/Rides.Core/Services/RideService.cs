@@ -24,6 +24,7 @@ namespace Rides.Core.Services
         Task<IPagedResponse<RideDetailDTO>> GetRidesAsync(RideSearchRequest search);
         Task<IPagedResponse<RideDTO>> GetUserRidesAsync(RideSearchRequest search);
         Task<IEnumerable<DateTimeOffset>> GetRidesForStatisticsAsync(DateTimeOffset startDate, DateTimeOffset endDate);
+        Task<RideDetailDTO> GetRideForFinesAsync(int rideId);
     }
 
     public class RideService : IRideService
@@ -117,6 +118,12 @@ namespace Rides.Core.Services
         {
             var rides = await _rideRepository.GetAllByAsync(c => c.RideDateTime >= startDate && c.RideDateTime <= endDate);
             return rides.Select(c => c.RideDateTime).ToList();
+        }
+
+        public async Task<RideDetailDTO> GetRideForFinesAsync(int rideId)
+        {
+            var ride = await _rideRepository.GetAsync(rideId);
+            return _mapper.Map<RideDetailDTO>(ride);
         }
 
         private IQueryable<Ride> CreateSearchQuery(IQueryable<Ride> query, RideSearchRequest search, bool isUserRides)

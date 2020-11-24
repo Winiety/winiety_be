@@ -56,11 +56,6 @@ namespace Rides.UnitTests.RideServiceUnitTests
         [Fact]
         public async Task CarRegisteredConsumer_Should_ConsumeCarRegistered()
         {
-            var responseMock = new ResponseMock<GetUserIdByPlateResult>(new GetUserIdByPlateResultMock
-            {
-                UserId = 1
-            });
-
             var harness = new InMemoryTestHarness();
             var consumerHarness = harness.Consumer(() => new CarRegisteredConsumer(_rideService));
 
@@ -69,14 +64,12 @@ namespace Rides.UnitTests.RideServiceUnitTests
             {
                 await harness.InputQueueSendEndpoint.Send<CarRegistered>(new
                 {
-
-                    PictureId = 1,
-                    PlateNumber = "112233"
+                    PictureId = default(int),
+                    PlateNumber = default(string)
                 });
 
                 Assert.True(await harness.Consumed.Any<CarRegistered>());
                 Assert.True(await consumerHarness.Consumed.Any<CarRegistered>());
-
             }
             finally
             {
@@ -85,28 +78,45 @@ namespace Rides.UnitTests.RideServiceUnitTests
         }
 
         [Fact]
-        public async Task GetRidesConsumer_Should_ConsumeGetRides()
+        public async Task GetRideDatesConsumer_Should_ConsumeGetRideDates()
         {
-            var responseMock = new ResponseMock<GetRidesResult>(new GetRidesResultResultMock
-            {
-                Rides= new List<DateTimeOffset>()
-            });
-
             var harness = new InMemoryTestHarness();
-            var consumerHarness = harness.Consumer(() => new GetRidesConsumer(_rideService));
+            var consumerHarness = harness.Consumer(() => new GetRideDatesConsumer(_rideService));
 
             await harness.Start();
             try
             {
-                await harness.InputQueueSendEndpoint.Send<GetRides>(new
+                await harness.InputQueueSendEndpoint.Send<GetRideDates>(new
                 {
-                    DateFrom = DateTimeOffset.UtcNow.AddDays(-1),
-                    DateTo = DateTimeOffset.UtcNow
+                    DateFrom = default(DateTimeOffset),
+                    DateTo = default(DateTimeOffset)
                 });
 
-                Assert.True(await harness.Consumed.Any<GetRides>());
-                Assert.True(await consumerHarness.Consumed.Any<GetRides>());
+                Assert.True(await harness.Consumed.Any<GetRideDates>());
+                Assert.True(await consumerHarness.Consumed.Any<GetRideDates>());
+            }
+            finally
+            {
+                await harness.Stop();
+            }
+        }
 
+        [Fact]
+        public async Task GetRideConsumer_Should_ConsumeGetRide()
+        {
+            var harness = new InMemoryTestHarness();
+            var consumerHarness = harness.Consumer(() => new GetRideConsumer(_rideService));
+
+            await harness.Start();
+            try
+            {
+                await harness.InputQueueSendEndpoint.Send<GetRide>(new
+                {
+                    RideId = default(int)
+                });
+
+                Assert.True(await harness.Consumed.Any<GetRide>());
+                Assert.True(await consumerHarness.Consumed.Any<GetRide>());
             }
             finally
             {

@@ -28,16 +28,16 @@ namespace Statistics.Core.Services
         private const string MonthFormat = "MMMM yyyy";
         private const string YearFormat = "yyyy";
 
-        private readonly IRequestClient<GetRides> _requestClient;
+        private readonly IRequestClient<GetRideDates> _requestClient;
 
-        public StatisticsService(IRequestClient<GetRides> requestClient)
+        public StatisticsService(IRequestClient<GetRideDates> requestClient)
         {
             _requestClient = requestClient;
         }
 
         public async Task<string> GetCsvDataStatistics(GetStatisticsRequest request)
         {
-            var result = await _requestClient.GetResponse<GetRidesResult>(new
+            var result = await _requestClient.GetResponse<GetRideDatesResult>(new
             {
                 DateFrom = request.DateFrom,
                 DateTo = request.DateTo
@@ -61,7 +61,7 @@ namespace Statistics.Core.Services
 
         public async Task<string> GetJsonDataStatistics(GetStatisticsRequest request)
         {
-            var result = await _requestClient.GetResponse<GetRidesResult>(new
+            var result = await _requestClient.GetResponse<GetRideDatesResult>(new
             {
                 DateFrom = request.DateFrom,
                 DateTo = request.DateTo
@@ -91,7 +91,7 @@ namespace Statistics.Core.Services
         {
             var response = new ResultResponse<ChartStatsDTO>();
 
-            var result = await _requestClient.GetResponse<GetRidesResult>(new
+            var result = await _requestClient.GetResponse<GetRideDatesResult>(new
             {
                 DateFrom = request.DateFrom,
                 DateTo = request.DateTo

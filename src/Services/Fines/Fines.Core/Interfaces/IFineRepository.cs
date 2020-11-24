@@ -1,4 +1,4 @@
-﻿using Fines.Core.Model;
+﻿using Fines.Core.Model.Entities;
 using Shared.Core.Interfaces;
 
 namespace Fines.Core.Interfaces

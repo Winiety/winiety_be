@@ -2,7 +2,7 @@
 
 namespace Contracts.Commands
 {
-    public interface GetRides
+    public interface GetRideDates
     {
         DateTimeOffset DateFrom { get; set; }
         DateTimeOffset DateTo { get; set; }

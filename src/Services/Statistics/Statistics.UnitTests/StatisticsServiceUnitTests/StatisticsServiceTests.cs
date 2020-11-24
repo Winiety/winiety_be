@@ -33,13 +33,13 @@ namespace Rides.UnitTests.RideServiceUnitTests
             }
             expected.AppendLine($"{DateTimeOffset.UtcNow.ToString("dd MMM")};0");
 
-            var responseMock = new ResponseMock<GetRidesResult>(new GetRidesResultMock
+            var responseMock = new ResponseMock<GetRideDatesResult>(new GetRidesResultMock
             {
                 Rides = stats
             });
 
             _requestClient
-                .Setup(c => c.GetResponse<GetRidesResult>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<GetRideDatesResult>(It.IsAny<object>(), default, default))
                 .ReturnsAsync(responseMock);
 
             var result = await _statisticsService.GetCsvDataStatistics(searchRequest);
@@ -80,13 +80,13 @@ namespace Rides.UnitTests.RideServiceUnitTests
                 Data = data
             }, options);
 
-            var responseMock = new ResponseMock<GetRidesResult>(new GetRidesResultMock
+            var responseMock = new ResponseMock<GetRideDatesResult>(new GetRidesResultMock
             {
                 Rides = stats
             });
 
             _requestClient
-                .Setup(c => c.GetResponse<GetRidesResult>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<GetRideDatesResult>(It.IsAny<object>(), default, default))
                 .ReturnsAsync(responseMock);
 
             var result = await _statisticsService.GetJsonDataStatistics(searchRequest);
@@ -105,13 +105,13 @@ namespace Rides.UnitTests.RideServiceUnitTests
                 GroupBy = GroupByType.Day
             };
 
-            var responseMock = new ResponseMock<GetRidesResult>(new GetRidesResultMock
+            var responseMock = new ResponseMock<GetRideDatesResult>(new GetRidesResultMock
             {
                 Rides = stats
             });
 
             _requestClient
-                .Setup(c => c.GetResponse<GetRidesResult>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<GetRideDatesResult>(It.IsAny<object>(), default, default))
                 .ReturnsAsync(responseMock);
 
             var result = await _statisticsService.GetChartStatistics(searchRequest);

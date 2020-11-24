@@ -1,4 +1,4 @@
-﻿using Fines.Core.Model;
+﻿using Fines.Core.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

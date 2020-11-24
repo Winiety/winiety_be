@@ -16,7 +16,7 @@ namespace Statistics.API.StartupConfiguration
                     cfg.Host(configuration["RabbitMqHost"]);
                 });
 
-                c.AddRequestClient<GetRides>();
+                c.AddRequestClient<GetRideDates>();
             });
 
             services.AddMassTransitHostedService();

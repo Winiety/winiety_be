@@ -10,12 +10,12 @@ namespace Rides.UnitTests.RideServiceUnitTests
 {
     public class StatisticsServiceSetup
     {
-        protected readonly Mock<IRequestClient<GetRides>> _requestClient;
+        protected readonly Mock<IRequestClient<GetRideDates>> _requestClient;
         protected readonly StatisticsService _statisticsService;
 
         public StatisticsServiceSetup()
         {
-            _requestClient = new Mock<IRequestClient<GetRides>>();
+            _requestClient = new Mock<IRequestClient<GetRideDates>>();
             _statisticsService = new StatisticsService( _requestClient.Object);
         }
 
@@ -30,7 +30,7 @@ namespace Rides.UnitTests.RideServiceUnitTests
             };
         }
 
-        public class GetRidesResultMock : GetRidesResult
+        public class GetRidesResultMock : GetRideDatesResult
         {
             public IEnumerable<DateTimeOffset> Rides { get; set; }
         }
