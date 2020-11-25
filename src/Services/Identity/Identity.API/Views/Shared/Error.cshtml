@@ -1,0 +1,35 @@
+﻿@model Identity.API.ViewModels.ErrorViewModel
+
+@{
+    var error = Model?.Error?.Error;
+    var request_id = Model?.Error?.RequestId;
+}
+
+<div class="container error-container">
+    <div class="row">
+        <div class="col-md-12 mb-4 mt-4">
+            <h2>Error</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-danger p-4">
+                Sorry, there was an error
+
+                @if (error != null)
+                {
+                    <strong>
+                        <em>
+                            : @error
+                        </em>
+                    </strong>
+                }
+            </div>
+
+            @if (request_id != null)
+            {
+                <div class="request-id">Request Id: @request_id</div>
+            }
+        </div>
+    </div>
+</div>
