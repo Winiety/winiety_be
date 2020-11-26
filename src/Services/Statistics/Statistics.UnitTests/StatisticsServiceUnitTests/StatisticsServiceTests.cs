@@ -25,7 +25,9 @@ namespace Rides.UnitTests.RideServiceUnitTests
                 GroupBy = GroupByType.Day
             };
 
-            var expected = new StringBuilder("Day;Rides number\r\n");
+            var expected = new StringBuilder();
+
+            expected.AppendLine("Day;Rides number");
 
             foreach (var stat in stats)
             {
