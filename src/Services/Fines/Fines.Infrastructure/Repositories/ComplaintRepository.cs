@@ -1,5 +1,5 @@
 ﻿using Fines.Core.Interfaces;
-using Fines.Core.Model;
+using Fines.Core.Model.Entities;
 using Fines.Infrastructure.Data;
 using Shared.Infrastructure;
 

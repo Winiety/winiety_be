@@ -12,6 +12,8 @@ namespace Notification.API.StartupConfiguration
             services.AddMassTransit(c =>
             {
                 c.AddConsumer<RideRegisteredConsumer>();
+                c.AddConsumer<ComplaintRegisteredConsumer>();
+                c.AddConsumer<FineRegisteredConsumer>();
 
                 c.UsingRabbitMq((context, cfg) =>
                 {
@@ -19,6 +21,8 @@ namespace Notification.API.StartupConfiguration
                     cfg.ReceiveEndpoint("notifications-listener", e =>
                     {
                         e.ConfigureConsumer<RideRegisteredConsumer>(context);
+                        e.ConfigureConsumer<ComplaintRegisteredConsumer>(context);
+                        e.ConfigureConsumer<FineRegisteredConsumer>(context);
                     });
                 });
             });

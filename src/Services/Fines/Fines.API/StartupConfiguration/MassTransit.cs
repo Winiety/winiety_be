@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using Contracts.Commands;
+using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,7 +14,12 @@ namespace Fines.API.StartupConfiguration
                 c.UsingRabbitMq((context, cfg) =>
                 {
                     cfg.Host(configuration["RabbitMqHost"]);
+                    cfg.ReceiveEndpoint("fines-listener", e =>
+                    {
+                    });
                 });
+                
+                c.AddRequestClient<GetRide>();
             });
 
             services.AddMassTransitHostedService();

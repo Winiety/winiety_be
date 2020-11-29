@@ -20,14 +20,69 @@ namespace Notification.UnitTests.NotificationServiceUnitTests
             {
                 await harness.InputQueueSendEndpoint.Send<RideRegistered>(new
                 {
-                    Id = 1,
-                    UserId = 1,
-                    PlateNumber = "112233",
-                    RideDateTime = DateTimeOffset.UtcNow
+                    Id = default(int),
+                    UserId = default(int?),
+                    PlateNumber = default(string),
+                    RideDateTime = default(DateTimeOffset)
                 });
 
                 Assert.True(await harness.Consumed.Any<RideRegistered>());
                 Assert.True(await consumerHarness.Consumed.Any<RideRegistered>());
+            }
+            finally
+            {
+                await harness.Stop();
+            }
+        }
+
+        [Fact]
+        public async Task FineRegisteredConsumer_Should_ConsumeFineRegistered()
+        {
+            var harness = new InMemoryTestHarness();
+            var consumerHarness = harness.Consumer(() => new FineRegisteredConsumer(_notificationService));
+
+            await harness.Start();
+            try
+            {
+                await harness.InputQueueSendEndpoint.Send<FineRegistered>(new
+                {
+                    Id = default(int),
+                    UserId = default(int),
+                    RideId = default(int),
+                    Cost = default(double),
+                    Description = default(string),
+                    CreateDateTime = default(DateTimeOffset)
+                });
+
+                Assert.True(await harness.Consumed.Any<FineRegistered>());
+                Assert.True(await consumerHarness.Consumed.Any<FineRegistered>());
+            }
+            finally
+            {
+                await harness.Stop();
+            }
+        }
+
+        [Fact]
+        public async Task ComplaintRegisteredConsumer_Should_ConsumeComplaintRegistered()
+        {
+            var harness = new InMemoryTestHarness();
+            var consumerHarness = harness.Consumer(() => new ComplaintRegisteredConsumer(_notificationService));
+
+            await harness.Start();
+            try
+            {
+                await harness.InputQueueSendEndpoint.Send<ComplaintRegistered>(new
+                {
+                    Id = default(int),
+                    UserId = default(int),
+                    RideId = default(int),
+                    Description = default(string),
+                    CreateDateTime = default(DateTimeOffset)
+                });
+
+                Assert.True(await harness.Consumed.Any<ComplaintRegistered>());
+                Assert.True(await consumerHarness.Consumed.Any<ComplaintRegistered>());
             }
             finally
             {

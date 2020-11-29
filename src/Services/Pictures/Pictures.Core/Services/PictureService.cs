@@ -113,7 +113,7 @@ namespace Pictures.Core.Services
         {
             var response = new ResultResponse<PictureDTO>();
 
-            var pictureEntity = await _pictureRepository.GetByAsync(c => c.Id == id);
+            var pictureEntity = await _pictureRepository.GetAsync(id);
 
             if (pictureEntity == null)
             {

@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="MassTransit" Version="7.0.6" />
     <PackageReference Include="MassTransit.Analyzers" Version="7.0.6" />
   </ItemGroup>
 
