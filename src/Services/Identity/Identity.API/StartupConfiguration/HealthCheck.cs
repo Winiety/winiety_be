@@ -20,21 +20,5 @@ namespace Identity.API.StartupConfiguration
 
             return services;
         }
-
-        public static IApplicationBuilder UseHealthChecks(this IApplicationBuilder app)
-        {
-            app.UseHealthChecks("/health/ready", new HealthCheckOptions()
-            {
-                Predicate = _ => true,
-                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-            });
-
-            app.UseHealthChecks("/health/live", new HealthCheckOptions
-            {
-                Predicate = r => r.Name.Contains("self")
-            });
-
-            return app;
-        }
     }
 }

@@ -47,6 +47,44 @@
         }
       },
       "SolutionPlatform": "x64"
+    },
+    "HttpOnly": {
+      "Projects": {
+        "AI.API": {
+          "ProfileName": "AI.API.HttpOnly"
+        },
+        "Fines.API": {
+          "ProfileName": "Fines.API.HttpOnly"
+        },
+        "Identity.API": {
+          "ProfileName": "Identity.API.HttpOnly"
+        },
+        "Payment.API": {
+          "ProfileName": "Payment.API.HttpOnly"
+        },
+        "Pictures.API": {
+          "ProfileName": "Pictures.API.HttpOnly"
+        },
+        "Rides.API": {
+          "ProfileName": "Rides.API.HttpOnly"
+        },
+        "Statistics.API": {
+          "ProfileName": "Statistics.API.HttpOnly"
+        },
+        "Profile.API": {
+          "ProfileName": "Profile.API.HttpOnly"
+        },
+        "Notification.API": {
+          "ProfileName": "Notification.API.HttpOnly"
+        },
+        "HealthCheckUI.API": {
+          "ProfileName": "HealthCheckUI.API.HttpOnly"
+        },
+        "ApiGateway": {
+          "ProfileName": "ApiGateway.HttpOnly"
+        }
+      },
+      "SolutionPlatform": "x64"
     }
   }
 }

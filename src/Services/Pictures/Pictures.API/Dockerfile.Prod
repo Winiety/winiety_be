@@ -1,0 +1,19 @@
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster as build
+
+WORKDIR /src
+COPY ["src/Services/Pictures/Pictures.API/Pictures.API.csproj", "src/Services/Pictures/Pictures.API/"]
+RUN dotnet restore "src/Services/Pictures/Pictures.API/Pictures.API.csproj"
+COPY . .
+WORKDIR "/src/src/Services/Pictures/Pictures.API"
+
+RUN dotnet publish -c Release -o /dist
+
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim
+
+WORKDIR /app
+COPY --from=build /dist /app
+
+EXPOSE 80
+EXPOSE 443
+
+CMD ["dotnet", "Pictures.API.dll"]

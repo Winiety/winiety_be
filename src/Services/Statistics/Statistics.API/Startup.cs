@@ -57,8 +57,6 @@ namespace Statistics.API
 
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
 
-            app.UseHttpsRedirection();
-
             app.UseAuthentication();
 
             app.UseAuthorization();

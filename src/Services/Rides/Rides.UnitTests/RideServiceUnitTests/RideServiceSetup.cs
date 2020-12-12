@@ -112,7 +112,7 @@ namespace Rides.UnitTests.RideServiceUnitTests
             public int? UserId { get; set; }
         }
 
-        public class GetRidesResultResultMock : GetRidesResult
+        public class GetRidesResultResultMock : GetRideDatesResult
         {
             public IEnumerable<DateTimeOffset> Rides { get; set; }
         }

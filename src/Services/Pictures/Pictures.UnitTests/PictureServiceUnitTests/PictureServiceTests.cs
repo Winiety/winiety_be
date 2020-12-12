@@ -39,7 +39,7 @@ namespace Pictures.UnitTests.PictureServiceUnitTests
             };
 
             _pictureRepository
-                .Setup(c => c.GetByAsync(It.IsAny<Expression<Func<Picture, bool>>>(), false))
+                .Setup(c => c.GetAsync(It.IsAny<int>(), false))
                 .ReturnsAsync(picture);
 
             _mapper
