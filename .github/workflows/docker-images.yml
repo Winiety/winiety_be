@@ -1,0 +1,89 @@
+name: Docker Images CI/CD
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Log into registry
+        run: docker login ${{ secrets.DOCKER_REGISTRY_URL }} -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Set images version and container registry
+        run: |
+          VERSION=$(cat version)
+          CONTAINER_REGISTRY=${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.REPOSITORY }}
+
+      - name: Build the AI Docker image
+        run: docker build . --file src/Services/AI/AI.API/Dockerfile.Prod --tag winiety-ai-api:$VERSION
+      - name: Build the Fines Docker image
+        run: docker build . --file src/Services/Fines/Fines.API/Dockerfile.Prod --tag winiety-fines-api:$VERSION
+      - name: Build the Identity Docker image
+        run: docker build . --file src/Services/Identity/Identity.API/Dockerfile.Prod --tag winiety-identity-api:$VERSION
+      - name: Build the Notification Docker image
+        run: docker build . --file src/Services/Notification/Notification.API/Dockerfile.Prod --tag winiety-notification-api:$VERSION
+      - name: Build the Payment Docker image
+        run: docker build . --file src/Services/Payment/Payment.API/Dockerfile.Prod --tag winiety-payment-api:$VERSION
+      - name: Build the Pictures Docker image
+        run: docker build . --file src/Services/Pictures/Pictures.API/Dockerfile.Prod --tag winiety-pictures-api:$VERSION
+      - name: Build the Profile Docker image
+        run: docker build . --file src/Services/Profile/Profile.API/Dockerfile.Prod --tag winiety-profile-api:$VERSION
+      - name: Build the Rides Docker image
+        run: docker build . --file src/Services/Rides/Rides.API/Dockerfile.Prod --tag winiety-rides-api:$VERSION
+      - name: Build the Statistics Docker image
+        run: docker build . --file src/Services/Statistics/Statistics.API/Dockerfile.Prod --tag winiety-statistics-api:$VERSION
+      - name: Build the Health Check UI Docker image
+        run: docker build . --file src/HealthCheckUI/HealthCheckUI.API/Dockerfile.Prod --tag winiety-health-check-ui-api:$VERSION
+      - name: Build the Api Gateway Docker image
+        run: docker build . --file src/ApiGateways/ApiGateway/Dockerfile.Prod --tag winiety-api-gateway:$VERSION
+
+      - name: Tag the AI Docker image
+        run: docker tag winiety-ai-api:$VERSION $CONTAINER_REGISTRY/winiety-ai-api:$VERSION
+      - name: Tag the Fines Docker image
+        run: docker tag winiety-fines-api:$VERSION $CONTAINER_REGISTRY/winiety-fines-api:$VERSION
+      - name: Tag the Identity Docker image
+        run: docker tag winiety-identity-api:$VERSION $CONTAINER_REGISTRY/winiety-identity-api:$VERSION
+      - name: Tag the Notification Docker image
+        run: docker tag winiety-notification-api:$VERSION $CONTAINER_REGISTRY/winiety-notification-api:$VERSION
+      - name: Tag the Payment Docker image
+        run: docker tag winiety-payment-api:$VERSION $CONTAINER_REGISTRY/winiety-payment-api:$VERSION
+      - name: Tag the Pictures Docker image
+        run: docker tag winiety-pictures-api:$VERSION $CONTAINER_REGISTRY/winiety-pictures-api:$VERSION
+      - name: Tag the Profile Docker image
+        run: docker tag winiety-profile-api:$VERSION $CONTAINER_REGISTRY/winiety-profile-api:$VERSION
+      - name: Tag the Rides Docker image
+        run: docker tag winiety-rides-api:$VERSION $CONTAINER_REGISTRY/winiety-rides-api:$VERSION
+      - name: Tag the Statistics Docker image
+        run: docker tag winiety-statistics-api:$VERSION $CONTAINER_REGISTRY/winiety-statistics-api:$VERSION
+      - name: Tag the Health Check UI Docker image
+        run: docker tag winiety-health-check-ui-api:$VERSION $CONTAINER_REGISTRY/winiety-health-check-ui-api:$VERSION
+      - name: Tag the Api Gateway Docker image
+        run: docker tag winiety-api-gateway:$VERSION $CONTAINER_REGISTRY/winiety-api-gateway:$VERSION
+
+      - name: Push the AI Docker image
+        run: docker push $CONTAINER_REGISTRY/winiety-ai-api:$VERSION
+      - name: Push the Fines Docker image
+        run: docker push $CONTAINER_REGISTRY/winiety-fines-api:$VERSION
+      - name: Push the Identity Docker image
+        run: docker push $CONTAINER_REGISTRY/winiety-identity-api:$VERSION
+      - name: Push the Notification Docker image
+        run: docker push $CONTAINER_REGISTRY/winiety-notification-api:$VERSION
+      - name: Push the Payment Docker image
+        run: docker push $CONTAINER_REGISTRY/winiety-payment-api:$VERSION
+      - name: Push the Pictures Docker image
+        run: docker push $CONTAINER_REGISTRY/winiety-pictures-api:$VERSION
+      - name: Push the Profile Docker image
+        run: docker push $CONTAINER_REGISTRY/winiety-profile-api:$VERSION
+      - name: Push the Rides Docker image
+        run: docker push $CONTAINER_REGISTRY/winiety-rides-api:$VERSION
+      - name: Push the Statistics Docker image
+        run: docker push $CONTAINER_REGISTRY/winiety-statistics-api:$VERSION
+      - name: Push the Health Check UI Docker image
+        run: docker push $CONTAINER_REGISTRY/winiety-health-check-ui-api:$VERSION
+      - name: Push the Api Gateway Docker image
+        run: docker push $CONTAINER_REGISTRY/winiety-api-gateway:$VERSION

@@ -1,8 +1,11 @@
+using HealthChecks.UI.Client;
 using Identity.API.IdentityConfiguration;
 using Identity.API.Options;
 using Identity.API.StartupConfiguration;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +26,9 @@ namespace Identity.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(options => options.EnableEndpointRouting = false);
+            services.AddControllers();
+            services.AddControllersWithViews();
+            services.AddRazorPages();
 
             services.AddHttpClient();
 
@@ -53,20 +58,33 @@ namespace Identity.API
                     });
 
             retry.Execute(() => IdentitySeed.InitializeDatabase(app, Configuration));
-            
-            app.UseHttpsRedirection();
-            
+
             app.UseStaticFiles();
 
-            app.UseHealthChecks();
-            
+            app.UseForwardedHeaders();
+
             app.UseIdentityServer();
-            
-            app.UseMvc(routes =>
+
+            if (env.IsEnvironment("HttpOnly"))
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Lax });
+            }
+
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health/ready", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
+
+                endpoints.MapHealthChecks("/health/live", new HealthCheckOptions
+                {
+                    Predicate = r => r.Name.Contains("self")
+                });
             });
         }
     }

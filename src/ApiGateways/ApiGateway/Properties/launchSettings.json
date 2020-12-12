@@ -22,6 +22,13 @@
       },
       "applicationUrl": "https://localhost:5201;http://localhost:5200"
     },
+    "ApiGateway.HttpOnly": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "HttpOnly"
+      },
+      "applicationUrl": "http://localhost:5200"
+    },
     "Docker": {
       "commandName": "Docker",
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",

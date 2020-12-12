@@ -59,8 +59,6 @@ namespace Notification.API
 
             retry.Execute(() => InitializeDatabase(app));
 
-            app.UseHttpsRedirection();
-            
             app.UseRouting();
 
             app.UseAuthentication();
