@@ -59,8 +59,6 @@ namespace Profile.API
 
             retry.Execute(() => InitializeDatabase(app));
 
-            app.UseHttpsRedirection();
-
             app.UseAuthentication();
 
             app.UseAuthorization();

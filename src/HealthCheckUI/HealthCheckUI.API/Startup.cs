@@ -50,8 +50,6 @@ namespace HealthCheckUI.API
                 config.UIPath = "/hc-ui";
             });
 
-            app.UseHttpsRedirection();
-
             app.UseAuthorization();
 
             app.UseMvcWithDefaultRoute();

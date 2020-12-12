@@ -1,0 +1,19 @@
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster as build
+
+WORKDIR /src
+COPY ["src/Services/Statistics/Statistics.API/Statistics.API.csproj", "src/Services/Statistics/Statistics.API/"]
+RUN dotnet restore "src/Services/Statistics/Statistics.API/Statistics.API.csproj"
+COPY . .
+WORKDIR "/src/src/Services/Statistics/Statistics.API"
+
+RUN dotnet publish -c Release -o /dist
+
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim
+
+WORKDIR /app
+COPY --from=build /dist /app
+
+EXPOSE 80
+EXPOSE 443
+
+CMD ["dotnet", "Statistics.API.dll"]

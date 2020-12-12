@@ -37,8 +37,6 @@ namespace AI.API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseAuthentication();
 
             app.UseAuthorization();
