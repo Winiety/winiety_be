@@ -20,40 +20,48 @@ jobs:
       - name: Build and push images
         run: |
           VERSION=$(cat version)
-          CONTAINER_REGISTRY=${{ secrets.DOCKER_REGISTRY_URL }}/${{ secrets.DOCKER_REPOSITORY }}
+          CONTAINER_REGISTRY=${{ secrets.DOCKER_REGISTRY_URL }}
           
           docker build . --file src/Services/AI/AI.API/Dockerfile.Prod --tag winiety-ai-api:$VERSION
-          docker build . --file src/Services/Fines/Fines.API/Dockerfile.Prod --tag winiety-fines-api:$VERSION
-          docker build . --file src/Services/Identity/Identity.API/Dockerfile.Prod --tag winiety-identity-api:$VERSION
-          docker build . --file src/Services/Notification/Notification.API/Dockerfile.Prod --tag winiety-notification-api:$VERSION
-          docker build . --file src/Services/Payment/Payment.API/Dockerfile.Prod --tag winiety-payment-api:$VERSION
-          docker build . --file src/Services/Pictures/Pictures.API/Dockerfile.Prod --tag winiety-pictures-api:$VERSION
-          docker build . --file src/Services/Profile/Profile.API/Dockerfile.Prod --tag winiety-profile-api:$VERSION
-          docker build . --file src/Services/Rides/Rides.API/Dockerfile.Prod --tag winiety-rides-api:$VERSION
-          docker build . --file src/Services/Statistics/Statistics.API/Dockerfile.Prod --tag winiety-statistics-api:$VERSION
-          docker build . --file src/HealthCheckUI/HealthCheckUI.API/Dockerfile.Prod --tag winiety-health-check-ui-api:$VERSION
-          docker build . --file src/ApiGateways/ApiGateway/Dockerfile.Prod --tag winiety-api-gateway:$VERSION
-
           docker tag winiety-ai-api:$VERSION $CONTAINER_REGISTRY/winiety-ai-api:$VERSION
-          docker tag winiety-fines-api:$VERSION $CONTAINER_REGISTRY/winiety-fines-api:$VERSION
-          docker tag winiety-identity-api:$VERSION $CONTAINER_REGISTRY/winiety-identity-api:$VERSION
-          docker tag winiety-notification-api:$VERSION $CONTAINER_REGISTRY/winiety-notification-api:$VERSION
-          docker tag winiety-payment-api:$VERSION $CONTAINER_REGISTRY/winiety-payment-api:$VERSION
-          docker tag winiety-pictures-api:$VERSION $CONTAINER_REGISTRY/winiety-pictures-api:$VERSION
-          docker tag winiety-profile-api:$VERSION $CONTAINER_REGISTRY/winiety-profile-api:$VERSION
-          docker tag winiety-rides-api:$VERSION $CONTAINER_REGISTRY/winiety-rides-api:$VERSION
-          docker tag winiety-statistics-api:$VERSION $CONTAINER_REGISTRY/winiety-statistics-api:$VERSION
-          docker tag winiety-health-check-ui-api:$VERSION $CONTAINER_REGISTRY/winiety-health-check-ui-api:$VERSION
-          docker tag winiety-api-gateway:$VERSION $CONTAINER_REGISTRY/winiety-api-gateway:$VERSION
-
           docker push $CONTAINER_REGISTRY/winiety-ai-api:$VERSION
+          
+          docker build . --file src/Services/Fines/Fines.API/Dockerfile.Prod --tag winiety-fines-api:$VERSION
+          docker tag winiety-fines-api:$VERSION $CONTAINER_REGISTRY/winiety-fines-api:$VERSION
           docker push $CONTAINER_REGISTRY/winiety-fines-api:$VERSION
+          
+          docker build . --file src/Services/Identity/Identity.API/Dockerfile.Prod --tag winiety-identity-api:$VERSION
+          docker tag winiety-identity-api:$VERSION $CONTAINER_REGISTRY/winiety-identity-api:$VERSION
           docker push $CONTAINER_REGISTRY/winiety-identity-api:$VERSION
+          
+          docker build . --file src/Services/Notification/Notification.API/Dockerfile.Prod --tag winiety-notification-api:$VERSION
+          docker tag winiety-notification-api:$VERSION $CONTAINER_REGISTRY/winiety-notification-api:$VERSION
           docker push $CONTAINER_REGISTRY/winiety-notification-api:$VERSION
+          
+          docker build . --file src/Services/Payment/Payment.API/Dockerfile.Prod --tag winiety-payment-api:$VERSION
+          docker tag winiety-payment-api:$VERSION $CONTAINER_REGISTRY/winiety-payment-api:$VERSION
           docker push $CONTAINER_REGISTRY/winiety-payment-api:$VERSION
+          
+          docker build . --file src/Services/Pictures/Pictures.API/Dockerfile.Prod --tag winiety-pictures-api:$VERSION
+          docker tag winiety-pictures-api:$VERSION $CONTAINER_REGISTRY/winiety-pictures-api:$VERSION
           docker push $CONTAINER_REGISTRY/winiety-pictures-api:$VERSION
+          
+          docker build . --file src/Services/Profile/Profile.API/Dockerfile.Prod --tag winiety-profile-api:$VERSION
+          docker tag winiety-profile-api:$VERSION $CONTAINER_REGISTRY/winiety-profile-api:$VERSION
           docker push $CONTAINER_REGISTRY/winiety-profile-api:$VERSION
+          
+          docker build . --file src/Services/Rides/Rides.API/Dockerfile.Prod --tag winiety-rides-api:$VERSION
+          docker tag winiety-rides-api:$VERSION $CONTAINER_REGISTRY/winiety-rides-api:$VERSION
           docker push $CONTAINER_REGISTRY/winiety-rides-api:$VERSION
+          
+          docker build . --file src/Services/Statistics/Statistics.API/Dockerfile.Prod --tag winiety-statistics-api:$VERSION
+          docker tag winiety-statistics-api:$VERSION $CONTAINER_REGISTRY/winiety-statistics-api:$VERSION
           docker push $CONTAINER_REGISTRY/winiety-statistics-api:$VERSION
+          
+          docker build . --file src/HealthCheckUI/HealthCheckUI.API/Dockerfile.Prod --tag winiety-health-check-ui-api:$VERSION
+          docker tag winiety-health-check-ui-api:$VERSION $CONTAINER_REGISTRY/winiety-health-check-ui-api:$VERSION
           docker push $CONTAINER_REGISTRY/winiety-health-check-ui-api:$VERSION
+          
+          docker build . --file src/ApiGateways/ApiGateway/Dockerfile.Prod --tag winiety-api-gateway:$VERSION
+          docker tag winiety-api-gateway:$VERSION $CONTAINER_REGISTRY/winiety-api-gateway:$VERSION
           docker push $CONTAINER_REGISTRY/winiety-api-gateway:$VERSION
