@@ -1,0 +1,111 @@
+replicaCount: 1
+
+image:
+  repository: doomloord10/winiety-health-check-ui-api
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+serviceAccount:
+  create: false
+
+service:
+  type: NodePort
+  port: 80
+
+ingress:
+  enabled: true
+  hosts:
+    - hosts: 
+      - localhost
+      paths: 
+      - path: "/healthcheckui"
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+
+env:
+  configmap:
+    - name: HealthChecksUI__HealthChecks__0__Name
+      key: ainame
+    - name: HealthChecksUI__HealthChecks__0__Uri
+      key: aiuri
+    - name: HealthChecksUI__HealthChecks__1__Name
+      key: finesname
+    - name: HealthChecksUI__HealthChecks__1__Uri
+      key: finesuri
+    - name: HealthChecksUI__HealthChecks__2__Name
+      key: identityname
+    - name: HealthChecksUI__HealthChecks__2__Uri
+      key: identityuri
+    - name: HealthChecksUI__HealthChecks__3__Name
+      key: paymentname
+    - name: HealthChecksUI__HealthChecks__3__Uri
+      key: paymenturi
+    - name: HealthChecksUI__HealthChecks__4__Name
+      key: picturesname
+    - name: HealthChecksUI__HealthChecks__4__Uri
+      key: picturesuri
+    - name: HealthChecksUI__HealthChecks__5__Name
+      key: ridesname
+    - name: HealthChecksUI__HealthChecks__5__Uri
+      key: ridesuri
+    - name: HealthChecksUI__HealthChecks__6__Name
+      key: statisticsname
+    - name: HealthChecksUI__HealthChecks__6__Uri
+      key: statisticsuri
+    - name: HealthChecksUI__HealthChecks__7__Name
+      key: profilename
+    - name: HealthChecksUI__HealthChecks__7__Uri
+      key: profileuri
+    - name: HealthChecksUI__HealthChecks__8__Name
+      key: notificationname
+    - name: HealthChecksUI__HealthChecks__8__Uri
+      key: notificationuri
+    - name: HealthChecksUI__HealthChecks__9__Name
+      key: apigatewayname
+    - name: HealthChecksUI__HealthChecks__9__Uri
+      key: apigatewayuri
+
+autoscaling:
+  enabled: false
+
+app:
+  name: "winiety"
+  svc:
+    identity: identity-api
+    ai: ai-api
+    fines: fines-api
+    payment: payment-api
+    pictures: pictures-api
+    rides: rides-api
+    statistics: statistics-api
+    profile: profile-api
+    notification: notification-api
+    healthcheckui: healthcheckui-api
+    apigateway: apigateway
+
+inf:
+  sql:
+    common:
+      user: sa
+      pwd: Pass@word
+      pid: Developer
+
+    identity:
+      db: identity-db
+    rides:
+      db: rides-db
+    pictures:
+      db: pictures-db
+    fines:
+      db: fines-db
+    profile:
+      db: profile-db
+    notification:
+      db: notification-db
+
+  rabbitmq:
+    srv: rabbitmq
+    host: rabbitmq
+    conn: amqp://guest:guest@rabbitmq:5672

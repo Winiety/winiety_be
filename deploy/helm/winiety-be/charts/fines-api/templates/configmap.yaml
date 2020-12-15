@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "cfg-fines-api"
+  labels:
+    app: {{ template "fines-api.name" . }}
+    chart: {{ template "fines-api.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  connectionString: Server={{ .Values.inf.sql.fines.db }};Database=FinesDb;User Id={{ .Values.inf.sql.common.user }};Password={{ .Values.inf.sql.common.pwd }}
+  rabbitMqHost: {{ .Values.inf.rabbitmq.host }}
+  rabbitMqConn: {{ .Values.inf.rabbitmq.conn }}
+  identityUrl: http://{{ .Values.app.svc.identity }}

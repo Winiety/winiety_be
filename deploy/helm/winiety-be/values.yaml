@@ -1,0 +1,39 @@
+app:
+  name: "winiety"
+  svc:
+    identity: identity-api
+    ai: ai-api
+    fines: fines-api
+    payment: payment-api
+    pictures: pictures-api
+    rides: rides-api
+    statistics: statistics-api
+    profile: profile-api
+    notification: notification-api
+    healthcheckui: healthcheckui-api
+    apigateway: apigateway
+
+inf:
+  sql:
+    common:
+      user: sa
+      pwd: Pass@word
+      pid: Developer
+
+    identity:
+      db: IdentityDb
+    rides:
+      db: RidesDb
+    pictures:
+      db: PicturesDb
+    fines:
+      db: FinesDb
+    profile:
+      db: ProfileDb
+    notification:
+      db: NotificationDb
+
+  rabbitmq:
+    srv: rabbitmq
+    host: rabbitmq
+    conn: amqp://guest:guest@rabbitmq:5672
