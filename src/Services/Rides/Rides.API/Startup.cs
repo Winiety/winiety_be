@@ -53,6 +53,11 @@ namespace Rides.API
                     TimeSpan.FromSeconds(16),
                     TimeSpan.FromSeconds(32),
                     TimeSpan.FromSeconds(64),
+                    TimeSpan.FromSeconds(128),
+                    TimeSpan.FromSeconds(256),
+                    TimeSpan.FromSeconds(512),
+                    TimeSpan.FromSeconds(1024),
+                    TimeSpan.FromSeconds(2048),
                     });
 
             retry.Execute(() => InitializeDatabase(app));

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "cfg-ai-api"
+  labels:
+    app: {{ template "ai-api.name" . }}
+    chart: {{ template "ai-api.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  rabbitMqHost: {{ .Values.inf.rabbitmq.host }}
+  rabbitMqConn: {{ .Values.inf.rabbitmq.conn }}
+  identityUrl: http://{{ .Values.app.svc.identity }}

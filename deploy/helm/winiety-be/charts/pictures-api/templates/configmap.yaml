@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "cfg-pictures-api"
+  labels:
+    app: {{ template "pictures-api.name" . }}
+    chart: {{ template "pictures-api.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  connectionString: Server={{ .Values.inf.sql.pictures.db }};Database=PicturesDb;User Id={{ .Values.inf.sql.common.user }};Password={{ .Values.inf.sql.common.pwd }};
+  rabbitMqHost: {{ .Values.inf.rabbitmq.host }}
+  rabbitMqConn: {{ .Values.inf.rabbitmq.conn }}
+  identityUrl: http://{{ .Values.app.svc.identity }}
+  azureBlobKey: "PUT azureBlobKey HERE"

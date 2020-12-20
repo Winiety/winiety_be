@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "cfg-rides-api"
+  labels:
+    app: {{ template "rides-api.name" . }}
+    chart: {{ template "rides-api.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  connectionString: Server={{ .Values.inf.sql.rides.db }};Database=RidesDb;User Id={{ .Values.inf.sql.common.user }};Password={{ .Values.inf.sql.common.pwd }};
+  rabbitMqHost: {{ .Values.inf.rabbitmq.host }}
+  rabbitMqConn: {{ .Values.inf.rabbitmq.conn }}
+  identityUrl: http://{{ .Values.app.svc.identity }}
