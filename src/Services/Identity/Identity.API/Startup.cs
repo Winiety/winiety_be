@@ -34,6 +34,16 @@ namespace Identity.API
 
             services.Configure<ReCaptchaOptions>(Configuration.GetSection("ReCaptchaOptions"));
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .WithOrigins(Configuration.GetValue<string>("ClientUrls:ReactApp"))
+                    .AllowCredentials());
+            });
+
             services
                 .ConfigureHealthChecks(Configuration)
                 .ConfigureIdentity(Configuration);
@@ -68,6 +78,8 @@ namespace Identity.API
 
             app.UseForwardedHeaders();
 
+            app.UseCors("CorsPolicy");
+
             app.UseIdentityServer();
 
             if (env.IsEnvironment("HttpOnly"))
@@ -76,6 +88,7 @@ namespace Identity.API
             }
 
             app.UseRouting();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
