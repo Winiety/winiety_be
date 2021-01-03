@@ -56,9 +56,9 @@ namespace Identity.API.IdentityConfiguration
                     ClientUri = $"{clientUrls["ReactApp"]}",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
-                    RedirectUris = { $"{clientUrls["ReactApp"]}/home" },
+                    RedirectUris = { $"{clientUrls["ReactApp"]}/sign-in" },
                     RequireConsent = false,
-                    PostLogoutRedirectUris = { $"{clientUrls["ReactApp"]}/logout" },
+                    PostLogoutRedirectUris = { $"{clientUrls["ReactApp"]}/sign-out" },
                     AllowedCorsOrigins = { $"{clientUrls["ReactApp"]}" },
                     AllowedScopes =
                     {
