@@ -41,7 +41,19 @@ namespace Profile.Core.Services
         {
             var response = new ResultResponse<CarDTO>();
 
-            var carEntity = _mapper.Map<Car>(car);
+            var carEntity = await _carRepository.GetByAsync(c => c.PlateNumber == car.PlateNumber);
+
+            if (carEntity != null)
+            {
+                response.AddError(new Error
+                {
+                    Message = "Car with given plate number already exists"
+                });
+
+                return response;
+            }
+
+            carEntity = _mapper.Map<Car>(car);
 
             var currentUserId = _userContext.GetUserId();
             carEntity.UserId = currentUserId;
@@ -57,9 +69,9 @@ namespace Profile.Core.Services
         {
             var response = new ResultResponse<CarDTO>();
 
-            var carEntity = await _carRepository.GetAsync(car.Id);
+            var actualCarEntity = await _carRepository.GetAsync(car.Id);
 
-            if (carEntity == null)
+            if (actualCarEntity == null)
             {
                 response.AddError(new Error
                 {
@@ -69,11 +81,23 @@ namespace Profile.Core.Services
                 return response;
             }
 
-            carEntity = _mapper.Map(car, carEntity);
+            var carEntity = await _carRepository.GetByAsync(c => c.PlateNumber == car.PlateNumber);
 
-            await _carRepository.UpdateAsync(carEntity);
+            if (actualCarEntity.PlateNumber != carEntity.PlateNumber)
+            {
+                response.AddError(new Error
+                {
+                    Message = "Car with given plate number already exists"
+                });
 
-            response.Result = _mapper.Map<CarDTO>(carEntity);
+                return response;
+            }
+
+            actualCarEntity = _mapper.Map(car, actualCarEntity);
+
+            await _carRepository.UpdateAsync(actualCarEntity);
+
+            response.Result = _mapper.Map<CarDTO>(actualCarEntity);
 
             return response;
         }
