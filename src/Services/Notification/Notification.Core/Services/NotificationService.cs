@@ -193,9 +193,8 @@ namespace Notification.Core.Services
                     webPushClient.SendNotification(sub, message, vapidDetails);
                 }
             }
-            catch (Exception exception)
+            catch (Exception)
             {
-                // Log error
             }
 
             await _notificationContext.Clients.User(userId.ToString()).SendAsync("newNotification", notification);
