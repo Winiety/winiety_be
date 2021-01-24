@@ -17,7 +17,7 @@ namespace AI.Core.Consumers
 
         public async Task Consume(ConsumeContext<AnalyzePicture> context)
         {
-            var plateNumber = await _aIService.AnalyzePicture(context.Message.Data);
+            var plateNumber = await _aIService.AnalyzePicture(context.Message.ImagePath);
 
             await context.RespondAsync<AnalyzePictureResult>(new
             {

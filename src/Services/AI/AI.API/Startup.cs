@@ -24,7 +24,7 @@ namespace AI.API
 
             services
                 .ConfigureSwagger(Configuration)
-                .ConfigureServices()
+                .ConfigureServices(Configuration)
                 .ConfigureHealthChecks(Configuration)
                 .ConfigureMassTransit(Configuration)
                 .ConfigureAuthentication(Configuration);

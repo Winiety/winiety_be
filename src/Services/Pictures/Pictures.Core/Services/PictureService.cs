@@ -57,18 +57,19 @@ namespace Pictures.Core.Services
 
             pictureStream.Seek(0, SeekOrigin.Begin);
 
-            var response = await _requestClient.GetResponse<AnalyzePictureResult>(new
-            {
-                Data = pictureMemoryStream.ToArray()
-            });
-
-            var plateNumber = response.Message.PlateNumber;
             var filename = $"{Guid.NewGuid()}{Path.GetExtension(pictureRequest.Picture.FileName)}";
             var imagePath = await _blobStorageService.UploadFileBlobAsync(
                     "picturescontainer",
                     pictureStream,
                     pictureRequest.Picture.ContentType,
                     filename);
+
+            var response = await _requestClient.GetResponse<AnalyzePictureResult>(new
+            {
+                ImagePath = imagePath.AbsoluteUri
+            });
+
+            var plateNumber = response.Message.PlateNumber;
 
             var picture = new Picture
             {
