@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Notification.API.StartupConfiguration;
 using Notification.Core.Hubs;
+using Notification.Core.Options;
 using Notification.Infrastructure.Data;
 using Polly;
 using System;
@@ -28,6 +29,7 @@ namespace Notification.API
             services.AddControllers();
 
             services.AddSignalR();
+            services.Configure<WebPushOptions>(Configuration.GetSection("VAPID"));
 
             services
                 .ConfigureSwagger(Configuration)

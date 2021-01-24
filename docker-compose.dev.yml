@@ -259,6 +259,9 @@ services:
       - "5116:80"
       - "5117:443"
     environment:
+      - VAPID__Subject=${VAPID_SUBJECT}
+      - VAPID__PublicKey=${VAPID_PUBLIC_KEY}
+      - VAPID__PrivateKey=${VAPID_PRIVATE_KEY}
       - ConnectionString=Server=notification.db;Database=NotificationDb;User Id=sa;Password=Pass@word
       - RabbitMqHost=rabbitmq
       - RabbitMqConn=amqp://guest:guest@rabbitmq:5672

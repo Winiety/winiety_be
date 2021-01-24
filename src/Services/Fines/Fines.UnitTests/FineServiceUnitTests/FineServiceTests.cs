@@ -9,9 +9,7 @@ using Shared.Core.BaseModels.Requests;
 using Shared.Core.BaseModels.Responses;
 using Shared.Core.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Xunit;
 
