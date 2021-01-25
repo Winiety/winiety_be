@@ -1,5 +1,6 @@
 ﻿using IdentityServer4;
 using IdentityServer4.Models;
+using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 
 namespace Identity.API.IdentityConfiguration
@@ -194,6 +195,18 @@ namespace Identity.API.IdentityConfiguration
                         "notification"
                     }
                 },
+            };
+        }
+
+        public static IEnumerable<IdentityRole<int>> GetRoles()
+        {
+            return new List<IdentityRole<int>>
+            {
+                new IdentityRole<int>() { Name = "user" },
+                new IdentityRole<int>() { Name = "admin" },
+                new IdentityRole<int>() { Name = "corrector" },
+                new IdentityRole<int>() { Name = "analyst" },
+                new IdentityRole<int>() { Name = "police" },
             };
         }
     }
