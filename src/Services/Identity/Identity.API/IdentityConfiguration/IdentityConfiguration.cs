@@ -53,11 +53,12 @@ namespace Identity.API.IdentityConfiguration
                 {
                     ClientId = "react",
                     ClientName = "Winiety React App OpenId Client",
+                    ClientUri = $"{clientUrls["ReactApp"]}",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
-                    RedirectUris = { $"{clientUrls["ReactApp"]}/" },
+                    RedirectUris = { $"{clientUrls["ReactApp"]}/sign-in" },
                     RequireConsent = false,
-                    PostLogoutRedirectUris = { $"{clientUrls["ReactApp"]}/" },
+                    PostLogoutRedirectUris = { $"{clientUrls["ReactApp"]}/sign-out" },
                     AllowedCorsOrigins = { $"{clientUrls["ReactApp"]}" },
                     AllowedScopes =
                     {

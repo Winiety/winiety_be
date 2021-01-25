@@ -2,12 +2,14 @@
 using Contracts.Events;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using Notification.Core.Common;
 using Notification.Core.Hubs;
 using Notification.Core.Interfaces;
 using Notification.Core.Model.DTOs;
 using Notification.Core.Model.Entities;
+using Notification.Core.Options;
 using Notification.Core.Services;
 using Shared.Core.Interfaces;
 using Shared.Core.Services;
@@ -20,8 +22,10 @@ namespace Notification.UnitTests.NotificationServiceUnitTests
     public class NotificationServiceSetup
     {
         protected readonly Mock<INotificationRepository> _notificationRepository;
+        protected readonly Mock<ISubscriptionRepository> _subscriptionRepository;
         protected readonly Mock<IMapper> _mapper;
         protected readonly Mock<IUserContext> _userContext;
+        protected readonly Mock<IOptions<WebPushOptions>> _webPushOptions;
         protected readonly Mock<IHubContext<NotificationHub>> _notificationContext;
         protected readonly Mock<IHubClients> _hubClients;
         protected readonly Mock<IClientProxy> _clientProxy;
@@ -35,7 +39,9 @@ namespace Notification.UnitTests.NotificationServiceUnitTests
             _logger = new Mock<ILogger<NotificationService>>();
             _userContext = new Mock<IUserContext>();
             _notificationContext = new Mock<IHubContext<NotificationHub>>();
-            _notificationService = new NotificationService(_notificationRepository.Object, _mapper.Object, _userContext.Object, _notificationContext.Object, _logger.Object);
+            _subscriptionRepository = new Mock<ISubscriptionRepository>();
+            _webPushOptions = new Mock<IOptions<WebPushOptions>>();
+            _notificationService = new NotificationService(_notificationRepository.Object,_subscriptionRepository.Object, _mapper.Object, _userContext.Object, _webPushOptions.Object, _notificationContext.Object, _logger.Object);
 
             _hubClients = new Mock<IHubClients>();
             _clientProxy = new Mock<IClientProxy>();

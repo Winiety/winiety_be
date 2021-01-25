@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "cfg-api-gateway"
+  labels:
+    app: {{ template "api-gateway.name" . }}
+    chart: {{ template "api-gateway.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  identityUrl: http://{{ .Values.app.svc.identity }}
+  aIUrlHC: http://{{ .Values.app.svc.ai }}/health/ready
+  finesUrlHC: http://{{ .Values.app.svc.fines }}/health/ready
+  identityUrlHC: http://{{ .Values.app.svc.identity }}/health/ready
+  paymentUrlHC: http://{{ .Values.app.svc.payment }}/health/ready
+  picturesUrlHC: http://{{ .Values.app.svc.pictures }}/health/ready
+  ridesUrlHC: http://{{ .Values.app.svc.rides }}/health/ready
+  statisticsUrlHC: http://{{ .Values.app.svc.statistics }}/health/ready
+  profileUrlHC: http://{{ .Values.app.svc.profile }}/health/ready
+  notificationUrlHC: http://{{ .Values.app.svc.notification }}/health/ready
+  clientApp: http://{{ .Values.app.svc.identity }}

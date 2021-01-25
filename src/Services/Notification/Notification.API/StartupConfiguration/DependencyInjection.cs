@@ -13,6 +13,7 @@ namespace Notification.API.StartupConfiguration
         public static IServiceCollection ConfigureRepositories(this IServiceCollection services)
         {
             services.AddTransient<INotificationRepository, NotificationRepository>();
+            services.AddTransient<ISubscriptionRepository, SubscriptionRepository>();
 
             return services;
         }
