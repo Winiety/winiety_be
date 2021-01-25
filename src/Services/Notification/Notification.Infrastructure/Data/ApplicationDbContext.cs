@@ -6,7 +6,8 @@ namespace Notification.Infrastructure.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<NotificationModel> Pictures { get; set; }
+        public DbSet<NotificationModel> Notifications { get; set; }
+        public DbSet<SubscriptionModel> Subscriptions { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -18,6 +19,7 @@ namespace Notification.Infrastructure.Data
             base.OnModelCreating(builder);
 
             builder.ApplyConfiguration(new NotificationConfiguration());
+            builder.ApplyConfiguration(new SubscriptionConfiguration());
         }
     }
 }

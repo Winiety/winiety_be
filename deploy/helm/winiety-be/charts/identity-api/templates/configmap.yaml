@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "cfg-identity-api"
+  labels:
+    app: {{ template "identity-api.name" . }}
+    chart: {{ template "identity-api.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  connectionString: "Server={{ .Values.inf.sql.identity.db }};Database=IdentityDb;User Id=sa;Password=Pass@word"
+  reactApp: http://{{ .Values.app.svc.ai }}
+  aIApi: http://{{ .Values.app.svc.ai }}
+  finesApi: http://{{ .Values.app.svc.fines }}
+  paymentApi: http://{{ .Values.app.svc.payment }}
+  picturesApi: http://{{ .Values.app.svc.pictures }}
+  ridesApi: http://{{ .Values.app.svc.rides }}
+  statisticsApi: http://{{ .Values.app.svc.statistics }}
+  profileApi: http://{{ .Values.app.svc.profile }}
+  notificationApi: http://{{ .Values.app.svc.notification }}
+  reCaptchaSiteKey: "PUT reCaptchaSiteKey HERE"
+  reCaptchaSecretKey: "PUT reCaptchaSecretKey HERE"

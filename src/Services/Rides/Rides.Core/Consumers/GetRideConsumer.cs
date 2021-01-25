@@ -2,7 +2,6 @@
 using Contracts.Results;
 using MassTransit;
 using Rides.Core.Services;
-using System;
 using System.Threading.Tasks;
 
 namespace Rides.Core.Consumers

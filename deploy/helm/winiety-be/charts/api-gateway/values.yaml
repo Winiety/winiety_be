@@ -1,0 +1,93 @@
+replicaCount: 1
+
+image:
+  repository: doomloord10/winiety-api-gateway
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+serviceAccount:
+  create: false
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  hosts:
+    - hosts: 
+      - localhost
+      paths: 
+      - path: "/apigateway"
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+
+env:
+  configmap:
+    - name: IdentityUrl
+      key: identityUrl
+    - name: AIUrlHC
+      key: aIUrlHC
+    - name: FinesUrlHC
+      key: finesUrlHC
+    - name: IdentityUrlHC
+      key: identityUrlHC
+    - name: PaymentUrlHC
+      key: paymentUrlHC
+    - name: PicturesUrlHC
+      key: picturesUrlHC
+    - name: RidesUrlHC
+      key: ridesUrlHC
+    - name: StatisticsUrlHC
+      key: statisticsUrlHC
+    - name: ProfileUrlHC
+      key: profileUrlHC
+    - name: NotificationUrlHC
+      key: notificationUrlHC
+    - name: ClientApp
+      key: clientApp
+
+autoscaling:
+  enabled: false
+
+app:
+  name: "winiety"
+  svc:
+    identity: identity-api
+    ai: ai-api
+    fines: fines-api
+    payment: payment-api
+    pictures: pictures-api
+    rides: rides-api
+    statistics: statistics-api
+    profile: profile-api
+    notification: notification-api
+    healthcheckui: healthcheckui-api
+    apigateway: apigateway
+
+inf:
+  sql:
+    common:
+      user: sa
+      pwd: Pass@word
+      pid: Developer
+
+    identity:
+      db: identity-db
+    rides:
+      db: rides-db
+    pictures:
+      db: pictures-db
+    fines:
+      db: fines-db
+    profile:
+      db: profile-db
+    notification:
+      db: notification-db
+
+  rabbitmq:
+    srv: rabbitmq
+    host: rabbitmq
+    conn: amqp://guest:guest@rabbitmq:5672
