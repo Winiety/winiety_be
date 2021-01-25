@@ -15,10 +15,12 @@ namespace Identity.Core.Services
     public class ProfileService : IProfileService
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole<int>> _roleManager;
 
-        public ProfileService(UserManager<ApplicationUser> userManager)
+        public ProfileService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<int>> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
@@ -31,7 +33,7 @@ namespace Identity.Core.Services
             if (user == null)
                 throw new ArgumentException("Invalid subject identifier");
 
-            var claims = GetClaimsFromUser(user);
+            var claims = await GetClaimsFromUserAsync(user);
             context.IssuedClaims = claims.ToList();
         }
 
@@ -64,7 +66,7 @@ namespace Identity.Core.Services
             }
         }
 
-        private IEnumerable<Claim> GetClaimsFromUser(ApplicationUser user)
+        private async Task<IEnumerable<Claim>> GetClaimsFromUserAsync(ApplicationUser user)
         {
             var claims = new List<Claim>
             {
@@ -79,6 +81,23 @@ namespace Identity.Core.Services
 
             if (!string.IsNullOrWhiteSpace(user.LastName))
                 claims.Add(new Claim("last_name", user.LastName));
+
+            if (_userManager.SupportsUserRole)
+            {
+                IList<string> roles = await _userManager.GetRolesAsync(user);
+                foreach(var roleName in roles)
+                {
+                    claims.Add(new Claim(JwtClaimTypes.Role, roleName));
+                    if (_roleManager.SupportsRoleClaims)
+                    {
+                        IdentityRole<int> role = await _roleManager.FindByNameAsync(roleName);
+                        if(role != null)
+                        {
+                            claims.AddRange(await _roleManager.GetClaimsAsync(role));
+                        }
+                    }
+                }
+            }
 
             return claims;
         }

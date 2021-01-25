@@ -12,7 +12,7 @@ namespace Statistics.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "analyst, admin")]
     public class StatisticsController : ControllerBase
     {
         private readonly IStatisticsService _statisticsService;

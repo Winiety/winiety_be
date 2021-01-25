@@ -149,6 +149,11 @@ namespace Identity.API.Controllers
 
             var result = await _userManager.CreateAsync(user, model.Password);
 
+            if(result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, "user");
+            }
+
             if (result.Errors.Count() > 0)
             {
                 AddErrors(result);
@@ -200,6 +205,24 @@ namespace Identity.API.Controllers
             var logout = await _interaction.GetLogoutContextAsync(model.LogoutId);
 
             return Redirect(logout?.PostLogoutRedirectUri);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateUserRoles([FromBody] UpdateUserRolesRequest userRoles)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(userRoles.UserId.ToString());
+                var oldRoles = await _userManager.GetRolesAsync(user);
+                await _userManager.RemoveFromRolesAsync(user, oldRoles);
+                await _userManager.AddToRolesAsync(user, userRoles.Roles);
+
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         private void AddErrors(IdentityResult result)
