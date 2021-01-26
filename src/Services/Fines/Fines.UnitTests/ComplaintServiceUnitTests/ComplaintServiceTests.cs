@@ -12,6 +12,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+
 namespace Fines.UnitTests.ComplaintServiceUnitTests
 {
     public class ComplaintServiceTests : ComplaintServiceSetup
@@ -493,3 +495,4 @@ namespace Fines.UnitTests.ComplaintServiceUnitTests
         }
     }
 }
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously

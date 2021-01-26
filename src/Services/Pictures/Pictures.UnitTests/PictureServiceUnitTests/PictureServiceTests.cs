@@ -1,4 +1,5 @@
 using Contracts.Results;
+using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Moq;
@@ -135,7 +136,7 @@ namespace Pictures.UnitTests.PictureServiceUnitTests
 
             var path = new Uri("http://test.path.com");
             _requestClient
-                .Setup(c => c.GetResponse<AnalyzePictureResult>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<AnalyzePictureResult>(It.IsAny<object>(), default, RequestTimeout.After(null, null, 5, null, null)))
                 .ReturnsAsync(responseMock);
 
             _blobStorageService
@@ -170,7 +171,7 @@ namespace Pictures.UnitTests.PictureServiceUnitTests
 
             var path = new Uri("http://test.path.com");
             _requestClient
-                .Setup(c => c.GetResponse<AnalyzePictureResult>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<AnalyzePictureResult>(It.IsAny<object>(), default, RequestTimeout.After(null, null, 5, null, null)))
                 .ReturnsAsync(responseMock);
 
             _blobStorageService

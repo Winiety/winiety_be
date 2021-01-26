@@ -13,6 +13,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+
 namespace Fines.UnitTests.FineServiceUnitTests
 {
     public class FineServiceTests : FineServiceSetup
@@ -225,7 +227,7 @@ namespace Fines.UnitTests.FineServiceUnitTests
             });
 
             var responseTaskMock = Task.FromResult(responseMock);
-            var notFoundResponseTaskMock = Task.Run<Response<GetRideNotFound>>(async () => { throw new InvalidOperationException(); });
+            var notFoundResponseTaskMock = Task.Run<Response<GetRideNotFound>>(async () =>  { throw new InvalidOperationException(); });
             
             _requestClient
                 .Setup(c => c.GetResponse<GetRideResult, GetRideNotFound>(It.IsAny<object>(), default, default))
@@ -431,3 +433,4 @@ namespace Fines.UnitTests.FineServiceUnitTests
         }
     }
 }
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
