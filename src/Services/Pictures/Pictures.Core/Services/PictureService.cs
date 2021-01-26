@@ -67,7 +67,7 @@ namespace Pictures.Core.Services
             var response = await _requestClient.GetResponse<AnalyzePictureResult>(new
             {
                 ImagePath = imagePath.AbsoluteUri
-            });
+            }, timeout: RequestTimeout.After(m: 5));
 
             var plateNumber = response.Message.PlateNumber;
 
