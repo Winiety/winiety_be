@@ -2,11 +2,11 @@
   "Routes": [
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5001
+          "Host": "ai-api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/ai/{everything}",
@@ -18,11 +18,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5003
+          "Host": "fines-api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/fi/{everything}",
@@ -34,11 +34,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5005
+          "Host": "identity-api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/id/{everything}",
@@ -46,11 +46,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5007
+          "Host": "payment-api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/pa/{everything}",
@@ -62,11 +62,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5009
+          "Host": "pictures-api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/pi/{everything}",
@@ -78,11 +78,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5011
+          "Host": "rides-api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/ri/{everything}",
@@ -94,11 +94,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5013
+          "Host": "statistics-api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/st/{everything}",
@@ -110,11 +110,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5015
+          "Host": "profile-api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/pr/{everything}",
@@ -126,11 +126,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5017
+          "Host": "notification-api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/no/{everything}",
