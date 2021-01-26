@@ -105,6 +105,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+;http://+
       - ASPNETCORE_HTTPS_PORT=5103
+      - PredictService=${PREDICT_SERVICE}
 
   fines.api:
     build:
@@ -259,6 +260,9 @@ services:
       - "5116:80"
       - "5117:443"
     environment:
+      - VAPID__Subject=${VAPID_SUBJECT}
+      - VAPID__PublicKey=${VAPID_PUBLIC_KEY}
+      - VAPID__PrivateKey=${VAPID_PRIVATE_KEY}
       - ConnectionString=Server=notification.db;Database=NotificationDb;User Id=sa;Password=Pass@word
       - RabbitMqHost=rabbitmq
       - RabbitMqConn=amqp://guest:guest@rabbitmq:5672
@@ -290,6 +294,7 @@ services:
       - "5200:80"
       - "5201:443"
     environment:
+      - ClientApp=https://${WINIETY_DNS_NAME_OR_IP}:4000
       - IdentityUrl=https://identity.api
       - AIUrlHC=https://ai.api/health/ready
       - FinesUrlHC=https://fines.api/health/ready

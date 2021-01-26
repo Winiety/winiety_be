@@ -193,7 +193,8 @@ namespace Profile.UnitTests.CarServiceUnitTests
             var car = new Car
             {
                 Id = 1,
-                UserId = 1
+                UserId = 1,
+                PlateNumber = "112233"
             };
 
             var carDTO = new CarDTO
@@ -203,6 +204,10 @@ namespace Profile.UnitTests.CarServiceUnitTests
 
             _carRepository
                 .Setup(c => c.GetAsync(It.IsAny<int>(), false))
+                .ReturnsAsync(car);
+
+            _carRepository
+                .Setup(c => c.GetByAsync(It.IsAny<Expression<Func<Car, bool>>>(), false))
                 .ReturnsAsync(car);
 
             _mapper

@@ -38,6 +38,7 @@ namespace Pictures.API.Controllers
         }
 
         [HttpGet("not-recognized")]
+        [Authorize(Roles = "corrector, admin")]
         public async Task<ActionResult<IPagedResponse<PictureDTO>>> GetNotRecognizedPicturse([FromQuery] SearchRequest search)
         {
             var response = await _pictureService.GetNotRecognizedPicturesAsync(search);

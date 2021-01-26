@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "cfg-healthcheckui-api"
+  labels:
+    app: {{ template "health-check-ui.name" . }}
+    chart: {{ template "health-check-ui.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  ainame: AI HTTP Check
+  aiuri: http://{{ .Values.app.svc.ai }}/health/ready
+  finesname: Fines HTTP Check
+  finesuri: http://{{ .Values.app.svc.fines }}/health/ready
+  identityname: Identity HTTP Check
+  identityuri: http://{{ .Values.app.svc.identity }}/health/ready
+  paymentname: Payment HTTP Check
+  paymenturi: http://{{ .Values.app.svc.payment }}/health/ready
+  picturesname: Pictures HTTP Check
+  picturesuri: http://{{ .Values.app.svc.pictures }}/health/ready
+  ridesname: Rides HTTP Check
+  ridesuri: http://{{ .Values.app.svc.rides }}/health/ready
+  statisticsname: Statistics HTTP Check
+  statisticsuri: http://{{ .Values.app.svc.statistics }}/health/ready
+  profilename: Profile HTTP Check
+  profileuri: http://{{ .Values.app.svc.profile }}/health/ready
+  notificationname: Notification HTTP Check
+  notificationuri: http://{{ .Values.app.svc.notification }}/health/ready
+  apigatewayname: Api Gateway HTTP Check
+  apigatewayuri: http://{{ .Values.app.svc.apigateway }}/health/ready

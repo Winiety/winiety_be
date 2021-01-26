@@ -2,6 +2,6 @@
 {
     public interface AnalyzePicture
     {
-        byte[] Data { get; set; }
+        string ImagePath { get; set; }
     }
 }

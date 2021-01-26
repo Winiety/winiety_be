@@ -58,6 +58,7 @@ namespace Fines.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "police, admin")]
         public async Task<ActionResult<IResultResponse<FineDTO>>> CreateFine([FromBody] CreateFineRequest fine)
         {
             var response = await _fineService.CreateFineAsync(fine);
@@ -70,6 +71,7 @@ namespace Fines.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "police, admin")]
         public async Task<ActionResult<IResultResponse<FineDTO>>> UpdateFine([FromBody] UpdateFineRequest fine)
         {
             var response = await _fineService.UpdateFineAsync(fine);
@@ -82,6 +84,7 @@ namespace Fines.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "police, admin")]
         public async Task<ActionResult<IBaseResponse>> DeleteFine(int id)
         {
             var response = await _fineService.RemoveFineAsync(id);

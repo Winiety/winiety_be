@@ -2,7 +2,6 @@
 using Fines.Core.Model.Requests.Complaint;
 using Fines.Core.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Core.BaseModels.Requests;
 using Shared.Core.BaseModels.Responses.Interfaces;

@@ -7,7 +7,6 @@ using Moq;
 using Rides.Core.Consumers;
 using Rides.Core.Model.Entities;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
