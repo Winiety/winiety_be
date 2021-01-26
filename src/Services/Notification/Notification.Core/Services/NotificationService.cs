@@ -67,7 +67,7 @@ namespace Notification.Core.Services
             var notification = new NotificationModel
             {
                 UserId = rideEvent.UserId.Value,
-                Content = $"Registered ride with license plates - [{rideEvent.PlateNumber}]. ({rideEvent.RideDateTime.ToString(DateTimeFormat)})",
+                Content = $"Przejazd zarejestrowany na tablice rejestracyjne - [{rideEvent.PlateNumber}]. ({rideEvent.RideDateTime.ToString(DateTimeFormat)})",
                 IsRead = false,
                 NotificationType = NotificationTypes.Ride,
                 RedirectId = rideEvent.Id,
@@ -86,7 +86,7 @@ namespace Notification.Core.Services
             var notification = new NotificationModel
             {
                 UserId = complaintEvent.UserId, // TODO: when roles are ready send this to all police officers
-                Content = $"Complaint for ride [{complaintEvent.RideId}] from user [{complaintEvent.UserId}]. Description [{TakeNLetters(complaintEvent.Description, 40)}...]. ({complaintEvent.CreateDateTime.ToString(DateTimeFormat)})",
+                Content = $"Skarga do przejazdu [nr. {complaintEvent.RideId}] została zgłoszona. Opis [{TakeNLetters(complaintEvent.Description, 40)}...]. ({complaintEvent.CreateDateTime.ToString(DateTimeFormat)})",
                 IsRead = false,
                 NotificationType = NotificationTypes.Complaint,
                 RedirectId = complaintEvent.Id,
@@ -105,7 +105,7 @@ namespace Notification.Core.Services
             var notification = new NotificationModel
             {
                 UserId = fineEvent.UserId,
-                Content = $"Fine for ride [{fineEvent.RideId}]. Cost [{fineEvent.Cost}]. Description [{TakeNLetters(fineEvent.Description, 40)}...]. ({fineEvent.CreateDateTime.ToString(DateTimeFormat)})",
+                Content = $"Mandat za przejazd [nr. {fineEvent.RideId}]. Wysokość mandatu [{fineEvent.Cost} PLN]. Opis [{TakeNLetters(fineEvent.Description, 40)}...]. ({fineEvent.CreateDateTime.ToString(DateTimeFormat)})",
                 IsRead = false,
                 NotificationType = NotificationTypes.Fine,
                 RedirectId = fineEvent.Id,

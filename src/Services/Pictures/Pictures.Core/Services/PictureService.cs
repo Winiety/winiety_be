@@ -84,7 +84,7 @@ namespace Pictures.Core.Services
 
             if (string.IsNullOrWhiteSpace(plateNumber))
             {
-                return "Not recognized";
+                return "Nie rozpoznano";
             }
 
             await _bus.Publish<CarRegistered>(new
@@ -120,7 +120,7 @@ namespace Pictures.Core.Services
             {
                 response.AddError(new Error
                 {
-                    Message = "Picture not found"
+                    Message = "Nie znaleziono zdjęcia"
                 });
 
                 return response;

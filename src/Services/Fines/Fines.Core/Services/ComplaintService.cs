@@ -57,7 +57,7 @@ namespace Fines.Core.Services
             {
                 response.AddError(new Error
                 {
-                    Message = "Ride not found"
+                    Message = "Nie znaleziono przejazdu"
                 });
 
                 return response;
@@ -71,7 +71,7 @@ namespace Fines.Core.Services
             {
                 response.AddError(new Error
                 {
-                    Message = "User id is empty in registered ride"
+                    Message = "User id jest pusty dla zarejestrowanego przejazdu"
                 });
 
                 return response;
@@ -81,7 +81,7 @@ namespace Fines.Core.Services
             {
                 response.AddError(new Error
                 {
-                    Message = "User id does not match"
+                    Message = "User id nie pasuje"
                 });
 
                 return response;
@@ -123,7 +123,7 @@ namespace Fines.Core.Services
             {
                 response.AddError(new Error
                 {
-                    Message = "Complaint not found"
+                    Message = "Nie znaleziono skargi"
                 });
 
                 return response;
@@ -178,7 +178,7 @@ namespace Fines.Core.Services
             {
                 response.AddError(new Error
                 {
-                    Message = "Complaint not found"
+                    Message = "Nie znaleziono skargi"
                 });
 
                 return response;
@@ -190,7 +190,7 @@ namespace Fines.Core.Services
             {
                 response.AddError(new Error
                 {
-                    Message = "User id does not match"
+                    Message = "User id nie pasuje"
                 });
 
                 return response;
@@ -211,7 +211,7 @@ namespace Fines.Core.Services
             {
                 response.AddError(new Error
                 {
-                    Message = "Complaint not found"
+                    Message = "Nie znaleziono skargi"
                 });
 
                 return response;
@@ -223,7 +223,7 @@ namespace Fines.Core.Services
             {
                 response.AddError(new Error
                 {
-                    Message = "User id does not match"
+                    Message = "User id nie pasuje"
                 });
 
                 return response;

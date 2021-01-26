@@ -66,7 +66,7 @@ namespace Identity.API.Controllers
 
             if (!isReCaptchaValid)
             {
-                ModelState.AddModelError(string.Empty, "ReCaptcha failed. You are a robot...");
+                ModelState.AddModelError(string.Empty, "Sprawdzenie ReCaptcha nie powiodło się. Jesteś robotem...");
 
                 return View(model);
             }
@@ -75,7 +75,7 @@ namespace Identity.API.Controllers
 
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty, "Invalid username or password.");
+                ModelState.AddModelError(string.Empty, "Niepoprawna nazwa użytkownika lub hasło.");
 
                 return View(model);
             }
@@ -111,7 +111,7 @@ namespace Identity.API.Controllers
                 return Redirect("~/");
             }
 
-            ModelState.AddModelError(string.Empty, "Invalid username or password.");
+            ModelState.AddModelError(string.Empty, "Niepoprawna nazwa użytkownika lub hasło.");
 
             return View(model);
         }
@@ -210,10 +210,11 @@ namespace Identity.API.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdateUserRoles([FromBody] UpdateUserRolesRequest userRoles)
         {
+            var user = await _userManager.FindByIdAsync(userRoles.UserId.ToString());
+            var oldRoles = await _userManager.GetRolesAsync(user);
+
             try
             {
-                var user = await _userManager.FindByIdAsync(userRoles.UserId.ToString());
-                var oldRoles = await _userManager.GetRolesAsync(user);
                 await _userManager.RemoveFromRolesAsync(user, oldRoles);
                 await _userManager.AddToRolesAsync(user, userRoles.Roles);
 
@@ -222,6 +223,10 @@ namespace Identity.API.Controllers
             catch (Exception)
             {
                 return BadRequest();
+            }
+            finally
+            {
+                await _userManager.AddToRolesAsync(user, oldRoles);
             }
         }
 

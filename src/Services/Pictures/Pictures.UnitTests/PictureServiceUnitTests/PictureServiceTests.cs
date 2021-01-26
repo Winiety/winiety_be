@@ -72,7 +72,7 @@ namespace Pictures.UnitTests.PictureServiceUnitTests
 
             Assert.False(result.IsSuccess);
             Assert.Equal(1, result.Errors.Count);
-            Assert.Equal("Picture not found", result.Errors.First().Message);
+            Assert.Equal("Nie znaleziono zdjêcia", result.Errors.First().Message);
         }
 
         [Fact]
@@ -183,7 +183,7 @@ namespace Pictures.UnitTests.PictureServiceUnitTests
 
             var result = await _pictureService.AddPictureAsync(request);
 
-            Assert.Equal("Not recognized", result);
+            Assert.Equal("Nie rozpoznano", result);
             _pictureRepository.Verify(c => c.AddAsync(It.IsAny<Picture>()), Times.Once());
         }
     }

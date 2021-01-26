@@ -153,7 +153,7 @@ namespace Profile.UnitTests.CarServiceUnitTests
             var result = await _carService.RemoveCarAsync(1);
 
             Assert.False(result.IsSuccess);
-            Assert.Equal("Car not found", result.Errors.First().Message);
+            Assert.Equal("Nie znaleziono samochodu", result.Errors.First().Message);
             _carRepository.Verify(c => c.RemoveAsync(It.IsAny<Car>()), Times.Never());
         }
 
@@ -177,7 +177,7 @@ namespace Profile.UnitTests.CarServiceUnitTests
             var result = await _carService.RemoveCarAsync(1);
 
             Assert.False(result.IsSuccess);
-            Assert.Equal("User id does not match", result.Errors.First().Message);
+            Assert.Equal("User id nie pasuje", result.Errors.First().Message);
             _carRepository.Verify(c => c.RemoveAsync(It.IsAny<Car>()), Times.Never());
         }
 
@@ -244,7 +244,7 @@ namespace Profile.UnitTests.CarServiceUnitTests
             var result = await _carService.UpdateCarAsync(request);
 
             Assert.False(result.IsSuccess);
-            Assert.Equal("Car not found", result.Errors.First().Message);
+            Assert.Equal("Nie znaleziono samochodu", result.Errors.First().Message);
             _carRepository.Verify(c => c.UpdateAsync(It.IsAny<Car>()), Times.Never());
         }
 

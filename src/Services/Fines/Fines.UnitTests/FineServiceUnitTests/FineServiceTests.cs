@@ -193,7 +193,7 @@ namespace Fines.UnitTests.FineServiceUnitTests
 
             Assert.False(result.IsSuccess);
             Assert.Equal(1, result.Errors.Count);
-            Assert.Equal("Fine not found", result.Errors.First().Message);
+            Assert.Equal("Nie znaleziono mandatu", result.Errors.First().Message);
         }
 
         [Fact]
@@ -282,7 +282,7 @@ namespace Fines.UnitTests.FineServiceUnitTests
 
             Assert.False(result.IsSuccess);
             Assert.Equal(1, result.Errors.Count);
-            Assert.Equal("Ride not found", result.Errors.First().Message);
+            Assert.Equal("Nie znaleziono przejazdu", result.Errors.First().Message);
         }
 
         [Fact]
@@ -315,7 +315,7 @@ namespace Fines.UnitTests.FineServiceUnitTests
 
             Assert.False(result.IsSuccess);
             Assert.Equal(1, result.Errors.Count);
-            Assert.Equal("User id is empty in registered ride", result.Errors.First().Message);
+            Assert.Equal("User id jest pusty dla zarejestrowanego przejazdu", result.Errors.First().Message);
         }
 
         [Fact]
@@ -356,7 +356,7 @@ namespace Fines.UnitTests.FineServiceUnitTests
             var result = await _fineService.RemoveFineAsync(1);
 
             Assert.False(result.IsSuccess);
-            Assert.Equal("Fine not found", result.Errors.First().Message);
+            Assert.Equal("Nie znaleziono mandatu", result.Errors.First().Message);
             _fineRepository.Verify(c => c.RemoveAsync(It.IsAny<Fine>()), Times.Never());
         }
 
@@ -428,7 +428,7 @@ namespace Fines.UnitTests.FineServiceUnitTests
             var result = await _fineService.UpdateFineAsync(request);
 
             Assert.False(result.IsSuccess);
-            Assert.Equal("Fine not found", result.Errors.First().Message);
+            Assert.Equal("Nie znaleziono mandatu", result.Errors.First().Message);
             _fineRepository.Verify(c => c.UpdateAsync(It.IsAny<Fine>()), Times.Never());
         }
     }

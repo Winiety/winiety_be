@@ -188,7 +188,7 @@ namespace Fines.UnitTests.ComplaintServiceUnitTests
 
             Assert.False(result.IsSuccess);
             Assert.Equal(1, result.Errors.Count);
-            Assert.Equal("Complaint not found", result.Errors.First().Message);
+            Assert.Equal("Nie znaleziono skargi", result.Errors.First().Message);
         }
 
         [Fact]
@@ -278,7 +278,7 @@ namespace Fines.UnitTests.ComplaintServiceUnitTests
 
             Assert.False(result.IsSuccess);
             Assert.Equal(1, result.Errors.Count);
-            Assert.Equal("Ride not found", result.Errors.First().Message);
+            Assert.Equal("Nie znaleziono przejazdu", result.Errors.First().Message);
         }
 
         [Fact]
@@ -310,7 +310,7 @@ namespace Fines.UnitTests.ComplaintServiceUnitTests
 
             Assert.False(result.IsSuccess);
             Assert.Equal(1, result.Errors.Count);
-            Assert.Equal("User id is empty in registered ride", result.Errors.First().Message);
+            Assert.Equal("User id jest pusty dla zarejestrowanego przejazdu", result.Errors.First().Message);
         }
 
         [Fact]
@@ -354,7 +354,7 @@ namespace Fines.UnitTests.ComplaintServiceUnitTests
             var result = await _complaintService.RemoveComplaintAsync(1);
 
             Assert.False(result.IsSuccess);
-            Assert.Equal("Complaint not found", result.Errors.First().Message);
+            Assert.Equal("Nie znaleziono skargi", result.Errors.First().Message);
             _complaintRepository.Verify(c => c.RemoveAsync(It.IsAny<Complaint>()), Times.Never());
         }
 
@@ -383,7 +383,7 @@ namespace Fines.UnitTests.ComplaintServiceUnitTests
             var result = await _complaintService.RemoveComplaintAsync(1);
 
             Assert.False(result.IsSuccess);
-            Assert.Equal("User id does not match", result.Errors.First().Message);
+            Assert.Equal("User id nie pasuje", result.Errors.First().Message);
             _complaintRepository.Verify(c => c.RemoveAsync(It.IsAny<Complaint>()), Times.Never());
         }
 
@@ -455,7 +455,7 @@ namespace Fines.UnitTests.ComplaintServiceUnitTests
             var result = await _complaintService.UpdateComplaintAsync(request);
 
             Assert.False(result.IsSuccess);
-            Assert.Equal("Complaint not found", result.Errors.First().Message);
+            Assert.Equal("Nie znaleziono skargi", result.Errors.First().Message);
             _complaintRepository.Verify(c => c.UpdateAsync(It.IsAny<Complaint>()), Times.Never());
         }
 
@@ -490,7 +490,7 @@ namespace Fines.UnitTests.ComplaintServiceUnitTests
             var result = await _complaintService.UpdateComplaintAsync(request);
 
             Assert.False(result.IsSuccess);
-            Assert.Equal("User id does not match", result.Errors.First().Message);
+            Assert.Equal("User id nie pasuje", result.Errors.First().Message);
             _complaintRepository.Verify(c => c.UpdateAsync(It.IsAny<Complaint>()), Times.Never());
         }
     }
