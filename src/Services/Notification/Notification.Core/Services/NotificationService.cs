@@ -85,7 +85,7 @@ namespace Notification.Core.Services
         {
             var notification = new NotificationModel
             {
-                UserId = complaintEvent.UserId, // TODO: when roles are ready send this to all police officers
+                UserId = complaintEvent.UserId,
                 Content = $"Skarga do przejazdu [nr. {complaintEvent.RideId}] została zgłoszona. Opis [{TakeNLetters(complaintEvent.Description, 40)}...]. ({complaintEvent.CreateDateTime.ToString(DateTimeFormat)})",
                 IsRead = false,
                 NotificationType = NotificationTypes.Complaint,
@@ -97,7 +97,7 @@ namespace Notification.Core.Services
 
             var notificationDTO = _mapper.Map<NotificationDTO>(notification);
 
-            await SendNotification(notification.UserId, notificationDTO); // TODO: when roles are ready send this to all police officers
+            await SendNotification(notification.UserId, notificationDTO);
         }
 
         public async Task CreateNotificationAsync(FineRegistered fineEvent)

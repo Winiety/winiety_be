@@ -34,6 +34,7 @@ namespace Fines.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "corrector, admin")]
         public async Task<ActionResult<IPagedResponse<ComplaintDetailDTO>>> GetComplaints([FromQuery] SearchRequest searchRequest)
         {
             var response = await _complaintService.GetComplaintsAsync(searchRequest);

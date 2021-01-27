@@ -21,6 +21,7 @@ namespace Rides.API.Controllers
         }
 
         [HttpGet]
+        [Authorize("police, admin")]
         public async Task<ActionResult<IPagedResponse<RideDetailDTO>>> GetRides([FromQuery] RideSearchRequest searchRequest)
         {
             var response = await _rideService.GetRidesAsync(searchRequest);

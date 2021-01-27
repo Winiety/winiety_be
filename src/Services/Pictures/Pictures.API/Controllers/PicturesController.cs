@@ -39,9 +39,19 @@ namespace Pictures.API.Controllers
 
         [HttpGet("not-recognized")]
         [Authorize(Roles = "corrector, admin")]
-        public async Task<ActionResult<IPagedResponse<PictureDTO>>> GetNotRecognizedPicturse([FromQuery] SearchRequest search)
+        public async Task<ActionResult<IPagedResponse<PictureDTO>>> GetNotRecognizedPictures([FromQuery] SearchRequest search)
         {
             var response = await _pictureService.GetNotRecognizedPicturesAsync(search);
+
+            return Ok(response);
+        }
+
+
+        [HttpPost("analyze-picture")]
+        [Authorize(Roles = "corrector, admin")]
+        public async Task<ActionResult<IPagedResponse<PictureDTO>>> AnalyzePicture([FromBody] AnalyzeRequest analyzeRequest)
+        {
+            var response = await _pictureService.AnalyzePictureAsync(analyzeRequest);
 
             return Ok(response);
         }
