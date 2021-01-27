@@ -69,10 +69,11 @@ namespace Pictures.UnitTests.PictureServiceUnitTests
                 .ReturnsAsync((Picture)null);
 
             var result = await _pictureService.GetPictureAsync(1);
+            var expected = "Nie znaleziono zdjêcia";
 
             Assert.False(result.IsSuccess);
             Assert.Equal(1, result.Errors.Count);
-            Assert.Equal("Nie znaleziono zdjêcia", result.Errors.First().Message);
+            Assert.Equal(expected, result.Errors.First().Message);
         }
 
         [Fact]
