@@ -51,6 +51,7 @@ namespace Pictures.Core.Services
 
         public async Task<string> AddPictureAsync(AddPictureRequest pictureRequest)
         {
+            var date = DateTimeOffset.UtcNow;
             using var pictureStream = pictureRequest.Picture.OpenReadStream();
             using var pictureMemoryStream = new MemoryStream();
             pictureStream.CopyTo(pictureMemoryStream);
@@ -90,7 +91,9 @@ namespace Pictures.Core.Services
             await _bus.Publish<CarRegistered>(new
             {
                 PictureId = picture.Id,
-                PlateNumber = picture.PlateNumber
+                PlateNumber = picture.PlateNumber,
+                Speed = pictureRequest.Speed,
+                RideDateTime = date
             });
 
             return response.Message.PlateNumber;

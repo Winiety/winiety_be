@@ -6,6 +6,7 @@ using Rides.Core.Model.Entities;
 using Rides.Core.Model.Requests;
 using Shared.Core.BaseModels.Responses;
 using Shared.Core.Interfaces;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -118,7 +119,7 @@ namespace Rides.UnitTests.RideServiceUnitTests
             _rideRepository
                 .Setup(c => c.AddAsync(It.IsAny<Ride>()));
 
-            await _rideService.RegisterRideAsync(1, "112233");
+            await _rideService.RegisterRideAsync(1, "112233", 100, DateTimeOffset.UtcNow);
 
             _rideRepository.Verify(c => c.AddAsync(It.IsAny<Ride>()), Times.Once());
         }

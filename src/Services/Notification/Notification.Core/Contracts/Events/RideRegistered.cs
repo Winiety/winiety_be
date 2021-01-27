@@ -8,5 +8,6 @@ namespace Contracts.Events
         int? UserId { get; set; }
         string PlateNumber { get; set; }
         DateTimeOffset RideDateTime { get; set; }
+        double Speed { get; set; }
     }
 }

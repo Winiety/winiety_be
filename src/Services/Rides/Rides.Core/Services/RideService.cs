@@ -20,7 +20,7 @@ namespace Rides.Core.Services
 {
     public interface IRideService
     {
-        Task RegisterRideAsync(int pictureId, string plateNumber);
+        Task RegisterRideAsync(int pictureId, string plateNumber, double speed, DateTimeOffset rideDateTime);
         Task<IPagedResponse<RideDetailDTO>> GetRidesAsync(RideSearchRequest search);
         Task<IPagedResponse<RideDTO>> GetUserRidesAsync(RideSearchRequest search);
         Task<IEnumerable<DateTimeOffset>> GetRidesForStatisticsAsync(DateTimeOffset startDate, DateTimeOffset endDate);
@@ -86,7 +86,7 @@ namespace Rides.Core.Services
             return response;
         }
 
-        public async Task RegisterRideAsync(int pictureId, string plateNumber)
+        public async Task RegisterRideAsync(int pictureId, string plateNumber, double speed, DateTimeOffset rideDateTime)
         {
             var response = await _requestClient.GetResponse<GetUserIdByPlateResult>(new
             {
@@ -97,8 +97,9 @@ namespace Rides.Core.Services
             {
                 PictureId = pictureId,
                 PlateNumber = plateNumber,
-                RideDateTime = DateTimeOffset.UtcNow,
-                UserId = response.Message.UserId
+                RideDateTime = rideDateTime,
+                UserId = response.Message.UserId,
+                Speed = speed
             };
 
             await _rideRepository.AddAsync(ride);
@@ -128,6 +129,11 @@ namespace Rides.Core.Services
 
         private IQueryable<Ride> CreateSearchQuery(IQueryable<Ride> query, RideSearchRequest search, bool isUserRides)
         {
+            if (search.SpeedLimit.HasValue)
+            {
+                query = query.Where(c => c.Speed > search.SpeedLimit);
+            }
+
             if (isUserRides)
             {
                 var currentUserId = _userContext.GetUserId();

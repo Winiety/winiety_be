@@ -10,5 +10,7 @@ namespace Pictures.Core.Model.Requests
         [DataType(DataType.Upload)]
         [AllowedExtensions(new string[] { ".jpg", ".png" })]
         public IFormFile Picture { get; set; }
+
+        public double Speed { get; set; }
     }
 }
