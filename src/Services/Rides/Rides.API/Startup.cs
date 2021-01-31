@@ -1,3 +1,4 @@
+using Bogus;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.SqlClient;
@@ -77,7 +78,22 @@ namespace Rides.API
         {
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
-                serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>().Database.Migrate();
+                var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                context.Database.Migrate();
+
+                if (context.Rides.CountAsync().Result < 100)
+                {
+                    var picId = 300;
+                    var faker = new Faker<Core.Model.Entities.Ride>()
+                        .RuleFor(c => c.PlateNumber, f => f.Lorem.Letter(8))
+                        .RuleFor(c => c.PictureId, f => picId++)
+                        .RuleFor(c => c.Speed, f => f.Random.Double(100, 150))
+                        .RuleFor(c => c.UserId, f => null)
+                        .RuleFor(c => c.RideDateTime, f => f.Date.Between(DateTime.Now.AddYears(-3), DateTime.Now));
+
+                    context.Rides.AddRange(faker.Generate(100000));
+                }
+                context.SaveChanges();
             }
         }
     }
