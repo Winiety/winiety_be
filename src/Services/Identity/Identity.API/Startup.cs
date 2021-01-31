@@ -82,10 +82,7 @@ namespace Identity.API
 
             app.UseIdentityServer();
 
-            if (env.IsEnvironment("HttpOnly"))
-            {
-                app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Lax });
-            }
+            app.UseCookiePolicy(new CookiePolicyOptions { Secure = CookieSecurePolicy.Always, MinimumSameSitePolicy = SameSiteMode.None });
 
             app.UseRouting();
 
