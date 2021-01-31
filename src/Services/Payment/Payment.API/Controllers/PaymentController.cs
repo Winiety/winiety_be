@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Payment.Core.Model.DTOs;
 using Payment.Core.Model.Requests;
 using Payment.Core.Services;
+using Shared.Core.BaseModels.Requests;
 using Shared.Core.BaseModels.Responses;
 using Shared.Core.BaseModels.Responses.Interfaces;
 
@@ -47,11 +48,38 @@ namespace Payment.API.Controllers
             return Ok(response);
         }
 
+        [HttpGet("winieta/user")]
+        [Authorize]
+        public async Task<ActionResult<IPagedResponse<PaymentDTO>>> GetUserWinietas([FromQuery] SearchRequest searchRequest)
+        {
+            var response = await _paymentService.GetUserWinietasAsync(searchRequest);
+            if (!response.IsSuccess)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
+        }
+
         [HttpPost("pay")]
         [Authorize]
         public async Task<ActionResult<ResultResponse<PaymentDTO>>> Pay([FromBody] PayRequest pay)
         {
             var response = await _paymentService.PayAsync(pay);
+
+            if (!response.IsSuccess)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPost("winieta/pay")]
+        [Authorize]
+        public async Task<ActionResult<ResultResponse<PaymentDTO>>> BuyWinieta(string continueUrl)
+        {
+            var response = await _paymentService.BuyWinietaAsync(continueUrl);
 
             if (!response.IsSuccess)
             {

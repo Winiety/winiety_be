@@ -13,6 +13,7 @@ namespace Payment.API.StartupConfiguration
         public static IServiceCollection ConfigureRepositories(this IServiceCollection services)
         {
             services.AddTransient<IPaymentRepository, PaymentRepository>();
+            services.AddTransient<IWinietaRepository, WinietaRepository>();
 
             return services;
         }
