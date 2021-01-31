@@ -11,7 +11,7 @@ using Shared.Core.BaseModels.Responses.Interfaces;
 
 namespace Payment.API.Controllers
 {
-    [Route("p/api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class PaymentController : ControllerBase
     {
