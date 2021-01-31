@@ -77,10 +77,7 @@ namespace Identity.API
 
             app.UseStaticFiles();
 
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedProto
-            });
+            app.UseForwardedHeaders();
 
             app.UseCors("CorsPolicy");
 
