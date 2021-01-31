@@ -28,7 +28,7 @@ namespace Rides.UnitTests.RideServiceUnitTests
 
             var expected = new StringBuilder();
 
-            expected.AppendLine("Day;Rides number");
+            expected.AppendLine("dzień;Liczba przejazdów");
 
             foreach (var stat in stats)
             {
@@ -120,8 +120,8 @@ namespace Rides.UnitTests.RideServiceUnitTests
             var result = await _statisticsService.GetChartStatistics(searchRequest);
 
             Assert.True(result.IsSuccess);
-            Assert.Equal("Rides Per Day", result.Result.XTitle);
-            Assert.Equal("Rides number", result.Result.YTitle);
+            Assert.Equal("Liczba przejazdów na dzień", result.Result.XTitle);
+            Assert.Equal("Liczba przejazdów", result.Result.YTitle);
             Assert.Equal(5, result.Result.XValues.Count());
             Assert.Equal(5, result.Result.YValues.Count());
         }
