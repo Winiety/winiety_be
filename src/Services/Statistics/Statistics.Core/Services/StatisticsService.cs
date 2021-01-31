@@ -7,6 +7,7 @@ using Statistics.Core.Model.DTOs;
 using Statistics.Core.Model.Requests;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -49,7 +50,7 @@ namespace Statistics.Core.Services
 
             var builder = new StringBuilder();
 
-            builder.AppendLine($"{ CreateChartTitle(request.GroupBy) };Rides number");
+            builder.AppendLine($"{ CreateChartTitle(request.GroupBy) };Liczba przejazdów");
 
             foreach (var ride in groupedRides)
             {
@@ -103,8 +104,8 @@ namespace Statistics.Core.Services
 
             response.Result = new ChartStatsDTO
             {
-                XTitle = $"Rides Per { CreateChartTitle(request.GroupBy) }",
-                YTitle = "Rides number",
+                XTitle = $"Liczba przejazdów na { CreateChartTitle(request.GroupBy) }",
+                YTitle = "Liczba przejazdów",
                 XValues = groupedRides.Select(c => c.Item1),
                 YValues = groupedRides.Select(c => c.Item2)
             };
@@ -120,8 +121,8 @@ namespace Statistics.Core.Services
             {
                 var startInterval = i;
                 var endInterval = SetIntervalByGroupBy(i, groupBy);
-
-                var label = $"{startInterval.ToString(GetFormatByGroupBy(groupBy))}";
+                var culture = new CultureInfo("pl-PL");
+                var label = $"{startInterval.ToString(GetFormatByGroupBy(groupBy), culture)}";
                 result.Add((label, values.Count(c => c >= startInterval && c < endInterval)));
             }
 
@@ -156,11 +157,11 @@ namespace Statistics.Core.Services
         {
             return groupBy switch
             {
-                GroupByType.Day => "Day",
-                GroupByType.Week => "Week",
-                GroupByType.Month => "Month",
-                GroupByType.Year => "Year",
-                _ => "Day"
+                GroupByType.Day => "dzień",
+                GroupByType.Week => "tydzień",
+                GroupByType.Month => "miesiąc",
+                GroupByType.Year => "rok",
+                _ => "dzień"
             };
         }
     }
