@@ -41,7 +41,7 @@ namespace Statistics.Core.Services
             {
                 DateFrom = request.DateFrom,
                 DateTo = request.DateTo
-            });
+            }, timeout: RequestTimeout.After(m: 5));
 
             var rides = result.Message.Rides;
 
@@ -65,7 +65,7 @@ namespace Statistics.Core.Services
             {
                 DateFrom = request.DateFrom,
                 DateTo = request.DateTo
-            });
+            }, timeout: RequestTimeout.After(m: 5));
 
             var rides = result.Message.Rides;
 
@@ -95,7 +95,7 @@ namespace Statistics.Core.Services
             {
                 DateFrom = request.DateFrom,
                 DateTo = request.DateTo
-            });
+            }, timeout: RequestTimeout.After(m: 5));
 
             var rides = result.Message.Rides;
 

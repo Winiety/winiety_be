@@ -51,7 +51,7 @@ namespace Fines.Core.Services
             var (rideResponse, rideNotFoundResponse) = await _requestClient.GetResponse<GetRideResult, GetRideNotFound>(new
             {
                 RideId = fine.RideId
-            });
+            }, timeout: RequestTimeout.After(m: 5));
 
             if (rideNotFoundResponse.IsCompletedSuccessfully)
             {

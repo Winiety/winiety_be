@@ -26,7 +26,7 @@ namespace Rides.UnitTests.RideServiceUnitTests
             var consumerHarness = harness.Consumer(() => new CarRegisteredConsumer(_rideService));
 
             _requestClient
-               .Setup(c => c.GetResponse<GetUserIdByPlateResult>(It.IsAny<object>(), default, default))
+               .Setup(c => c.GetResponse<GetUserIdByPlateResult>(It.IsAny<object>(), default, RequestTimeout.After(null, null, 5, null, null)))
                .ReturnsAsync(responseMock);
 
             _rideRepository

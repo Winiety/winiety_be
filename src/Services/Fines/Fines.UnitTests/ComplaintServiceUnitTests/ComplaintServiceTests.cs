@@ -227,7 +227,7 @@ namespace Fines.UnitTests.ComplaintServiceUnitTests
                .Returns(1);
 
             _requestClient
-                .Setup(c => c.GetResponse<GetRideResult, GetRideNotFound>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<GetRideResult, GetRideNotFound>(It.IsAny<object>(), default, RequestTimeout.After(null, null, 5, null, null)))
                 .ReturnsAsync((responseTaskMock, notFoundResponseTaskMock));
 
             _complaintRepository
@@ -303,7 +303,7 @@ namespace Fines.UnitTests.ComplaintServiceUnitTests
             var notFoundResponseTaskMock = Task.Run<Response<GetRideNotFound>>(async () => { throw new InvalidOperationException(); });
 
             _requestClient
-                .Setup(c => c.GetResponse<GetRideResult, GetRideNotFound>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<GetRideResult, GetRideNotFound>(It.IsAny<object>(), default, RequestTimeout.After(null, null, 5, null, null)))
                 .ReturnsAsync((responseTaskMock, notFoundResponseTaskMock));
 
             var result = await _complaintService.CreateComplaintAsync(createComplaintRequest);

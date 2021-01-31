@@ -1,4 +1,5 @@
 using Contracts.Results;
+using MassTransit;
 using MassTransit.Testing;
 using Moq;
 using Rides.Core.Model.DTOs;
@@ -113,7 +114,7 @@ namespace Rides.UnitTests.RideServiceUnitTests
             });
 
             _requestClient
-                .Setup(c => c.GetResponse<GetUserIdByPlateResult>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<GetUserIdByPlateResult>(It.IsAny<object>(), default, RequestTimeout.After(null, null, 5, null, null)))
                 .ReturnsAsync(responseMock);
 
             _rideRepository

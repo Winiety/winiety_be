@@ -230,7 +230,7 @@ namespace Fines.UnitTests.FineServiceUnitTests
             var notFoundResponseTaskMock = Task.Run<Response<GetRideNotFound>>(async () =>  { throw new InvalidOperationException(); });
             
             _requestClient
-                .Setup(c => c.GetResponse<GetRideResult, GetRideNotFound>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<GetRideResult, GetRideNotFound>(It.IsAny<object>(), default, RequestTimeout.After(null, null, 5, null, null)))
                 .ReturnsAsync((responseTaskMock, notFoundResponseTaskMock));
 
             _fineRepository
@@ -308,7 +308,7 @@ namespace Fines.UnitTests.FineServiceUnitTests
             var notFoundResponseTaskMock = Task.Run<Response<GetRideNotFound>>(async () => { throw new InvalidOperationException(); });
 
             _requestClient
-                .Setup(c => c.GetResponse<GetRideResult, GetRideNotFound>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<GetRideResult, GetRideNotFound>(It.IsAny<object>(), default, RequestTimeout.After(null, null, 5, null, null)))
                 .ReturnsAsync((responseTaskMock, notFoundResponseTaskMock));
 
             var result = await _fineService.CreateFineAsync(createFineRequest);

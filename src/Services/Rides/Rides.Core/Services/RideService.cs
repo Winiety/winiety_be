@@ -91,7 +91,7 @@ namespace Rides.Core.Services
             var response = await _requestClient.GetResponse<GetUserIdByPlateResult>(new
             {
                 PlateNumber = plateNumber
-            });
+            }, timeout: RequestTimeout.After(m: 5));
 
             var ride = new Ride
             {

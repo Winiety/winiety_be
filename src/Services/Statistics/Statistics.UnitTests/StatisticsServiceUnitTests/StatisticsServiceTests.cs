@@ -1,4 +1,5 @@
 using Contracts.Results;
+using MassTransit;
 using MassTransit.Testing;
 using Moq;
 using Statistics.Core.Model.DTOs;
@@ -41,7 +42,7 @@ namespace Rides.UnitTests.RideServiceUnitTests
             });
 
             _requestClient
-                .Setup(c => c.GetResponse<GetRideDatesResult>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<GetRideDatesResult>(It.IsAny<object>(), default, RequestTimeout.After(null, null, 5, null, null)))
                 .ReturnsAsync(responseMock);
 
             var result = await _statisticsService.GetCsvDataStatistics(searchRequest);
@@ -88,7 +89,7 @@ namespace Rides.UnitTests.RideServiceUnitTests
             });
 
             _requestClient
-                .Setup(c => c.GetResponse<GetRideDatesResult>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<GetRideDatesResult>(It.IsAny<object>(), default, RequestTimeout.After(null, null, 5, null, null)))
                 .ReturnsAsync(responseMock);
 
             var result = await _statisticsService.GetJsonDataStatistics(searchRequest);
@@ -113,7 +114,7 @@ namespace Rides.UnitTests.RideServiceUnitTests
             });
 
             _requestClient
-                .Setup(c => c.GetResponse<GetRideDatesResult>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<GetRideDatesResult>(It.IsAny<object>(), default, RequestTimeout.After(null, null, 5, null, null)))
                 .ReturnsAsync(responseMock);
 
             var result = await _statisticsService.GetChartStatistics(searchRequest);
