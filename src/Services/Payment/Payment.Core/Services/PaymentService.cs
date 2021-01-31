@@ -142,7 +142,7 @@ namespace Payment.Core.Services
                 PayUClient client = new PayUClient(settings);
 
                 var request = new OrderRequest("127.0.0.1", settings.ClientId, "Winiety", "PLN", (payment.Amount * 100).ToString(), new List<Product> { new Product(payment.RideId.ToString(), (payment.Amount * 100).ToString(), "1") });
-                request.ContinueUrl = pay.continueUrl;
+                request.ContinueUrl = pay.ContinueUrl;
                 request.NotifyUrl = _payuOptions.NotifyUrl + "/api/Payment";
 
                 var result = await client.PostOrderAsync(request, default(CancellationToken));

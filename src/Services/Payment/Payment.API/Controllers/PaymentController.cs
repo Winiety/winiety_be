@@ -22,7 +22,7 @@ namespace Payment.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<IPagedResponse<PaymentDetailDTO>>> GetPayments([FromQuery] PaymentSearchRequest searchRequest)
         {
             var response = await _paymentService.GetPaymentsAsync(searchRequest);
