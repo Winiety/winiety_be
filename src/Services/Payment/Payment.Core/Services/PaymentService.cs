@@ -136,7 +136,7 @@ namespace Payment.Core.Services
                 return response;
             }
 
-            if(payment.PayuUrl is null)
+            if(payment.PayuUrl is null || payment.Status.Equals("CANCELED"))
             {
                 var settings = new PayUClientSettings(_payuOptions.PayUApiUrl, "v2_1", _payuOptions.ClientId, _payuOptions.ClientSecret);
                 PayUClient client = new PayUClient(settings);
@@ -146,7 +146,8 @@ namespace Payment.Core.Services
                 request.NotifyUrl = _payuOptions.NotifyUrl + "/api/Payment";
 
                 var result = await client.PostOrderAsync(request, default(CancellationToken));
-                
+
+                payment.Status = "NEW";
                 payment.OrderId = result.OrderId;
                 payment.PayuUrl = result.RedirectUri;
                 await _paymentRepository.UpdateAsync(payment);
