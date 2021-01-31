@@ -38,6 +38,14 @@ services:
       - ACCEPT_EULA=Y
     ports:
       - "5437:1433"
+      
+  payment.db:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5440:1433"
 
   profile.db:
     image: mcr.microsoft.com/mssql/server:2017-latest
@@ -144,6 +152,11 @@ services:
       - "5106:80"
       - "5107:443"
     environment:
+      - PAYU__PayUApiUrl=${PAYU_PAYUAPIURL}
+      - PAYU__ClientId=${PAYU_CLIENTID}
+      - PAYU__ClientSecret=${PAYU_CLIENTSECRET}
+      - PAYU__NotifyUrl=${PAYU_NOTIFYURL}
+      - ConnectionString=Server=payment.db;Database=PaymentDb;User Id=sa;Password=Pass@word
       - RabbitMqHost=rabbitmq
       - RabbitMqConn=amqp://guest:guest@rabbitmq:5672
       - IdentityUrl=https://identity.api

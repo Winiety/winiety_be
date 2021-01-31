@@ -28,6 +28,8 @@ inf:
       db: PicturesDb
     fines:
       db: FinesDb
+    payment:
+      db: PaymentDb
     profile:
       db: ProfileDb
     notification:
