@@ -63,6 +63,8 @@ inf:
       db: profile-db
     notification:
       db: notification-db
+    payment:
+      db: payment-db
 
   rabbitmq:
     srv: rabbitmq
