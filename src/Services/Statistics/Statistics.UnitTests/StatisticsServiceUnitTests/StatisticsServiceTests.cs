@@ -5,6 +5,7 @@ using Moq;
 using Statistics.Core.Model.DTOs;
 using Statistics.Core.Model.Requests;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -29,12 +30,12 @@ namespace Rides.UnitTests.RideServiceUnitTests
             var expected = new StringBuilder();
 
             expected.AppendLine("dzień;Liczba przejazdów");
-
+            var culture = new CultureInfo("pl-PL");
             foreach (var stat in stats)
             {
-                expected.AppendLine($"{stat.ToString("dd MMM")};1");
+                expected.AppendLine($"{stat.ToString("dd MMM", culture)};1");
             }
-            expected.AppendLine($"{DateTimeOffset.UtcNow.ToString("dd MMM")};0");
+            expected.AppendLine($"{DateTimeOffset.UtcNow.ToString("dd MMM", culture)};0");
 
             var responseMock = new ResponseMock<GetRideDatesResult>(new GetRidesResultMock
             {
@@ -60,16 +61,17 @@ namespace Rides.UnitTests.RideServiceUnitTests
                 DateTo = DateTimeOffset.UtcNow.AddDays(1).Date,
                 GroupBy = GroupByType.Day
             };
+            var culture = new CultureInfo("pl-PL");
 
             var data = stats.Select(c => new JsonStatsElement
             {
-                Label = c.ToString("dd MMM"),
+                Label = c.ToString("dd MMM", culture),
                 Value = 1
             }).ToList();
 
             data.Add(new JsonStatsElement
             {
-                Label = DateTimeOffset.UtcNow.ToString("dd MMM"),
+                Label = DateTimeOffset.UtcNow.ToString("dd MMM", culture),
                 Value = 0
             });
 
