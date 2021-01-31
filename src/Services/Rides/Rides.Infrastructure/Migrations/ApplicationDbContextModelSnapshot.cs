@@ -19,7 +19,7 @@ namespace Rides.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Rides.Core.Model.Ride", b =>
+            modelBuilder.Entity("Rides.Core.Model.Entities.Ride", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -35,6 +35,9 @@ namespace Rides.Infrastructure.Migrations
 
                     b.Property<DateTimeOffset>("RideDateTime")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<double>("Speed")
+                        .HasColumnType("float");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");

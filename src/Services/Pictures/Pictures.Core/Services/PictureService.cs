@@ -22,6 +22,7 @@ namespace Pictures.Core.Services
         Task<IResultResponse<PictureDTO>> GetPictureAsync(int id);
         Task<IPagedResponse<PictureDTO>> GetNotRecognizedPicturesAsync(SearchRequest search);
         Task<string> AddPictureAsync(AddPictureRequest pictureRequest);
+        Task<IBaseResponse> AnalyzePictureAsync(AnalyzeRequest analyzeRequest);
     }
 
     public class PictureService : IPictureService
@@ -51,6 +52,7 @@ namespace Pictures.Core.Services
 
         public async Task<string> AddPictureAsync(AddPictureRequest pictureRequest)
         {
+            var date = DateTimeOffset.UtcNow;
             using var pictureStream = pictureRequest.Picture.OpenReadStream();
             using var pictureMemoryStream = new MemoryStream();
             pictureStream.CopyTo(pictureMemoryStream);
@@ -67,7 +69,7 @@ namespace Pictures.Core.Services
             var response = await _requestClient.GetResponse<AnalyzePictureResult>(new
             {
                 ImagePath = imagePath.AbsoluteUri
-            });
+            }, timeout: RequestTimeout.After(m: 5));
 
             var plateNumber = response.Message.PlateNumber;
 
@@ -75,7 +77,9 @@ namespace Pictures.Core.Services
             {
                 IsRecognized = !string.IsNullOrWhiteSpace(plateNumber),
                 PlateNumber = plateNumber,
-                ImagePath = imagePath.AbsoluteUri
+                ImagePath = imagePath.AbsoluteUri,
+                Speed = pictureRequest.Speed,
+                RideDateTime = date
             };
 
             await _pictureRepository.AddAsync(picture);
@@ -84,16 +88,58 @@ namespace Pictures.Core.Services
 
             if (string.IsNullOrWhiteSpace(plateNumber))
             {
-                return "Not recognized";
+                return "Nie rozpoznano";
             }
 
             await _bus.Publish<CarRegistered>(new
             {
                 PictureId = picture.Id,
-                PlateNumber = picture.PlateNumber
+                PlateNumber = picture.PlateNumber,
+                Speed = pictureRequest.Speed,
+                RideDateTime = date
             });
 
             return response.Message.PlateNumber;
+        }
+
+        public async Task<IBaseResponse> AnalyzePictureAsync(AnalyzeRequest analyzeRequest)
+        {
+            var response = new BaseResponse();
+
+            var pictureEntity = await _pictureRepository.GetAsync(analyzeRequest.PictureId);
+
+            if (pictureEntity == null)
+            {
+                response.AddError(new Error
+                {
+                    Message = "Nie znaleziono zdjęcia"
+                });
+
+                return response;
+            }
+
+            if(!analyzeRequest.IsRecognized)
+            {
+                await _pictureRepository.RemoveAsync(pictureEntity);
+
+                return response;
+            }
+
+            pictureEntity.PlateNumber = analyzeRequest.PlateNumber;
+
+            await _pictureRepository.UpdateAsync(pictureEntity);
+
+            _logger.LogInformation($"Picture registered - [ID={pictureEntity.Id}] [PlateNumber={pictureEntity.PlateNumber}] [ImagePath={pictureEntity.ImagePath}] [IsRecognized={pictureEntity.IsRecognized}]");
+
+            await _bus.Publish<CarRegistered>(new
+            {
+                PictureId = pictureEntity.Id,
+                PlateNumber = pictureEntity.PlateNumber,
+                Speed = pictureEntity.Speed,
+                RideDateTime = pictureEntity.RideDateTime
+            });
+
+            return response;
         }
 
         public async Task<IPagedResponse<PictureDTO>> GetNotRecognizedPicturesAsync(SearchRequest search)
@@ -120,7 +166,7 @@ namespace Pictures.Core.Services
             {
                 response.AddError(new Error
                 {
-                    Message = "Picture not found"
+                    Message = "Nie znaleziono zdjęcia"
                 });
 
                 return response;

@@ -1,4 +1,5 @@
 ﻿using Identity.Core.Data;
+using Identity.Core.Data.Model;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.AspNetCore.Builder;
@@ -18,9 +19,11 @@ namespace Identity.API.IdentityConfiguration
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
                 serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
-                serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>().Database.Migrate();
+                var appContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                appContext.Database.Migrate();
 
                 var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<int>>>();
+                var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                 var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
                 context.Database.Migrate();
 
@@ -80,7 +83,30 @@ namespace Identity.API.IdentityConfiguration
                         _ = roleManager.CreateAsync(role).Result;
                     }
                 }
+
+                if (!appContext.Users.Any())
+                {
+                    AddUser(userManager, "jan.user@winiety.com", "Jan", "User", "P@ssw0rd", "user");
+                    AddUser(userManager, "jan.admin@winiety.com", "Jan", "Admin", "P@ssw0rd", "admin");
+                    AddUser(userManager, "jan.corrector@winiety.com", "Jan", "Corrector", "P@ssw0rd", "corrector");
+                    AddUser(userManager, "jan.analyst@winiety.com", "Jan", "Analyst", "P@ssw0rd", "analyst");
+                    AddUser(userManager, "jan.police@winiety.com", "Jan", "Police", "P@ssw0rd", "police");
+                }
             }
+        }
+
+        private static void AddUser(UserManager<ApplicationUser> userManager, string email, string firstName, string lastName, string password, string role)
+        {
+            var user = new ApplicationUser
+            {
+                UserName = email,
+                Email = email,
+                FirstName = firstName,
+                LastName = lastName,
+            };
+
+            _ = userManager.CreateAsync(user, password).Result;
+            _ = userManager.AddToRoleAsync(user, role).Result;
         }
     }
 }

@@ -12,6 +12,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+
 namespace Fines.UnitTests.ComplaintServiceUnitTests
 {
     public class ComplaintServiceTests : ComplaintServiceSetup
@@ -186,7 +188,7 @@ namespace Fines.UnitTests.ComplaintServiceUnitTests
 
             Assert.False(result.IsSuccess);
             Assert.Equal(1, result.Errors.Count);
-            Assert.Equal("Complaint not found", result.Errors.First().Message);
+            Assert.Equal("Nie znaleziono skargi", result.Errors.First().Message);
         }
 
         [Fact]
@@ -225,7 +227,7 @@ namespace Fines.UnitTests.ComplaintServiceUnitTests
                .Returns(1);
 
             _requestClient
-                .Setup(c => c.GetResponse<GetRideResult, GetRideNotFound>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<GetRideResult, GetRideNotFound>(It.IsAny<object>(), default, RequestTimeout.After(null, null, 5, null, null)))
                 .ReturnsAsync((responseTaskMock, notFoundResponseTaskMock));
 
             _complaintRepository
@@ -276,7 +278,7 @@ namespace Fines.UnitTests.ComplaintServiceUnitTests
 
             Assert.False(result.IsSuccess);
             Assert.Equal(1, result.Errors.Count);
-            Assert.Equal("Ride not found", result.Errors.First().Message);
+            Assert.Equal("Nie znaleziono przejazdu", result.Errors.First().Message);
         }
 
         [Fact]
@@ -301,14 +303,14 @@ namespace Fines.UnitTests.ComplaintServiceUnitTests
             var notFoundResponseTaskMock = Task.Run<Response<GetRideNotFound>>(async () => { throw new InvalidOperationException(); });
 
             _requestClient
-                .Setup(c => c.GetResponse<GetRideResult, GetRideNotFound>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<GetRideResult, GetRideNotFound>(It.IsAny<object>(), default, RequestTimeout.After(null, null, 5, null, null)))
                 .ReturnsAsync((responseTaskMock, notFoundResponseTaskMock));
 
             var result = await _complaintService.CreateComplaintAsync(createComplaintRequest);
 
             Assert.False(result.IsSuccess);
             Assert.Equal(1, result.Errors.Count);
-            Assert.Equal("User id is empty in registered ride", result.Errors.First().Message);
+            Assert.Equal("User id jest pusty dla zarejestrowanego przejazdu", result.Errors.First().Message);
         }
 
         [Fact]
@@ -352,7 +354,7 @@ namespace Fines.UnitTests.ComplaintServiceUnitTests
             var result = await _complaintService.RemoveComplaintAsync(1);
 
             Assert.False(result.IsSuccess);
-            Assert.Equal("Complaint not found", result.Errors.First().Message);
+            Assert.Equal("Nie znaleziono skargi", result.Errors.First().Message);
             _complaintRepository.Verify(c => c.RemoveAsync(It.IsAny<Complaint>()), Times.Never());
         }
 
@@ -381,7 +383,7 @@ namespace Fines.UnitTests.ComplaintServiceUnitTests
             var result = await _complaintService.RemoveComplaintAsync(1);
 
             Assert.False(result.IsSuccess);
-            Assert.Equal("User id does not match", result.Errors.First().Message);
+            Assert.Equal("User id nie pasuje", result.Errors.First().Message);
             _complaintRepository.Verify(c => c.RemoveAsync(It.IsAny<Complaint>()), Times.Never());
         }
 
@@ -453,7 +455,7 @@ namespace Fines.UnitTests.ComplaintServiceUnitTests
             var result = await _complaintService.UpdateComplaintAsync(request);
 
             Assert.False(result.IsSuccess);
-            Assert.Equal("Complaint not found", result.Errors.First().Message);
+            Assert.Equal("Nie znaleziono skargi", result.Errors.First().Message);
             _complaintRepository.Verify(c => c.UpdateAsync(It.IsAny<Complaint>()), Times.Never());
         }
 
@@ -488,8 +490,9 @@ namespace Fines.UnitTests.ComplaintServiceUnitTests
             var result = await _complaintService.UpdateComplaintAsync(request);
 
             Assert.False(result.IsSuccess);
-            Assert.Equal("User id does not match", result.Errors.First().Message);
+            Assert.Equal("User id nie pasuje", result.Errors.First().Message);
             _complaintRepository.Verify(c => c.UpdateAsync(It.IsAny<Complaint>()), Times.Never());
         }
     }
 }
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously

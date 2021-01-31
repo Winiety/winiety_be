@@ -34,6 +34,7 @@ namespace Fines.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "police, admin")]
         public async Task<ActionResult<IPagedResponse<FineDetailDTO>>> GetFines([FromQuery] SearchRequest searchRequest)
         {
             var response = await _fineService.GetFinesAsync(searchRequest);

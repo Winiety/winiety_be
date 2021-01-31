@@ -13,6 +13,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+
 namespace Fines.UnitTests.FineServiceUnitTests
 {
     public class FineServiceTests : FineServiceSetup
@@ -191,7 +193,7 @@ namespace Fines.UnitTests.FineServiceUnitTests
 
             Assert.False(result.IsSuccess);
             Assert.Equal(1, result.Errors.Count);
-            Assert.Equal("Fine not found", result.Errors.First().Message);
+            Assert.Equal("Nie znaleziono mandatu", result.Errors.First().Message);
         }
 
         [Fact]
@@ -225,10 +227,10 @@ namespace Fines.UnitTests.FineServiceUnitTests
             });
 
             var responseTaskMock = Task.FromResult(responseMock);
-            var notFoundResponseTaskMock = Task.Run<Response<GetRideNotFound>>(async () => { throw new InvalidOperationException(); });
+            var notFoundResponseTaskMock = Task.Run<Response<GetRideNotFound>>(async () =>  { throw new InvalidOperationException(); });
             
             _requestClient
-                .Setup(c => c.GetResponse<GetRideResult, GetRideNotFound>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<GetRideResult, GetRideNotFound>(It.IsAny<object>(), default, RequestTimeout.After(null, null, 5, null, null)))
                 .ReturnsAsync((responseTaskMock, notFoundResponseTaskMock));
 
             _fineRepository
@@ -280,7 +282,7 @@ namespace Fines.UnitTests.FineServiceUnitTests
 
             Assert.False(result.IsSuccess);
             Assert.Equal(1, result.Errors.Count);
-            Assert.Equal("Ride not found", result.Errors.First().Message);
+            Assert.Equal("Nie znaleziono przejazdu", result.Errors.First().Message);
         }
 
         [Fact]
@@ -306,14 +308,14 @@ namespace Fines.UnitTests.FineServiceUnitTests
             var notFoundResponseTaskMock = Task.Run<Response<GetRideNotFound>>(async () => { throw new InvalidOperationException(); });
 
             _requestClient
-                .Setup(c => c.GetResponse<GetRideResult, GetRideNotFound>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<GetRideResult, GetRideNotFound>(It.IsAny<object>(), default, RequestTimeout.After(null, null, 5, null, null)))
                 .ReturnsAsync((responseTaskMock, notFoundResponseTaskMock));
 
             var result = await _fineService.CreateFineAsync(createFineRequest);
 
             Assert.False(result.IsSuccess);
             Assert.Equal(1, result.Errors.Count);
-            Assert.Equal("User id is empty in registered ride", result.Errors.First().Message);
+            Assert.Equal("User id jest pusty dla zarejestrowanego przejazdu", result.Errors.First().Message);
         }
 
         [Fact]
@@ -354,7 +356,7 @@ namespace Fines.UnitTests.FineServiceUnitTests
             var result = await _fineService.RemoveFineAsync(1);
 
             Assert.False(result.IsSuccess);
-            Assert.Equal("Fine not found", result.Errors.First().Message);
+            Assert.Equal("Nie znaleziono mandatu", result.Errors.First().Message);
             _fineRepository.Verify(c => c.RemoveAsync(It.IsAny<Fine>()), Times.Never());
         }
 
@@ -426,8 +428,9 @@ namespace Fines.UnitTests.FineServiceUnitTests
             var result = await _fineService.UpdateFineAsync(request);
 
             Assert.False(result.IsSuccess);
-            Assert.Equal("Fine not found", result.Errors.First().Message);
+            Assert.Equal("Nie znaleziono mandatu", result.Errors.First().Message);
             _fineRepository.Verify(c => c.UpdateAsync(It.IsAny<Fine>()), Times.Never());
         }
     }
 }
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously

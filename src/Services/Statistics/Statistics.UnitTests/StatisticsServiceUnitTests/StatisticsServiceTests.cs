@@ -1,9 +1,11 @@
 using Contracts.Results;
+using MassTransit;
 using MassTransit.Testing;
 using Moq;
 using Statistics.Core.Model.DTOs;
 using Statistics.Core.Model.Requests;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -27,13 +29,13 @@ namespace Rides.UnitTests.RideServiceUnitTests
 
             var expected = new StringBuilder();
 
-            expected.AppendLine("Day;Rides number");
-
+            expected.AppendLine("dzień;Liczba przejazdów");
+            var culture = new CultureInfo("pl-PL");
             foreach (var stat in stats)
             {
-                expected.AppendLine($"{stat.ToString("dd MMM")};1");
+                expected.AppendLine($"{stat.ToString("dd MMM", culture)};1");
             }
-            expected.AppendLine($"{DateTimeOffset.UtcNow.ToString("dd MMM")};0");
+            expected.AppendLine($"{DateTimeOffset.UtcNow.ToString("dd MMM", culture)};0");
 
             var responseMock = new ResponseMock<GetRideDatesResult>(new GetRidesResultMock
             {
@@ -41,7 +43,7 @@ namespace Rides.UnitTests.RideServiceUnitTests
             });
 
             _requestClient
-                .Setup(c => c.GetResponse<GetRideDatesResult>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<GetRideDatesResult>(It.IsAny<object>(), default, RequestTimeout.After(null, null, 5, null, null)))
                 .ReturnsAsync(responseMock);
 
             var result = await _statisticsService.GetCsvDataStatistics(searchRequest);
@@ -59,16 +61,17 @@ namespace Rides.UnitTests.RideServiceUnitTests
                 DateTo = DateTimeOffset.UtcNow.AddDays(1).Date,
                 GroupBy = GroupByType.Day
             };
+            var culture = new CultureInfo("pl-PL");
 
             var data = stats.Select(c => new JsonStatsElement
             {
-                Label = c.ToString("dd MMM"),
+                Label = c.ToString("dd MMM", culture),
                 Value = 1
             }).ToList();
 
             data.Add(new JsonStatsElement
             {
-                Label = DateTimeOffset.UtcNow.ToString("dd MMM"),
+                Label = DateTimeOffset.UtcNow.ToString("dd MMM", culture),
                 Value = 0
             });
 
@@ -88,7 +91,7 @@ namespace Rides.UnitTests.RideServiceUnitTests
             });
 
             _requestClient
-                .Setup(c => c.GetResponse<GetRideDatesResult>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<GetRideDatesResult>(It.IsAny<object>(), default, RequestTimeout.After(null, null, 5, null, null)))
                 .ReturnsAsync(responseMock);
 
             var result = await _statisticsService.GetJsonDataStatistics(searchRequest);
@@ -113,14 +116,14 @@ namespace Rides.UnitTests.RideServiceUnitTests
             });
 
             _requestClient
-                .Setup(c => c.GetResponse<GetRideDatesResult>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<GetRideDatesResult>(It.IsAny<object>(), default, RequestTimeout.After(null, null, 5, null, null)))
                 .ReturnsAsync(responseMock);
 
             var result = await _statisticsService.GetChartStatistics(searchRequest);
 
             Assert.True(result.IsSuccess);
-            Assert.Equal("Rides Per Day", result.Result.XTitle);
-            Assert.Equal("Rides number", result.Result.YTitle);
+            Assert.Equal("Liczba przejazdów na dzień", result.Result.XTitle);
+            Assert.Equal("Liczba przejazdów", result.Result.YTitle);
             Assert.Equal(5, result.Result.XValues.Count());
             Assert.Equal(5, result.Result.YValues.Count());
         }

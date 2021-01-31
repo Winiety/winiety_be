@@ -121,6 +121,7 @@ namespace Notification.UnitTests.NotificationServiceUnitTests
             public int? UserId { get; set; }
             public string PlateNumber { get; set; }
             public DateTimeOffset RideDateTime { get; set; }
+            public double Speed { get; set; }
         }
     }
 }

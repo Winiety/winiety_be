@@ -1,4 +1,5 @@
 using Contracts.Results;
+using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Moq;
@@ -68,10 +69,11 @@ namespace Pictures.UnitTests.PictureServiceUnitTests
                 .ReturnsAsync((Picture)null);
 
             var result = await _pictureService.GetPictureAsync(1);
+            var expected = "Nie znaleziono zdj";
 
             Assert.False(result.IsSuccess);
             Assert.Equal(1, result.Errors.Count);
-            Assert.Equal("Picture not found", result.Errors.First().Message);
+            Assert.Contains(expected, result.Errors.First().Message);
         }
 
         [Fact]
@@ -135,7 +137,7 @@ namespace Pictures.UnitTests.PictureServiceUnitTests
 
             var path = new Uri("http://test.path.com");
             _requestClient
-                .Setup(c => c.GetResponse<AnalyzePictureResult>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<AnalyzePictureResult>(It.IsAny<object>(), default, RequestTimeout.After(null, null, 5, null, null)))
                 .ReturnsAsync(responseMock);
 
             _blobStorageService
@@ -170,7 +172,7 @@ namespace Pictures.UnitTests.PictureServiceUnitTests
 
             var path = new Uri("http://test.path.com");
             _requestClient
-                .Setup(c => c.GetResponse<AnalyzePictureResult>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<AnalyzePictureResult>(It.IsAny<object>(), default, RequestTimeout.After(null, null, 5, null, null)))
                 .ReturnsAsync(responseMock);
 
             _blobStorageService
@@ -182,7 +184,7 @@ namespace Pictures.UnitTests.PictureServiceUnitTests
 
             var result = await _pictureService.AddPictureAsync(request);
 
-            Assert.Equal("Not recognized", result);
+            Assert.Equal("Nie rozpoznano", result);
             _pictureRepository.Verify(c => c.AddAsync(It.IsAny<Picture>()), Times.Once());
         }
     }

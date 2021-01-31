@@ -47,7 +47,7 @@ namespace Profile.Core.Services
             {
                 response.AddError(new Error
                 {
-                    Message = "Car with given plate number already exists"
+                    Message = "Samochód z podaną tablicą rejestracyjną już jest zarejestrowany w systemie"
                 });
 
                 return response;
@@ -75,7 +75,7 @@ namespace Profile.Core.Services
             {
                 response.AddError(new Error
                 {
-                    Message = "Car not found"
+                    Message = "Nie znaleziono samochodu"
                 });
 
                 return response;
@@ -87,7 +87,7 @@ namespace Profile.Core.Services
             {
                 response.AddError(new Error
                 {
-                    Message = "Car with given plate number already exists"
+                    Message = "Samochód z podaną tablicą rejestracyjną już jest zarejestrowany w systemie"
                 });
 
                 return response;
@@ -112,7 +112,7 @@ namespace Profile.Core.Services
             {
                 response.AddError(new Error
                 {
-                    Message = "Car not found"
+                    Message = "Nie znaleziono samochodu"
                 });
 
                 return response;
@@ -124,7 +124,7 @@ namespace Profile.Core.Services
             {
                 response.AddError(new Error
                 {
-                    Message = "User id does not match"
+                    Message = "User id nie pasuje"
                 });
 
                 return response;

@@ -1,6 +1,7 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Payment.Core.Consumers;
 
 namespace Payment.API.StartupConfiguration
 {
@@ -10,9 +11,16 @@ namespace Payment.API.StartupConfiguration
         {
             services.AddMassTransit(c =>
             {
+                c.AddConsumer<RideRegisteredConsumer>();
+
                 c.UsingRabbitMq((context, cfg) =>
                 {
                     cfg.Host(configuration["RabbitMqHost"]);
+
+                    cfg.ReceiveEndpoint("payments-listener", e =>
+                    {
+                        e.ConfigureConsumer<RideRegisteredConsumer>(context);
+                    });
                 });
             });
 

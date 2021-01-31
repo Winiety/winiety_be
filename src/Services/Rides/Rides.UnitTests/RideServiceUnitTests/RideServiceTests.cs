@@ -1,4 +1,5 @@
 using Contracts.Results;
+using MassTransit;
 using MassTransit.Testing;
 using Moq;
 using Rides.Core.Model.DTOs;
@@ -6,6 +7,7 @@ using Rides.Core.Model.Entities;
 using Rides.Core.Model.Requests;
 using Shared.Core.BaseModels.Responses;
 using Shared.Core.Interfaces;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -112,13 +114,13 @@ namespace Rides.UnitTests.RideServiceUnitTests
             });
 
             _requestClient
-                .Setup(c => c.GetResponse<GetUserIdByPlateResult>(It.IsAny<object>(), default, default))
+                .Setup(c => c.GetResponse<GetUserIdByPlateResult>(It.IsAny<object>(), default, RequestTimeout.After(null, null, 5, null, null)))
                 .ReturnsAsync(responseMock);
 
             _rideRepository
                 .Setup(c => c.AddAsync(It.IsAny<Ride>()));
 
-            await _rideService.RegisterRideAsync(1, "112233");
+            await _rideService.RegisterRideAsync(1, "112233", 100, DateTimeOffset.UtcNow);
 
             _rideRepository.Verify(c => c.AddAsync(It.IsAny<Ride>()), Times.Once());
         }

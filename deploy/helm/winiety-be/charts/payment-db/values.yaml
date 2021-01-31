@@ -1,0 +1,61 @@
+replicaCount: 1
+
+image:
+  repository: mcr.microsoft.com/mssql/server
+  pullPolicy: IfNotPresent
+  tag: "2017-latest"
+
+serviceAccount:
+  create: false
+
+service:
+  type: ClusterIP
+  port: 1433
+
+ingress:
+  enabled: false
+
+autoscaling:
+  enabled: false
+
+app:
+  name: "winiety"
+  svc:
+    identity: identity-api
+    ai: ai-api
+    fines: fines-api
+    payment: payment-api
+    pictures: pictures-api
+    rides: rides-api
+    statistics: statistics-api
+    profile: profile-api
+    notification: notification-api
+    healthcheckui: healthcheckui-api
+    apigateway: apigateway
+
+inf:
+  sql:
+    common:
+      user: sa
+      pwd: Pass@word
+      pid: Developer
+
+    identity:
+      db: identity-db
+    rides:
+      db: rides-db
+    pictures:
+      db: pictures-db
+    fines:
+      db: fines-db
+    payment:
+      db: payment-db
+    profile:
+      db: profile-db
+    notification:
+      db: notification-db
+
+  rabbitmq:
+    srv: rabbitmq
+    host: rabbitmq
+    conn: amqp://guest:guest@rabbitmq:5672

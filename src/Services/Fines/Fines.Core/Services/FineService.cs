@@ -51,13 +51,13 @@ namespace Fines.Core.Services
             var (rideResponse, rideNotFoundResponse) = await _requestClient.GetResponse<GetRideResult, GetRideNotFound>(new
             {
                 RideId = fine.RideId
-            });
+            }, timeout: RequestTimeout.After(m: 5));
 
             if (rideNotFoundResponse.IsCompletedSuccessfully)
             {
                 response.AddError(new Error
                 {
-                    Message = "Ride not found"
+                    Message = "Nie znaleziono przejazdu"
                 });
 
                 return response;
@@ -69,7 +69,7 @@ namespace Fines.Core.Services
             {
                 response.AddError(new Error
                 {
-                    Message = "User id is empty in registered ride"
+                    Message = "User id jest pusty dla zarejestrowanego przejazdu"
                 });
 
                 return response;
@@ -113,7 +113,7 @@ namespace Fines.Core.Services
             {
                 response.AddError(new Error
                 {
-                    Message = "Fine not found"
+                    Message = "Nie znaleziono mandatu"
                 });
 
                 return response;
@@ -168,7 +168,7 @@ namespace Fines.Core.Services
             {
                 response.AddError(new Error
                 {
-                    Message = "Fine not found"
+                    Message = "Nie znaleziono mandatu"
                 });
 
                 return response;
@@ -189,7 +189,7 @@ namespace Fines.Core.Services
             {
                 response.AddError(new Error
                 {
-                    Message = "Fine not found"
+                    Message = "Nie znaleziono mandatu"
                 });
 
                 return response;
