@@ -130,6 +130,7 @@ namespace Fines.Core.Services
 
             var finesQuery = _fineRepository.GetQueryable();
             finesQuery = CreateSearchQuery(finesQuery, search, false);
+            finesQuery.OrderByDescending(c => c.CreateTime);
 
             var fines = await _fineRepository.GetPagedByAsync(
                  finesQuery,
@@ -147,6 +148,7 @@ namespace Fines.Core.Services
 
             var finesQuery = _fineRepository.GetQueryable();
             finesQuery = CreateSearchQuery(finesQuery, search, true);
+            finesQuery.OrderByDescending(c => c.CreateTime);
 
             var fines = await _fineRepository.GetPagedByAsync(
                  finesQuery,

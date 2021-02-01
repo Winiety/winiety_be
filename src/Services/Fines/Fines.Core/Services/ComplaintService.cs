@@ -140,6 +140,7 @@ namespace Fines.Core.Services
 
             var complaintsQuery = _complaintRepository.GetQueryable();
             complaintsQuery = CreateSearchQuery(complaintsQuery, search, false);
+            complaintsQuery.OrderByDescending(c => c.CreateTime);
 
             var complaints = await _complaintRepository.GetPagedByAsync(
                  complaintsQuery,
@@ -157,6 +158,7 @@ namespace Fines.Core.Services
 
             var complaintsQuery = _complaintRepository.GetQueryable();
             complaintsQuery = CreateSearchQuery(complaintsQuery, search, true);
+            complaintsQuery.OrderByDescending(c => c.CreateTime);
 
             var complaints = await _complaintRepository.GetPagedByAsync(
                  complaintsQuery,
