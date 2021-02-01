@@ -152,6 +152,8 @@ namespace Notification.Core.Services
         public async Task RegisterSubscriptionAsync(RegisterSubscriptionRequest subscriptionRequest)
         {
             var currentUserId = _userContext.GetUserId();
+            var subs = await _subscriptionRepository.GetAllByAsync(c => c.UserId == currentUserId);
+            await _subscriptionRepository.RemoveRangeAsync(subs);
 
             var subscription = new SubscriptionModel
             {
