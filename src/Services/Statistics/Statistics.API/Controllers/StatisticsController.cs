@@ -39,7 +39,7 @@ namespace Statistics.API.Controllers
         {
             var response = await _statisticsService.GetCsvDataStatistics(searchRequest);
 
-            var result = Encoding.ASCII.GetBytes(response);
+            var result = Encoding.UTF8.GetBytes(response);
 
             return File(result, "text/csv", $"stats_{DateTimeOffset.Now.ToString("MM_dd_yyyy")}.csv");
         }
@@ -49,7 +49,7 @@ namespace Statistics.API.Controllers
         {
             var response = await _statisticsService.GetJsonDataStatistics(searchRequest);
 
-            var result = Encoding.ASCII.GetBytes(response);
+            var result = Encoding.UTF8.GetBytes(response);
 
             return File(result, "text/json", $"stats_{DateTimeOffset.Now.ToString("MM_dd_yyyy")}.json");
         }
