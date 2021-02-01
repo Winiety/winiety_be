@@ -127,7 +127,7 @@ namespace Payment.Core.Services
 
             var paymentsQuery = _paymentRepository.GetQueryable();
             paymentsQuery = CreateSearchQuery(paymentsQuery, search, true);
-            paymentsQuery.OrderByDescending(c => c.Id);
+            paymentsQuery = paymentsQuery.OrderByDescending(c => c.Id);
 
             var payments = await _paymentRepository.GetPagedByAsync(
                  paymentsQuery,
@@ -145,7 +145,7 @@ namespace Payment.Core.Services
 
             var winietasQuery = _winietaRepository.GetQueryable();
             winietasQuery = CreateWinietasSearchQuery(winietasQuery, true);
-            winietasQuery.OrderByDescending(c => c.Id);
+            winietasQuery = winietasQuery.OrderByDescending(c => c.Id);
 
             var winietas = await _winietaRepository.GetPagedByAsync(
                  winietasQuery,
