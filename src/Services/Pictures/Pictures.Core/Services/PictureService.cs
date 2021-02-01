@@ -126,6 +126,7 @@ namespace Pictures.Core.Services
             }
 
             pictureEntity.PlateNumber = analyzeRequest.PlateNumber;
+            pictureEntity.IsRecognized = true;
 
             await _pictureRepository.UpdateAsync(pictureEntity);
 
