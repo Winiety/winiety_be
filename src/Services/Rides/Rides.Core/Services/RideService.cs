@@ -58,7 +58,7 @@ namespace Rides.Core.Services
 
             var ridesQuery = _rideRepository.GetQueryable();
             ridesQuery = CreateSearchQuery(ridesQuery, search, false);
-            ridesQuery.OrderByDescending(c => c.RideDateTime);
+            ridesQuery = ridesQuery.OrderByDescending(c => c.RideDateTime);
 
             var rides = await _rideRepository.GetPagedByAsync(
                  ridesQuery,
@@ -76,7 +76,7 @@ namespace Rides.Core.Services
 
             var ridesQuery = _rideRepository.GetQueryable();
             ridesQuery = CreateSearchQuery(ridesQuery, search, true);
-            ridesQuery.OrderByDescending(c => c.RideDateTime);
+            ridesQuery = ridesQuery.OrderByDescending(c => c.RideDateTime);
 
             var rides = await _rideRepository.GetPagedByAsync(
                  ridesQuery,
